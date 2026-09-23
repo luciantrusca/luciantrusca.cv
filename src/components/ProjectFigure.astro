@@ -83,6 +83,39 @@ const stacked = rows.map((r) => r.map((v, j) => ({ x: 170 + 290 * r.slice(0, j).
     </>
   )}
 
+  {kind === 'dashboard' && (
+    <>
+      <rect width="480" height="300" fill="var(--fig-bg)" />
+      <rect width="64" height="300" fill="var(--navy)" />
+      <g stroke="var(--paper-ink)" stroke-width="3" stroke-linecap="round" opacity="0.7">
+        <path d="M18 60 H46 M18 84 H40 M18 108 H44 M18 132 H36" />
+      </g>
+      <circle cx="32" cy="28" r="9" fill="var(--accent)" />
+      <g fill="none" stroke="var(--navy)" stroke-width="1.5">
+        <rect x="84" y="52" width="116" height="58" />
+        <rect x="214" y="52" width="116" height="58" />
+        <rect x="344" y="52" width="116" height="58" />
+        <rect x="84" y="124" width="200" height="156" />
+        <rect x="298" y="124" width="162" height="156" />
+        <path d="M96 94 l20 -10 l18 6 l20 -16 l20 4" />
+        <path d="M312 150 H446 M312 176 H446 M312 202 H446 M312 228 H446 M312 254 H446" opacity="0.45" />
+      </g>
+      <g fill="var(--navy)">
+        <rect x="226" y="66" width="44" height="12" opacity="0.8" />
+        <rect x="226" y="86" width="80" height="8" opacity="0.35" />
+        <rect x="356" y="66" width="30" height="12" fill="var(--accent)" />
+        <rect x="356" y="86" width="70" height="8" opacity="0.35" />
+        {[62, 104, 48, 86, 120, 70, 96].map((h, i) => (
+          <rect x={100 + i * 25} y={266 - h} width="15" height={h} opacity={i === 4 ? 1 : 0.55} />
+        ))}
+        {[0, 1, 2, 3, 4].map((r) => <rect x="312" y={142 + r * 26} width={[64, 88, 52, 76, 40][r]} height="8" opacity="0.5" />)}
+      </g>
+      <g class="t" fill="var(--navy)">
+        <text x="84" y="34">DeepCase</text>
+      </g>
+    </>
+  )}
+
   {kind === 'signs' && (
     <>
       <rect width="480" height="300" fill="var(--fig-bg)" />
@@ -130,5 +163,5 @@ const stacked = rows.map((r) => r.map((v, j) => ({ x: 170 + 290 * r.slice(0, j).
 
 <style>
   .fig { display: block; width: 100%; height: auto; }
-  .t text { font: 500 15px var(--sans); letter-spacing: 0.1em; text-transform: uppercase; }
+  .t text { font: 500 19px var(--sans); letter-spacing: 0.06em; text-transform: uppercase; }
 </style>

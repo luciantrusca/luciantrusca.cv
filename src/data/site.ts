@@ -38,7 +38,7 @@ export const journey = {
   end: ['New questions.', 'More to build.'],
 };
 
-export type Figure = 'birds' | 'forecast' | 'signs' | 'cave';
+export type Figure = 'birds' | 'forecast' | 'dashboard' | 'signs' | 'cave';
 
 export const work = {
   intro: 'Projects from across the path, from camera traps to cave sediment, each turning data into a decision.',
@@ -51,15 +51,22 @@ export const work = {
       outcome: 'Benchmarked models across lighting conditions and showed where they work and where they fail.',
     },
     {
-      area: 'Time series', figure: 'forecast' as Figure, title: 'Walmart Demand Forecast',
-      text: 'An end-to-end pipeline predicting 28 days of daily sales, from diagnostics to model comparison.',
+      area: 'Time series', figure: 'forecast' as Figure, title: 'Sales Forecasting',
+      text: 'An end-to-end pipeline predicting 28 days of daily Walmart sales, from diagnostics to model comparison.',
       tags: ['Python', 'SARIMAX', 'ETS'],
       role: 'Course project, Applied Forecasting',
       outcome: 'Found weekend peaks, non-stationarity and shifting volatility; compared seasonal naive, ETS and SARIMAX.',
     },
     {
-      area: 'Embedded ML', figure: 'signs' as Figure, title: 'Traffic Signs on Arduino',
-      text: 'A lightweight image classifier running in real time on a microcontroller, over 99% accurate on 6 classes.',
+      area: 'Data viz', figure: 'dashboard' as Figure, title: 'Security Dashboard',
+      text: 'An interactive Dash dashboard for the DeepCase security tool, prototyped in Figma with weekly stakeholder feedback.',
+      tags: ['Dash', 'Figma', 'SQL'],
+      role: 'Team project',
+      outcome: 'Turned a command-line tool into an interactive dashboard, with metrics and requirements defined together with stakeholders.',
+    },
+    {
+      area: 'Embedded ML', figure: 'signs' as Figure, title: 'Edge Traffic Signs',
+      text: 'A lightweight image classifier running in real time on an Arduino, over 99% accurate on 6 classes.',
       tags: ['Arduino', 'Edge Impulse'],
       role: 'Course project, Intelligent Embedded Systems',
       outcome: 'Over 99% accuracy on 6 classes, 75% on all 42; field-tested across distance, angle and light.',
@@ -73,7 +80,6 @@ export const work = {
     },
   ],
   also: [
-    { title: 'DeepCase dashboard', text: 'Security tool UI in Dash, prototyped in Figma' },
     { title: 'Cottage listings', text: 'NLP cleanup with spaCy, ML imputation' },
     { title: 'Training platform', text: 'Role-based web app with progress dashboards' },
     { title: 'Chessmate', text: 'Real-time move assistant with OpenCV' },

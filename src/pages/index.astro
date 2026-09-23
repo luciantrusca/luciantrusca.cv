@@ -102,7 +102,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
           <p class="label subtitle">Ideas into outcomes.</p>
         </div>
         <p class="work-intro">{work.intro}</p>
-        <a class="all" href={cv}>View all projects <Icon name="arrow" size={20} /></a>
       </div>
 
       <div class="cards">
@@ -225,21 +224,18 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .arrow { position: absolute; top: -17px; right: 0; width: 34px; height: 34px; border: 1.5px solid var(--paper-ink); border-radius: 50%; display: grid; place-items: center; background: var(--navy); }
 
   /* ── 03 Work: head row, four equal cards, also-built strip ── */
-  .work-head { display: grid; grid-template-columns: 40fr 42fr 18fr; column-gap: clamp(1.5rem, 3vw, 3rem); align-items: center; margin-bottom: clamp(1.5rem, 3.5vh, 2.5rem); }
+  .work-head { display: grid; grid-template-columns: 40fr 60fr; column-gap: clamp(1.5rem, 3vw, 3rem); align-items: center; margin-bottom: clamp(1.5rem, 3.5vh, 2.5rem); }
   .work-intro { font-size: 1.12rem; line-height: 1.6; max-width: 30em; }
-  .all { justify-self: end; display: inline-flex; align-items: center; gap: 1rem; font-size: 1.05rem; text-decoration: none; padding-bottom: 0.45rem; border-bottom: 1px solid var(--ink); }
-  .all :global(.icon) { transition: transform 0.2s; }
-  .all:hover :global(.icon) { transform: translateX(3px); }
 
-  .cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(1rem, 1.6vw, 1.5rem); }
-  .card { display: flex; flex-direction: column; border: 1px solid var(--card-line); padding: clamp(1.1rem, 1.6vw, 1.6rem); background: color-mix(in srgb, var(--paper) 60%, white); transition: border-color 0.2s; }
+  .cards { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(0.85rem, 1.3vw, 1.25rem); }
+  .card { display: flex; flex-direction: column; border: 1px solid var(--card-line); padding: clamp(1rem, 1.3vw, 1.3rem); background: color-mix(in srgb, var(--paper) 60%, white); transition: border-color 0.2s; }
   .card:hover { border-color: var(--navy); }
   .card-top { display: flex; align-items: baseline; gap: 1.1rem; margin-bottom: 1rem; }
   .card-top .num { font-size: 1.2rem; font-weight: 700; }
   .card-top .label { font-size: 0.62rem; color: var(--muted); }
   .card :global(.fig) { margin-bottom: 1.25rem; }
-  .card h3 { font-size: 1.22rem; font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 0.55rem; }
-  .card-text { font-size: 0.98rem; line-height: 1.55; opacity: 0.85; margin-bottom: 1.4rem; }
+  .card h3 { font-size: 1.15rem; font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 0.55rem; }
+  .card-text { font-size: 0.94rem; line-height: 1.55; opacity: 0.85; margin-bottom: 1.4rem; }
   details { margin-top: auto; }
   summary { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; cursor: pointer; list-style: none; font-size: 0.88rem; color: var(--muted); }
   summary::-webkit-details-marker { display: none; }
@@ -253,7 +249,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .also { margin-top: clamp(1.75rem, 3.5vh, 2.5rem); }
   .also-title { display: flex; align-items: center; gap: 1.1rem; font-size: 0.64rem; color: var(--muted); margin-bottom: 1.25rem; }
   .also-title::after { content: ''; flex: 1; border-top: 1px solid var(--card-line); }
-  .also ul { display: grid; grid-template-columns: repeat(5, 1fr); }
+  .also ul { display: grid; grid-template-columns: repeat(4, 1fr); }
   .also li { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.1rem 1.25rem; border-left: 1px solid var(--card-line); font-size: 0.92rem; line-height: 1.45; }
   .also li:first-child { border-left: 0; padding-left: 0; }
   .also strong { font-weight: 600; font-size: 1rem; }
@@ -293,12 +289,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
   }
   @media (max-width: 1199px) {
     .motto { display: none; }
-    .cards { grid-template-columns: repeat(2, 1fr); }
+    .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .toolkit { grid-template-columns: repeat(4, 1fr); row-gap: 2.5rem; }
     .toolkit-title { grid-column: 1 / -1; }
     .tool:nth-child(2) { border-left: 0; padding-left: 0; }
-    .also ul { grid-template-columns: repeat(3, 1fr); row-gap: 1.25rem; }
-    .also li:nth-child(4) { border-left: 0; padding-left: 0; }
+    .also ul { grid-template-columns: repeat(2, 1fr); row-gap: 1.25rem; }
+    .also li:nth-child(3) { border-left: 0; padding-left: 0; }
   }
   @media (max-width: 899px) {
     nav { display: none; } /* ponytail: no mobile menu; the page is one scroll */
@@ -307,7 +303,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
     .art { position: static; width: 100%; height: auto; }
     .side { width: auto; }
     .art-note, .hand { display: none; }
-    .all { justify-self: start; }
 
     .cards, .toolkit { grid-template-columns: 1fr; }
     .tool { border-left: 0; padding-left: 0; }

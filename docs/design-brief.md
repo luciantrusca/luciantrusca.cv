@@ -155,7 +155,7 @@ Measured at 1440×900 (content-driven, tightened in revision 3): Profile 64vh, J
 - **Header:** name + `Biology × Computation × Data`, numbered serif nav + Contact, two-line motto right, hairline under.
 - **Profile:** 44/56 split with a vertical rule. Left: headline, lead, buttons, `×` kicker. Right: italic quote + triad over the etched art (cropped from the mockup, text inpainted out, edges faded; replace with hi-res art), small-caps note top-right, handwritten note bottom-right.
 - **Journey:** title | paragraph | quote, split by rules. Timeline: track with dots, dotted run-out to an arrow circle, five ruled columns (dates, phase, degree/role, one line) + italic end column. Vertical below 1100 px.
-- **Work:** title | intro | "View all projects →". Four equal bordered cards (number, area, schematic SVG figure, title, text, tags + arrow; the arrow opens role/outcome via `<details>`, no JS). "Also built" strip of five below.
+- **Work:** title | intro. Five equal bordered cards (number, area, schematic SVG figure, title, text, tags + arrow; the arrow opens role/outcome via `<details>`, no JS). "Also built" strip of four below.
 - **Toolkit:** title block + four icon columns (Biology, Computation, Engineering, Direction) split by rules.
 - **Footer:** name | quote | GitHub, LinkedIn, mail icons | "Open to collaborations".
 - **Responsive:** 2-column cards and wrapped toolkit below 1200 px; single column below 900 px, nav hidden.
@@ -165,7 +165,7 @@ Measured at 1440×900 (content-driven, tightened in revision 3): Profile 64vh, J
 - ~~Typeface pairing~~ Source Serif 4 + Inter for now.
 - ~~Colors~~ sampled from the mockup; accent brass `#c29a5b`.
 - EHA Data Analyst role has no dates in the CV; it is mentioned in the 2025 – Present column.
-- No per-project links yet (no repo URLs in the CV); "View all projects" points to the CV PDF.
+- No per-project links yet (no repo URLs in the CV). "View all projects" removed for now; five featured projects instead of four.
 - Project figures are schematic SVGs; replace with real plots/screenshots.
 - Headline uses the mockup's "Curiosity Bridges Worlds."; final wording open.
 - `public/cv.pdf` contains a phone number.
