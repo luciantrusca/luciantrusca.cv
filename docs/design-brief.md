@@ -158,7 +158,7 @@ Measured at 1440×900 (content-driven, tightened in revision 3): Profile 64vh, J
 - **Work:** title | intro. Five equal bordered cards (number, area, schematic SVG figure, title, text, tags + arrow; the arrow opens role/outcome via `<details>`, no JS). "Also built" strip of four below.
 - **Toolkit:** title block + four icon columns (Biology, Computation, Engineering, Direction) split by rules.
 - **Footer:** name | quote | GitHub, LinkedIn, mail icons | "Open to collaborations".
-- **Responsive:** 2-column cards and wrapped toolkit below 1200 px; single column below 900 px, nav hidden.
+- **Responsive:** five cards stay on one row down to 900 px (cards grow taller); toolkit wraps below 1200 px; single column below 900 px, nav hidden.
 
 ## Open decisions
 
