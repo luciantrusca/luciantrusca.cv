@@ -113,7 +113,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
             <p class="card-text">{p.text}</p>
             <details>
               <summary>
-                <span class="tags">{p.tags.map((t) => <span class="tag">{t}</span>)}</span>
+                <span class="tags">{p.tags.map((t, j) => <span class="tag">{t}{j < p.tags.length - 1 && <span class="sep"><span aria-hidden="true">•</span><span class="vh">, </span></span>}</span>)}</span>
                 <span class="more" aria-label="Details"><Icon name="arrow" size={20} /></span>
               </summary>
               <dl>
@@ -241,7 +241,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   summary::-webkit-details-marker { display: none; }
   .tags { display: flex; flex-wrap: wrap; align-items: center; row-gap: 0.15rem; min-width: 0; }
   .tag { white-space: nowrap; }
-  .tag:not(:last-child)::after { content: "·"; margin: 0 0.45em; opacity: 0.6; }
+  .sep { margin: 0 0.55em; color: var(--accent); font-size: 1.05em; }
   .more { color: var(--ink); display: inline-flex; flex: none; transition: transform 0.2s; }
   summary:hover .more { transform: translateX(3px); }
   details[open] .more { transform: rotate(90deg); }

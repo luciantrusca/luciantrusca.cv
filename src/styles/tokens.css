@@ -68,3 +68,6 @@ a:hover { text-decoration-color: var(--accent); }
 @media (max-width: 899px) {
   .vrule { border-left: 0; padding-left: 0; border-top: 1px solid var(--hair); padding-top: 1.5rem; }
 }
+
+/* Visually hidden, still read by screen readers */
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
