@@ -146,24 +146,26 @@ Do not polish individual project descriptions before the layout exists; the wire
 
 ## Current build (steps 2–3, plus first content pass)
 
-The page follows the mockup's visual language: warm paper `#f7f7f3` and navy `#0e2638` sampled from `docs/mockup-v1.png`, Source Serif 4 (bold headlines, italic quotes) with Inter for letterspaced labels, `01 / 04` chapter labels with a rule, quote columns behind thin vertical rules, navy + outline buttons, brass `#c29a5b` as the single accent. Structure keeps this brief's changes over the mockup: branching phylogeny instead of an equal-column timeline, asymmetric Work grid instead of four equal cards, 2/3 capability map + 1/3 Direction.
+**Revision 2 (owner feedback): the mockup's layout now wins over this brief's structural changes.** The owner found the phylogeny, asymmetric Work grid and 2/3 + 1/3 Toolkit "all over the place" and asked to follow the mockup. So: horizontal timeline, four equal project cards, title + four toolkit columns.
 
-All copy comes from `Resume_DS.tex` and lives in `src/data/site.ts`. Measured at 1440×900: Profile 71vh (+ header), Journey 86vh, Work 150vh, Toolkit 82vh, Footer 28vh.
+Visual language from `docs/mockup-v1.png`: paper `#f7f7f3`, navy `#0e2638`, Source Serif 4 (bold headlines, italic quotes) + Inter for letterspaced labels + Caveat for the one handwritten note, `01 / 04` labels with a rule, quote columns behind thin vertical rules, navy + outline buttons with arrow icons, brass `#c29a5b` as the single accent. All copy comes from `Resume_DS.tex` and lives in `src/data/site.ts`.
 
-- **Grid:** 12 columns, max content width 1280 px, 24 px gutter, side margin `clamp(20px, 5vw, 64px)`.
-- **Profile:** text cols 1–6 · quote + triad cols 7–8 · etched illustration cols 9–12 (cropped from the mockup; replace with hi-res art).
-- **Journey:** title cols 1–4 · text cols 5–9 · quote cols 10–12; phylogeny on a 2015–2026 year axis. The dashed bioinformatics thread leaves the MSc and rejoins CS in the Data Science MSc.
-- **Work:** title column cols 1–3 with an "Also built" list; large 01 (cols 4–8), regular 02 (9–12, offset down), regular 03 (4–7), large 04 (8–12, offset up). Figures are schematic SVGs at 16:9; swap for real plots or screenshots.
-- **Toolkit:** 2×2 capability map cols 1–8, Direction cols 9–12.
-- **Mobile (< 860 px):** single column in source order; the phylogeny scrolls horizontally instead of shrinking; nav hidden.
+Measured at 1440×900 (content-driven): Profile 76vh, Journey 87vh, Work 108vh, Toolkit 56vh, Footer 22vh.
+
+- **Header:** name + `Biology × Computation × Data`, numbered serif nav + Contact, two-line motto right, hairline under.
+- **Profile:** 44/56 split with a vertical rule. Left: headline, lead, buttons, `×` kicker. Right: italic quote + triad over the etched art (cropped from the mockup, text inpainted out, edges faded; replace with hi-res art), small-caps note top-right, handwritten note bottom-right.
+- **Journey:** title | paragraph | quote, split by rules. Timeline: track with dots, dotted run-out to an arrow circle, five ruled columns (dates, phase, degree/role, one line) + italic end column. Vertical below 1100 px.
+- **Work:** title | intro | "View all projects →". Four equal bordered cards (number, area, schematic SVG figure, title, text, tags + arrow; the arrow opens role/outcome via `<details>`, no JS). "Also built" strip of five below.
+- **Toolkit:** title block + four icon columns (Biology, Computation, Engineering, Direction) split by rules.
+- **Footer:** name | quote | GitHub, LinkedIn, mail icons | "Open to collaborations".
+- **Responsive:** 2-column cards and wrapped toolkit below 1200 px; single column below 900 px, nav hidden.
 
 ## Open decisions
 
 - ~~Typeface pairing~~ Source Serif 4 + Inter for now.
 - ~~Colors~~ sampled from the mockup; accent brass `#c29a5b`.
-- EHA Data Analyst role has no dates in the CV; it sits on the Data Science branch without a date.
-- No per-project links yet (no repo URLs in the CV).
-- Which 4 projects are featured and which two get the large slots.
-- Final headline and positioning statement for Profile.
-- Whether the phylogeny is static SVG first or interactive from the start.
-- ~~Mobile behavior of the asymmetric Work grid and the 2/3 + 1/3 Toolkit split.~~ Defaulted to single-column stacking in the wireframe; revisit if needed.
+- EHA Data Analyst role has no dates in the CV; it is mentioned in the 2025 – Present column.
+- No per-project links yet (no repo URLs in the CV); "View all projects" points to the CV PDF.
+- Project figures are schematic SVGs; replace with real plots/screenshots.
+- Headline uses the mockup's "Curiosity Bridges Worlds."; final wording open.
+- `public/cv.pdf` contains a phone number.

@@ -25,7 +25,7 @@ const rows = [
 const shades = [1, 0.72, 0.48, 0.28, 0.14];
 const stacked = rows.map((r) => r.map((v, j) => ({ x: 170 + 290 * r.slice(0, j).reduce((a, b) => a + b, 0), w: 290 * v, o: shades[j] })));
 ---
-<svg viewBox="0 0 480 300" preserveAspectRatio="xMidYMid slice" role="img" aria-label={label} class="fig">
+<svg viewBox="0 0 480 300" role="img" aria-label={label} class="fig">
   {kind === 'birds' && (
     <>
       <defs>
@@ -75,7 +75,7 @@ const stacked = rows.map((r) => r.map((v, j) => ({ x: 170 + 290 * r.slice(0, j).
         <path d={`M${fx(56)} 52 V46 H${fx(83)} V52`} stroke-width="1" />
       </g>
       <g class="t" fill="var(--navy)">
-        <text x={fx(56)} y="36">28-day horizon</text>
+        <text x="470" y="36" text-anchor="end">28-day horizon</text>
         <text x="48" y="36">Daily sales</text>
         <text x={fx(55) - 6} y="284" text-anchor="end">history</text>
         <text x={fx(57)} y="284">forecast</text>
@@ -101,7 +101,7 @@ const stacked = rows.map((r) => r.map((v, j) => ({ x: 170 + 290 * r.slice(0, j).
         <rect x="270" y="170" width={170 * 0.75} height="26" opacity="0.55" />
       </g>
       <g class="t" fill="var(--navy)">
-        <text x="36" y="44">Classes on device</text>
+        <text x="36" y="44">Sign classes</text>
         <text x="270" y="60">Accuracy</text>
         <text x="270" y="90">6 classes</text>
         <text x="270" y="162">42 classes</text>
@@ -122,7 +122,7 @@ const stacked = rows.map((r) => r.map((v, j) => ({ x: 170 + 290 * r.slice(0, j).
       )))}
       <g class="t" fill="var(--navy)">
         <text x="40" y="30">Cluster</text>
-        <text x="170" y="30">Relative abundance per sample</text>
+        <text x="170" y="30">Abundance per sample</text>
       </g>
     </>
   )}
@@ -130,5 +130,5 @@ const stacked = rows.map((r) => r.map((v, j) => ({ x: 170 + 290 * r.slice(0, j).
 
 <style>
   .fig { display: block; width: 100%; height: auto; }
-  .t text { font: 500 11px var(--sans); letter-spacing: 0.14em; text-transform: uppercase; }
+  .t text { font: 500 15px var(--sans); letter-spacing: 0.1em; text-transform: uppercase; }
 </style>

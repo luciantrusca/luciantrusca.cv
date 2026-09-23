@@ -1,26 +1,14 @@
 ---
 import '../styles/tokens.css';
 import ChapterBand from '../components/ChapterBand.astro';
-import Phylogeny from '../components/Phylogeny.astro';
 import ProjectFigure from '../components/ProjectFigure.astro';
-import { person, profile, journey, projects, alsoBuilt, capabilities, languages, direction } from '../data/site';
+import Icon from '../components/Icon.astro';
+import { person, profile, journey, work, toolkit, footer } from '../data/site';
 
 const base = import.meta.env.BASE_URL;
 const cv = `${base}cv.pdf`;
 const nav = [['profile', 'Profile'], ['journey', 'Journey'], ['work', 'Work'], ['toolkit', 'Toolkit']];
 const pad = (n: number) => String(n).padStart(2, '0');
-
-// 24px stroke icons
-const icons: Record<string, string> = {
-  dna: '<path d="M7 3c0 5 10 4 10 9s-10 4-10 9M17 3c0 5-10 4-10 9s10 4 10 9M8.5 6.5h7M8.5 17.5h7M10 12h4"/>',
-  network: '<circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M7 6h10M6 8l5 8M18 8l-5 8"/>',
-  code: '<path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/>',
-  chip: '<rect x="6" y="6" width="12" height="12"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/>',
-  compass: '<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
-  mail: '<rect x="3" y="5" width="18" height="14"/><path d="M3 6l9 7 9-7"/>',
-  git: '<circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="8" r="2"/><path d="M6 7v10M18 10c0 4-6 3-11 7"/>',
-  linkedin: '<rect x="3" y="3" width="18" height="18"/><path d="M8 10v7M8 7v.01M12 17v-7M12 13c0-2 1.5-3 3-3s2 1 2 3v4"/>',
-};
 ---
 <!doctype html>
 <html lang="en">
@@ -31,245 +19,301 @@ const icons: Record<string, string> = {
   <meta name="description" content={profile.statement} />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Inter:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet" />
 </head>
 <body>
   <header class="site-header">
     <div class="wrap bar">
       <a class="brand" href="#profile">
         <span class="name">{person.name}</span>
-        <span class="label">Biology × Computation × Data</span>
+        <span class="label">{person.tagline.map((t, i) => <>{i > 0 && <span class="x">×</span>}{t}</>)}</span>
       </a>
       <nav aria-label="Sections">
-        {nav.map(([id, text], i) => <a href={`#${id}`}><span>{pad(i + 1)}</span> {text}</a>)}
+        {nav.map(([id, text], i) => <a href={`#${id}`}><span class="n">{pad(i + 1)}</span>{text}</a>)}
+        <a href="#contact">Contact</a>
       </nav>
-      <p class="label where">Based in<br />{person.location}</p>
+      <p class="label motto">{person.motto[0]}<br />{person.motto[1]}</p>
     </div>
   </header>
 
   <main>
     <!-- 01 PROFILE -->
-    <ChapterBand id="profile" num={1} minH="calc(76vh - var(--header-h))">
-      <div class="grid profile">
+    <ChapterBand id="profile" num={1} minH="calc(80vh - var(--header-h))">
+      <div class="profile">
         <div class="intro">
           <h1 id="profile-title" class="hero">{profile.headline[0]}<br />{profile.headline[1]}</h1>
           <p class="lead">{profile.statement}</p>
           <p class="actions">
-            <a class="btn primary" href="#work">View my work <span aria-hidden="true">→</span></a>
-            <a class="btn" href={cv} download>Download CV <span aria-hidden="true">↓</span></a>
+            <a class="btn primary" href="#work">View My Work <Icon name="arrow" /></a>
+            <a class="btn" href={cv} download>Download CV <Icon name="down" /></a>
           </p>
-          <p class="label kicker">Biotechnology × Computer science × Data science</p>
+          <p class="label kicker">{profile.kicker.map((t, i) => <>{i > 0 && <span class="x">×</span>}{t}</>)}</p>
         </div>
-        <div class="vrule side">
-          <p class="quote big">“{profile.quote.map((l, i) => <>{l}{i < profile.quote.length - 1 && <br />}</>)}”</p>
-          <span class="short-rule"></span>
-          <ul class="label triad">{profile.triad.map((t) => <li>{t}</li>)}</ul>
+
+        <div class="vrule visual">
+          <img class="art" src={`${base}img/convergence.jpg`} alt="Etched illustration: a DNA helix and a young plant in front of mountains, a lake and a hiker." width="832" height="680" />
+          <div class="side">
+            <p class="quote big">“{profile.quote.map((l, i) => <>{l}{i < profile.quote.length - 1 && <br />}</>)}”</p>
+            <span class="short-rule"></span>
+            <ul class="label triad">{profile.triad.map((t) => <li>{t}</li>)}</ul>
+          </div>
+          <p class="label art-note">{profile.artNote.map((l) => <>{l}<br /></>)}</p>
+          <p class="hand">{profile.handNote}</p>
         </div>
-        <figure class="art">
-          <img src={`${base}img/convergence.jpg`} alt="Etched illustration: a DNA helix and a plant in front of mountains and a lake." width="596" height="676" />
-          <figcaption><span class="label">Fig. 1</span>{profile.caption}</figcaption>
-        </figure>
       </div>
     </ChapterBand>
 
     <!-- 02 JOURNEY -->
-    <ChapterBand id="journey" num={2} dark minH="86vh">
-      <div class="grid journey-head">
-        <div class="title-block">
+    <ChapterBand id="journey" num={2} dark minH="84vh">
+      <div class="journey-head">
+        <div>
           <h2 id="journey-title" class="chapter-title">My Journey.</h2>
           <p class="label subtitle">{journey.subtitle}</p>
         </div>
         <p class="vrule journey-text">{journey.text}</p>
-        <p class="vrule quote journey-quote">“{journey.quote}”</p>
+        <div class="vrule journey-quote">
+          <p class="quote">“{journey.quote}”</p>
+          <span class="short-rule"></span>
+          <p class="label">{journey.quoteNote[0]}<br />{journey.quoteNote[1]}</p>
+        </div>
       </div>
-      <figure class="journey-fig">
-        <Phylogeny />
-        <figcaption><span class="label">Fig. 2</span>{journey.caption}</figcaption>
-      </figure>
+
+      <ol class="timeline">
+        {journey.steps.map((s, i) => (
+          <li class:list={['step', { last: i === journey.steps.length - 1 }]}>
+            <p class="dates">{s.dates}{s.now && <em>{s.now}</em>}</p>
+            <h3>{s.phase}</h3>
+            <p class="role">{s.title}</p>
+            <p class="desc">{s.text}</p>
+          </li>
+        ))}
+        <li class="end" aria-hidden="true">
+          <span class="arrow"><Icon name="arrow" size={18} /></span>
+          <p>{journey.end[0]}<br />{journey.end[1]}</p>
+        </li>
+      </ol>
     </ChapterBand>
 
     <!-- 03 WORK -->
-    <ChapterBand id="work" num={3} minH="140vh">
-      <div class="grid work">
-        <div class="work-head">
+    <ChapterBand id="work" num={3} minH="100vh">
+      <div class="work-head">
+        <div>
           <h2 id="work-title" class="chapter-title">Selected Work.</h2>
-          <p class="label subtitle">Ideas into outcomes</p>
-          <p class="work-intro">Four projects across the path: computer vision, forecasting, embedded ML and bioinformatics.</p>
-          <div class="also">
-            <p class="label">Also built</p>
-            <ul>{alsoBuilt.map((a) => <li>{a}</li>)}</ul>
-          </div>
-          <a class="btn" href={cv}>All projects in CV <span aria-hidden="true">→</span></a>
+          <p class="label subtitle">Ideas into outcomes.</p>
         </div>
-        {projects.map((p, i) => (
-          <article class:list={['project', p.size, `p${i + 1}`]}>
-            <figure>
-              <ProjectFigure kind={p.figure} label={p.caption} />
-              <figcaption><span class="label">Fig. 3.{i + 1}</span>{p.caption}</figcaption>
-            </figure>
-            <p class="label kicker"><span class="num">{pad(i + 1)}</span> {p.area} · {p.role}</p>
+        <p class="work-intro">{work.intro}</p>
+        <a class="all" href={cv}>View all projects <Icon name="arrow" size={20} /></a>
+      </div>
+
+      <div class="cards">
+        {work.projects.map((p, i) => (
+          <article class="card">
+            <p class="card-top"><span class="num">{pad(i + 1)}</span><span class="label">{p.area}</span></p>
+            <ProjectFigure kind={p.figure} label={`${p.title}: schematic figure`} />
             <h3>{p.title}</h3>
-            <p class="summary">{p.summary}</p>
-            <dl class="meta">
-              <div><dt class="label">Methods</dt><dd>{p.methods}</dd></div>
-              <div><dt class="label">Outcome</dt><dd>{p.outcome}</dd></div>
-            </dl>
+            <p class="card-text">{p.text}</p>
+            <details>
+              <summary>
+                <span class="tags">{p.tags.map((t, j) => <>{j > 0 && <span class="dot">·</span>}<span class="tag">{t}</span></>)}</span>
+                <span class="more" aria-label="Details"><Icon name="arrow" size={20} /></span>
+              </summary>
+              <dl>
+                <div><dt class="label">Role</dt><dd>{p.role}</dd></div>
+                <div><dt class="label">Outcome</dt><dd>{p.outcome}</dd></div>
+              </dl>
+            </details>
           </article>
         ))}
+      </div>
+
+      <div class="also">
+        <p class="label also-title">Also built</p>
+        <ul>
+          {work.also.map((a) => <li><strong>{a.title}</strong><span>{a.text}</span></li>)}
+        </ul>
       </div>
     </ChapterBand>
 
     <!-- 04 TOOLKIT & DIRECTION -->
-    <ChapterBand id="toolkit" num={4} dark minH="78vh">
-      <div class="grid toolkit">
-        <div class="toolkit-main">
-          <h2 id="toolkit-title" class="chapter-title">My Toolkit &amp; Direction.</h2>
-          <p class="label subtitle">Skills today. Bigger questions tomorrow.</p>
-          <div class="cap-map">
-            {capabilities.map((c, i) => (
-              <div class="cap">
-                <h3><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[c.icon]} /><span class="label">{pad(i + 1)}</span> {c.group}</h3>
-                <ul>{c.items.map((it) => <li>{it}</li>)}</ul>
-              </div>
-            ))}
-          </div>
-          <p class="languages"><span class="label">Languages</span> {languages}</p>
+    <ChapterBand id="toolkit" num={4} dark minH="56vh">
+      <div class="toolkit">
+        <div class="toolkit-title">
+          <h2 id="toolkit-title" class="chapter-title">My Toolkit &amp;<br />Direction.</h2>
+          <p class="label subtitle">{toolkit.subtitle}</p>
+          <p class="languages">{toolkit.languages}</p>
         </div>
-        <aside class="vrule direction" aria-labelledby="direction-title">
-          <svg class="icon big" viewBox="0 0 24 24" aria-hidden="true" set:html={icons.compass} />
-          <p id="direction-title" class="label">Direction</p>
-          <p class="direction-text">{direction.statement}</p>
-          <p class="note">{direction.now}</p>
-          <p class="note">{direction.aim}</p>
-        </aside>
+        {toolkit.columns.map((c) => (
+          <div class:list={['vrule', 'tool', { direction: c.icon === 'compass' }]}>
+            <h3><Icon name={c.icon} size={28} />{c.title}</h3>
+            <ul>{c.items.map((it) => <li>{it}</li>)}</ul>
+          </div>
+        ))}
       </div>
     </ChapterBand>
   </main>
 
-  <footer class="site-footer">
-    <div class="wrap grid foot">
+  <footer id="contact" class="site-footer">
+    <div class="wrap foot">
       <div class="foot-brand">
         <p class="name">{person.name}</p>
-        <p class="label">Data science with a biotech background</p>
+        <p class="label">{footer.role}</p>
       </div>
-      <div class="vrule pitch">
-        <p class="pitch-title">Let’s build what’s next.</p>
-        <p>Open to collaborations, ideas and opportunities where biology meets data.</p>
-      </div>
-      <ul class="vrule contact">
-        <li><a href={`mailto:${person.email}`}><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons.mail} />{person.email}</a></li>
-        <li><a href={person.github}><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons.git} />github.com/luciantrusca</a></li>
-        <li><a href={person.linkedin}><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons.linkedin} />linkedin.com/in/lucian-trusca</a></li>
-        <li><a href={cv} download><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons.code} />Download CV (PDF)</a></li>
+      <p class="vrule foot-quote">“{footer.quote}”</p>
+      <ul class="vrule social">
+        <li><a href={person.github} aria-label="GitHub"><Icon name="github" size={30} /></a></li>
+        <li><a href={person.linkedin} aria-label="LinkedIn"><Icon name="linkedin" size={30} /></a></li>
+        <li><a href={`mailto:${person.email}`} aria-label={`Email ${person.email}`}><Icon name="mail" size={32} /></a></li>
       </ul>
-      <p class="label open">Same questions.<br />Better tools.</p>
+      <p class="vrule label open">{footer.open[0]}<br />{footer.open[1]}</p>
     </div>
   </footer>
 </body>
 </html>
 
 <style>
-  /* Header */
+  /* ── Header ─────────────────────────────── */
   .site-header { position: sticky; top: 0; z-index: 10; height: var(--header-h); background: var(--paper); }
-  .bar { height: 100%; display: flex; align-items: center; gap: var(--space-4); }
+  .bar { height: 100%; display: flex; align-items: center; gap: 2rem; position: relative; }
   .bar::after { content: ''; position: absolute; left: var(--margin); right: var(--margin); bottom: 0; border-bottom: 1px solid var(--hair); }
-  .brand { display: flex; flex-direction: column; text-decoration: none; margin-right: auto; }
-  .brand .name { font-size: 1.55rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+  .brand { display: flex; flex-direction: column; gap: 0.15rem; text-decoration: none; margin-right: auto; }
+  .brand .name { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.025em; line-height: 1.05; }
   .brand .label { font-size: 0.62rem; color: var(--muted); }
-  nav { display: flex; gap: var(--space-4); }
-  nav a { text-decoration: none; font-size: 0.98rem; }
-  nav a span { font-size: 0.85em; margin-right: 0.3em; }
-  nav a:hover { text-decoration: underline; text-decoration-color: var(--accent); }
-  .where { text-align: right; font-size: 0.62rem; color: var(--muted); }
+  nav { display: flex; gap: clamp(1.25rem, 2.6vw, 2.75rem); margin-right: clamp(1rem, 4vw, 4.5rem); }
+  nav a { text-decoration: none; font-size: 1.02rem; padding: 0.3rem 0; border-bottom: 1px solid transparent; }
+  nav a:hover { border-bottom-color: var(--accent); }
+  nav .n { margin-right: 0.55em; font-variant-numeric: lining-nums; }
+  .motto { text-align: right; font-size: 0.62rem; line-height: 1.9; color: var(--muted); }
 
-  /* Shared */
-  .icon { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; flex: none; }
-  .kicker { color: var(--muted); }
+  .short-rule { display: block; width: 52px; border-top: 1px solid currentColor; opacity: 0.8; }
 
-  /* 01 Profile: text | quote | art */
-  .profile { align-items: center; }
-  .intro { grid-column: 1 / 7; }
-  .hero { font-size: clamp(3rem, 1rem + 5.6vw, 6.6rem); font-weight: 700; line-height: 0.92; letter-spacing: -0.04em; margin-bottom: var(--space-3); }
-  .lead { font-size: var(--step-1); line-height: 1.45; max-width: 31em; }
-  .actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: var(--space-4) 0 var(--space-3); }
-  .side { grid-column: 7 / 9; align-self: stretch; display: flex; flex-direction: column; justify-content: center; gap: var(--space-3); padding-left: var(--space-3); }
-  .quote.big { font-size: clamp(1.3rem, 0.8rem + 1vw, 1.9rem); }
-  .short-rule { width: 44px; border-top: 1px solid currentColor; }
-  .triad { font-size: 0.64rem; color: var(--muted); display: grid; gap: 0.3em; }
-  .art { grid-column: 9 / 13; }
-  .art img { display: block; width: 100%; height: auto; max-height: 56vh; object-fit: contain; mix-blend-mode: multiply; }
+  /* ── 01 Profile: text | rule | quote + art ─────────────── */
+  .profile { display: grid; grid-template-columns: 44fr 56fr; column-gap: clamp(1.5rem, 3vw, 3rem); align-items: stretch; }
+  .intro { display: flex; flex-direction: column; justify-content: center; padding-bottom: 0.5rem; }
+  .hero { font-size: var(--hero); font-weight: 700; line-height: 0.95; letter-spacing: -0.045em; margin: 0 0 1.75rem -0.04em; }
+  .lead { font-size: clamp(1.1rem, 0.95rem + 0.45vw, 1.35rem); line-height: 1.5; max-width: 30em; }
+  .actions { display: flex; flex-wrap: wrap; gap: 1.5rem; margin: 2.25rem 0 2rem; }
+  .kicker { font-size: 0.64rem; color: var(--muted); }
+  .visual { position: relative; min-height: clamp(360px, 50vh, 520px); }
+  .art { position: absolute; right: -3%; top: 0; width: 68%; height: 100%; object-fit: cover; object-position: 62% 50%; mix-blend-mode: multiply; filter: brightness(1.07) contrast(1.06); -webkit-mask-image: radial-gradient(ellipse 64% 80% at 62% 50%, #000 55%, transparent 100%); mask-image: radial-gradient(ellipse 64% 80% at 62% 50%, #000 55%, transparent 100%); }
+  .side { position: relative; z-index: 1; height: 100%; width: 34%; display: flex; flex-direction: column; justify-content: center; gap: 1.6rem; }
+  .quote.big { font-size: clamp(1.35rem, 1rem + 0.9vw, 1.85rem); line-height: 1.28; text-indent: -0.4em; }
+  .triad { font-size: 0.6rem; line-height: 2.1; color: var(--muted); }
+  .art-note { position: absolute; top: 0.25rem; right: 0; font-size: 0.6rem; line-height: 2; color: var(--muted); }
+  .hand { position: absolute; right: 0; bottom: 0.5rem; width: 9.5em; font: 500 clamp(1.1rem, 0.8rem + 0.6vw, 1.45rem) / 1.15 var(--hand); color: var(--navy); transform: rotate(-9deg); text-align: center; text-shadow: 0 0 6px var(--paper), 0 0 3px var(--paper), 0 0 1px var(--paper); }
 
-  /* 02 Journey */
-  .journey-head { align-items: start; margin-bottom: var(--space-4); }
-  .title-block { grid-column: 1 / 5; }
-  .journey-text { grid-column: 5 / 10; font-size: 1.08rem; line-height: 1.6; }
-  .journey-quote { grid-column: 10 / 13; }
-  .journey-fig { border-top: 1px solid var(--hair); padding-top: var(--space-2); }
-  .journey-fig figcaption { color: color-mix(in srgb, var(--paper-ink) 75%, transparent); }
+  /* ── 02 Journey: head row + horizontal timeline ─────────── */
+  .journey-head { display: grid; grid-template-columns: 34fr 44fr 22fr; column-gap: clamp(1.5rem, 3vw, 3rem); align-items: stretch; margin-bottom: clamp(2.5rem, 5vh, 3.75rem); }
+  .journey-text { font-size: 1.1rem; line-height: 1.65; align-self: center; opacity: 0.92; }
+  .journey-quote { display: flex; flex-direction: column; justify-content: center; gap: 1.1rem; }
+  .journey-quote .label { font-size: 0.6rem; line-height: 2; opacity: 0.8; }
 
-  /* 03 Work: title column + asymmetric 2x2 */
-  .work { row-gap: var(--space-4); align-items: start; }
-  .work-head { grid-column: 1 / 4; grid-row: 1 / 3; align-self: stretch; display: flex; flex-direction: column; gap: var(--space-3); padding-right: var(--space-2); }
-  .work-head .chapter-title { font-size: clamp(2.75rem, 1rem + 3.6vw, 4.6rem); }
-  .work-head .subtitle { margin-top: calc(-1 * var(--space-2)); }
-  .work-intro { font-size: 1.05rem; }
-  .also { border-top: 1px solid var(--hair); padding-top: var(--space-2); }
-  .also ul { margin-top: var(--space-1); font-size: 0.95rem; line-height: 1.45; display: grid; gap: 0.45em; }
-  .work-head .btn { align-self: start; margin-top: auto; }
-  .p1 { grid-column: 4 / 9; grid-row: 1; }
-  .p2 { grid-column: 9 / 13; grid-row: 1; margin-top: var(--space-3); }
-  .p3 { grid-column: 4 / 8; grid-row: 2; }
-  .p4 { grid-column: 8 / 13; grid-row: 2; margin-top: calc(-1 * var(--space-4)); }
-  .project { border-top: 1px solid var(--ink); padding-top: var(--space-2); }
-  .project figure { margin-bottom: var(--space-2); }
-  .project .kicker { margin-bottom: 0.3rem; }
-  .project .num { color: var(--ink); font-weight: 600; margin-right: 0.6em; }
-  .project h3 { font-size: 1.5rem; font-weight: 600; line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 0.4rem; }
-  .large h3 { font-size: 1.85rem; }
-  .project :global(.fig) { aspect-ratio: 16 / 9; }
-  .summary { font-size: 1rem; line-height: 1.5; color: color-mix(in srgb, var(--ink) 85%, transparent); }
-  .meta { margin-top: var(--space-2); font-size: 0.9rem; line-height: 1.4; display: grid; gap: 0.35rem; }
-  .meta div { display: grid; grid-template-columns: 5.5rem 1fr; gap: var(--space-1); border-top: 1px solid var(--hair); padding-top: 0.35rem; }
-  .meta dt { color: var(--muted); font-size: 0.62rem; padding-top: 0.2em; }
+  .timeline { --gap: clamp(1rem, 2vw, 1.75rem); display: grid; grid-template-columns: repeat(5, 1fr) 0.85fr; column-gap: var(--gap); padding-top: 1rem; }
+  .timeline li { position: relative; }
+  /* track: each item draws its own segment to the next column */
+  .timeline li::after { content: ''; position: absolute; top: 0; left: 0; right: calc(-1 * var(--gap)); border-top: 1.5px solid color-mix(in srgb, var(--paper-ink) 80%, transparent); }
+  .timeline .last::after, .timeline .end::after { border-top-style: dotted; border-top-width: 2px; }
+  .timeline .end::after { right: 38px; }
+  .step::before { content: ''; position: absolute; z-index: 1; top: -6px; left: -6px; width: 13px; height: 13px; border-radius: 50%; background: var(--paper-ink); }
+  .step { padding: 2.1rem 0.25rem 0.4rem 1.2rem; border-left: 1px solid; border-image: linear-gradient(to bottom, transparent 1.4rem, var(--hair) 1.4rem) 1; }
+  .dates { font-size: 0.98rem; opacity: 0.85; margin-bottom: 0.45rem; font-variant-numeric: lining-nums; }
+  .dates em { margin-left: 0.3em; }
+  .step h3 { font-size: 1.18rem; font-weight: 600; letter-spacing: -0.005em; margin-bottom: 0.9rem; }
+  .role { font-size: 1.02rem; margin-bottom: 0.2rem; }
+  .desc { font-size: 0.95rem; line-height: 1.55; opacity: 0.78; }
+  .end { display: flex; align-items: center; padding-left: clamp(1rem, 2vw, 1.75rem); border-left: 1px solid; border-image: linear-gradient(to bottom, transparent 2.6rem, var(--hair) 2.6rem) 1; }
+  .end p { font-style: italic; font-size: 1.2rem; line-height: 1.45; padding-top: 2rem; }
+  .arrow { position: absolute; top: -17px; right: 0; width: 34px; height: 34px; border: 1.5px solid var(--paper-ink); border-radius: 50%; display: grid; place-items: center; background: var(--navy); }
 
-  /* 04 Toolkit: map 2/3 + direction 1/3 */
-  .toolkit { align-items: stretch; }
-  .toolkit-main { grid-column: 1 / 9; }
-  .cap-map { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4) var(--space-4); margin-top: var(--space-4); }
-  .cap h3 { display: flex; align-items: center; gap: 0.7rem; font-size: 1.25rem; font-weight: 600; padding-bottom: 0.6rem; border-bottom: 1px solid var(--hair); }
-  .cap h3 .label { font-weight: 400; opacity: 0.7; }
-  .cap ul { margin-top: 0.7rem; line-height: 1.75; font-size: 1rem; }
-  .languages { margin-top: var(--space-4); font-size: 0.95rem; }
-  .languages .label { margin-right: 1em; opacity: 0.7; }
-  .direction { grid-column: 9 / 13; display: flex; flex-direction: column; justify-content: center; gap: var(--space-2); }
-  .icon.big { width: 44px; height: 44px; color: var(--accent); }
-  .direction-text { font-size: clamp(1.9rem, 1rem + 2vw, 2.8rem); font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; }
-  .note { font-style: italic; font-size: 1.02rem; line-height: 1.45; opacity: 0.85; }
+  /* ── 03 Work: head row, four equal cards, also-built strip ── */
+  .work-head { display: grid; grid-template-columns: 40fr 42fr 18fr; column-gap: clamp(1.5rem, 3vw, 3rem); align-items: center; margin-bottom: clamp(2.25rem, 4.5vh, 3.25rem); }
+  .work-intro { font-size: 1.12rem; line-height: 1.6; max-width: 30em; }
+  .all { justify-self: end; display: inline-flex; align-items: center; gap: 1rem; font-size: 1.05rem; text-decoration: none; padding-bottom: 0.45rem; border-bottom: 1px solid var(--ink); }
+  .all :global(.icon) { transition: transform 0.2s; }
+  .all:hover :global(.icon) { transform: translateX(3px); }
 
-  /* Footer */
-  .site-footer { min-height: 28vh; display: flex; align-items: center; padding: var(--space-4) 0; }
-  .foot { width: 100%; align-items: center; row-gap: var(--space-3); }
-  .foot-brand { grid-column: 1 / 4; }
-  .foot-brand .name { font-size: 1.55rem; font-weight: 700; letter-spacing: -0.02em; }
-  .foot-brand .label { font-size: 0.62rem; color: var(--muted); }
-  .pitch { grid-column: 4 / 7; padding-left: var(--space-3); font-size: 0.95rem; }
-  .pitch-title { font-size: 1.35rem; font-weight: 600; margin-bottom: 0.2rem; }
-  .contact { grid-column: 7 / 11; padding-left: var(--space-3); display: grid; gap: 0.5rem; font-size: 0.95rem; }
-  .contact a { display: inline-flex; align-items: center; gap: 0.7rem; text-decoration: none; }
-  .contact a:hover { text-decoration: underline; text-decoration-color: var(--accent); }
-  .contact .icon { width: 20px; height: 20px; }
-  .open { grid-column: 11 / 13; text-align: right; font-size: 0.64rem; color: var(--muted); }
+  .cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(1rem, 1.6vw, 1.5rem); }
+  .card { display: flex; flex-direction: column; border: 1px solid var(--card-line); padding: clamp(1.1rem, 1.6vw, 1.6rem); background: color-mix(in srgb, var(--paper) 60%, white); transition: border-color 0.2s; }
+  .card:hover { border-color: var(--navy); }
+  .card-top { display: flex; align-items: baseline; gap: 1.1rem; margin-bottom: 1rem; }
+  .card-top .num { font-size: 1.2rem; font-weight: 700; }
+  .card-top .label { font-size: 0.62rem; color: var(--muted); }
+  .card :global(.fig) { margin-bottom: 1.25rem; }
+  .card h3 { font-size: 1.22rem; font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 0.55rem; }
+  .card-text { font-size: 0.98rem; line-height: 1.55; opacity: 0.85; margin-bottom: 1.4rem; }
+  details { margin-top: auto; }
+  summary { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; cursor: pointer; list-style: none; font-size: 0.88rem; color: var(--muted); }
+  summary::-webkit-details-marker { display: none; }
+  .tag { white-space: nowrap; }
+  .more { color: var(--ink); display: inline-flex; transition: transform 0.2s; }
+  summary:hover .more { transform: translateX(3px); }
+  details[open] .more { transform: rotate(90deg); }
+  details dl { margin-top: 1rem; padding-top: 0.9rem; border-top: 1px solid var(--card-line); display: grid; gap: 0.7rem; font-size: 0.92rem; line-height: 1.45; }
+  details dt { font-size: 0.58rem; color: var(--muted); }
 
+  .also { margin-top: clamp(2.5rem, 5vh, 3.5rem); }
+  .also-title { display: flex; align-items: center; gap: 1.1rem; font-size: 0.64rem; color: var(--muted); margin-bottom: 1.25rem; }
+  .also-title::after { content: ''; flex: 1; border-top: 1px solid var(--card-line); }
+  .also ul { display: grid; grid-template-columns: repeat(5, 1fr); }
+  .also li { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.1rem 1.25rem; border-left: 1px solid var(--card-line); font-size: 0.92rem; line-height: 1.45; }
+  .also li:first-child { border-left: 0; padding-left: 0; }
+  .also strong { font-weight: 600; font-size: 1rem; }
+  .also span { opacity: 0.78; }
+
+  /* ── 04 Toolkit: title | 3 skill columns | direction ─────── */
+  .toolkit { display: grid; grid-template-columns: 1.5fr repeat(4, 1fr); column-gap: clamp(1rem, 2vw, 1.8rem); align-items: stretch; }
+  .toolkit-title { padding-right: 0.5rem; }
+  .toolkit-title .chapter-title { font-size: clamp(2.4rem, 1rem + 2.6vw, 3.4rem); }
+  .languages { margin-top: 1.5rem; font-size: 0.92rem; font-style: italic; opacity: 0.75; }
+  .tool { padding-top: 0.25rem; padding-bottom: 0.25rem; padding-left: clamp(1rem, 1.6vw, 1.5rem); }
+  .tool h3 { display: flex; align-items: center; gap: 0.8rem; font-size: 1.3rem; font-weight: 400; margin-bottom: 1.1rem; }
+  .tool ul { padding-left: calc(28px + 0.8rem); font-size: 0.98rem; line-height: 2; opacity: 0.88; }
+  .direction h3 :global(.icon) { color: var(--accent); }
+
+  /* ── Footer ─────────────────────────────── */
+  .site-footer { min-height: 22vh; display: flex; align-items: center; padding: 2.5rem 0; }
+  .foot { width: 100%; display: grid; grid-template-columns: 1.25fr 1.7fr 1fr 1fr; align-items: center; column-gap: clamp(1.5rem, 3vw, 3rem); }
+  .foot > .vrule { min-height: 64px; display: flex; align-items: center; }
+  .foot-brand .name { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.025em; line-height: 1.1; }
+  .foot-brand .label { font-size: 0.62rem; color: var(--muted); margin-top: 0.3rem; }
+  .foot-quote { justify-content: center; font-style: italic; font-size: 1.2rem; }
+  .social { justify-content: center; gap: 1.75rem; }
+  .social a { display: inline-flex; color: var(--navy); transition: color 0.2s, transform 0.2s; }
+  .social a:hover { color: var(--accent); transform: translateY(-2px); }
+  .open { justify-content: center; text-align: center; font-size: 0.62rem; line-height: 2.1; color: var(--muted); }
+
+  /* ── Responsive ─────────────────────────── */
   @media (max-width: 1099px) {
-    nav { gap: var(--space-2); }
-    .where { display: none; }
+    /* vertical timeline: six columns get too narrow below this */
+    .timeline { grid-template-columns: 1fr; padding: 0 0 0 0.5rem; max-width: 40rem; }
+    .timeline li::after { top: 0; bottom: 0; left: 0; right: auto; border-top: 0; border-left: 1.5px solid color-mix(in srgb, var(--paper-ink) 80%, transparent); }
+    .timeline .last::after { border-left-style: dotted; }
+    .step { border: 0; padding: 0 0 2.25rem 1.75rem; }
+    .step::before { top: 0.35rem; }
+    .timeline .end { display: none; }
   }
-  @media (max-width: 859px) {
-    nav { display: none; } /* ponytail: no mobile menu; sections are one scroll away */
-    .work-head, .p1, .p2, .p3, .p4 { grid-row: auto; margin-top: 0; }
-    .art img { max-height: none; }
-    .cap-map { grid-template-columns: 1fr; }
+  @media (max-width: 1199px) {
+    .motto { display: none; }
+    .cards { grid-template-columns: repeat(2, 1fr); }
+    .toolkit { grid-template-columns: repeat(4, 1fr); row-gap: 2.5rem; }
+    .toolkit-title { grid-column: 1 / -1; }
+    .tool:nth-child(2) { border-left: 0; padding-left: 0; }
+    .also ul { grid-template-columns: repeat(3, 1fr); row-gap: 1.25rem; }
+    .also li:nth-child(4) { border-left: 0; padding-left: 0; }
+  }
+  @media (max-width: 899px) {
+    nav { display: none; } /* ponytail: no mobile menu; the page is one scroll */
+    .profile, .journey-head, .work-head, .foot { grid-template-columns: 1fr; row-gap: 1.75rem; }
+    .visual { min-height: 0; display: grid; gap: 1.5rem; }
+    .art { position: static; width: 100%; height: auto; }
+    .side { width: auto; }
+    .art-note, .hand { display: none; }
+    .all { justify-self: start; }
+
+    .cards, .toolkit { grid-template-columns: 1fr; }
+    .tool { border-left: 0; padding-left: 0; }
+    .also ul { grid-template-columns: 1fr; row-gap: 1rem; }
+    .also li { border-left: 0; padding-left: 0; }
+    .foot > .vrule { justify-content: flex-start; min-height: 0; }
     .open { text-align: left; }
-    .journey-head, .profile, .foot { row-gap: var(--space-3); }
   }
 </style>
