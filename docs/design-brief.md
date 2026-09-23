@@ -150,7 +150,7 @@ Do not polish individual project descriptions before the layout exists; the wire
 
 Visual language from `docs/mockup-v1.png`: paper `#f7f7f3`, navy `#0e2638`, Source Serif 4 (bold headlines, italic quotes) + Inter for letterspaced labels + Caveat for the one handwritten note, `01 / 04` labels with a rule, quote columns behind thin vertical rules, navy + outline buttons with arrow icons, brass `#c29a5b` as the single accent. All copy comes from `Resume_DS.tex` and lives in `src/data/site.ts`.
 
-Measured at 1440×900 (content-driven): Profile 76vh, Journey 87vh, Work 108vh, Toolkit 56vh, Footer 22vh.
+Measured at 1440×900 (content-driven, tightened in revision 3): Profile 64vh, Journey 76vh, Work 95vh, Toolkit 39vh, Footer 14vh.
 
 - **Header:** name + `Biology × Computation × Data`, numbered serif nav + Contact, two-line motto right, hairline under.
 - **Profile:** 44/56 split with a vertical rule. Left: headline, lead, buttons, `×` kicker. Right: italic quote + triad over the etched art (cropped from the mockup, text inpainted out, edges faded; replace with hi-res art), small-caps note top-right, handwritten note bottom-right.

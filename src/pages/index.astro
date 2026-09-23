@@ -38,7 +38,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
   <main>
     <!-- 01 PROFILE -->
-    <ChapterBand id="profile" num={1} minH="calc(80vh - var(--header-h))">
+    <ChapterBand id="profile" num={1} minH="calc(72vh - var(--header-h))">
       <div class="profile">
         <div class="intro">
           <h1 id="profile-title" class="hero">{profile.headline[0]}<br />{profile.headline[1]}</h1>
@@ -64,7 +64,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     </ChapterBand>
 
     <!-- 02 JOURNEY -->
-    <ChapterBand id="journey" num={2} dark minH="84vh">
+    <ChapterBand id="journey" num={2} dark minH="0">
       <div class="journey-head">
         <div>
           <h2 id="journey-title" class="chapter-title">My Journey.</h2>
@@ -95,7 +95,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     </ChapterBand>
 
     <!-- 03 WORK -->
-    <ChapterBand id="work" num={3} minH="100vh">
+    <ChapterBand id="work" num={3} minH="0">
       <div class="work-head">
         <div>
           <h2 id="work-title" class="chapter-title">Selected Work.</h2>
@@ -135,7 +135,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     </ChapterBand>
 
     <!-- 04 TOOLKIT & DIRECTION -->
-    <ChapterBand id="toolkit" num={4} dark minH="56vh">
+    <ChapterBand id="toolkit" num={4} dark minH="0">
       <div class="toolkit">
         <div class="toolkit-title">
           <h2 id="toolkit-title" class="chapter-title">My Toolkit &amp;<br />Direction.</h2>
@@ -191,9 +191,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .intro { display: flex; flex-direction: column; justify-content: center; padding-bottom: 0.5rem; }
   .hero { font-size: var(--hero); font-weight: 700; line-height: 0.95; letter-spacing: -0.045em; margin: 0 0 1.75rem -0.04em; }
   .lead { font-size: clamp(1.1rem, 0.95rem + 0.45vw, 1.35rem); line-height: 1.5; max-width: 30em; }
-  .actions { display: flex; flex-wrap: wrap; gap: 1.5rem; margin: 2.25rem 0 2rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: 1.25rem; margin: 1.75rem 0 1.5rem; }
   .kicker { font-size: 0.64rem; color: var(--muted); }
-  .visual { position: relative; min-height: clamp(360px, 50vh, 520px); }
+  .visual { position: relative; min-height: clamp(320px, 44vh, 460px); }
   .art { position: absolute; right: -3%; top: 0; width: 68%; height: 100%; object-fit: cover; object-position: 62% 50%; mix-blend-mode: multiply; filter: brightness(1.07) contrast(1.06); -webkit-mask-image: radial-gradient(ellipse 64% 80% at 62% 50%, #000 55%, transparent 100%); mask-image: radial-gradient(ellipse 64% 80% at 62% 50%, #000 55%, transparent 100%); }
   .side { position: relative; z-index: 1; height: 100%; width: 34%; display: flex; flex-direction: column; justify-content: center; gap: 1.6rem; }
   .quote.big { font-size: clamp(1.35rem, 1rem + 0.9vw, 1.85rem); line-height: 1.28; text-indent: -0.4em; }
@@ -202,7 +202,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .hand { position: absolute; right: 0; bottom: 0.5rem; width: 9.5em; font: 500 clamp(1.1rem, 0.8rem + 0.6vw, 1.45rem) / 1.15 var(--hand); color: var(--navy); transform: rotate(-9deg); text-align: center; text-shadow: 0 0 6px var(--paper), 0 0 3px var(--paper), 0 0 1px var(--paper); }
 
   /* ── 02 Journey: head row + horizontal timeline ─────────── */
-  .journey-head { display: grid; grid-template-columns: 34fr 44fr 22fr; column-gap: clamp(1.5rem, 3vw, 3rem); align-items: stretch; margin-bottom: clamp(2.5rem, 5vh, 3.75rem); }
+  .journey-head { display: grid; grid-template-columns: 34fr 44fr 22fr; column-gap: clamp(1.5rem, 3vw, 3rem); align-items: stretch; margin-bottom: clamp(1.75rem, 3.5vh, 2.75rem); }
   .journey-text { font-size: 1.1rem; line-height: 1.65; align-self: center; opacity: 0.92; }
   .journey-quote { display: flex; flex-direction: column; justify-content: center; gap: 1.1rem; }
   .journey-quote .label { font-size: 0.6rem; line-height: 2; opacity: 0.8; }
@@ -225,7 +225,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .arrow { position: absolute; top: -17px; right: 0; width: 34px; height: 34px; border: 1.5px solid var(--paper-ink); border-radius: 50%; display: grid; place-items: center; background: var(--navy); }
 
   /* ── 03 Work: head row, four equal cards, also-built strip ── */
-  .work-head { display: grid; grid-template-columns: 40fr 42fr 18fr; column-gap: clamp(1.5rem, 3vw, 3rem); align-items: center; margin-bottom: clamp(2.25rem, 4.5vh, 3.25rem); }
+  .work-head { display: grid; grid-template-columns: 40fr 42fr 18fr; column-gap: clamp(1.5rem, 3vw, 3rem); align-items: center; margin-bottom: clamp(1.5rem, 3.5vh, 2.5rem); }
   .work-intro { font-size: 1.12rem; line-height: 1.6; max-width: 30em; }
   .all { justify-self: end; display: inline-flex; align-items: center; gap: 1rem; font-size: 1.05rem; text-decoration: none; padding-bottom: 0.45rem; border-bottom: 1px solid var(--ink); }
   .all :global(.icon) { transition: transform 0.2s; }
@@ -250,7 +250,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   details dl { margin-top: 1rem; padding-top: 0.9rem; border-top: 1px solid var(--card-line); display: grid; gap: 0.7rem; font-size: 0.92rem; line-height: 1.45; }
   details dt { font-size: 0.58rem; color: var(--muted); }
 
-  .also { margin-top: clamp(2.5rem, 5vh, 3.5rem); }
+  .also { margin-top: clamp(1.75rem, 3.5vh, 2.5rem); }
   .also-title { display: flex; align-items: center; gap: 1.1rem; font-size: 0.64rem; color: var(--muted); margin-bottom: 1.25rem; }
   .also-title::after { content: ''; flex: 1; border-top: 1px solid var(--card-line); }
   .also ul { display: grid; grid-template-columns: repeat(5, 1fr); }
@@ -270,7 +270,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .direction h3 :global(.icon) { color: var(--accent); }
 
   /* ── Footer ─────────────────────────────── */
-  .site-footer { min-height: 22vh; display: flex; align-items: center; padding: 2.5rem 0; }
+  .site-footer { display: flex; align-items: center; padding: 2rem 0; }
   .foot { width: 100%; display: grid; grid-template-columns: 1.25fr 1.7fr 1fr 1fr; align-items: center; column-gap: clamp(1.5rem, 3vw, 3rem); }
   .foot > .vrule { min-height: 64px; display: flex; align-items: center; }
   .foot-brand .name { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.025em; line-height: 1.1; }
