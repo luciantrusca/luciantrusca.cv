@@ -1,23 +1,24 @@
 ---
 interface Props {
   id: string;
-  num: string;       // "02"
-  name: string;      // "Journey"
+  num: number;       // 1..4, shown as "02 / 04"
   dark?: boolean;
   minH: string;      // starting height, content can push past it
 }
-const { id, num, name, dark = false, minH } = Astro.props;
+const { id, num, dark = false, minH } = Astro.props;
+const pad = (n: number) => String(n).padStart(2, '0');
 ---
 <section id={id} class:list={['band', { dark }]} style={`--min-h:${minH}`} aria-labelledby={`${id}-title`}>
   <div class="wrap">
-    <p class="chapter label"><span>{num} / {name}</span><span class="rule"></span></p>
+    <p class="chapter"><span>{pad(num)} / 04</span><span class="rule"></span></p>
     <slot />
   </div>
 </section>
 
 <style>
-  .band { min-height: var(--min-h); padding: var(--space-5) 0 var(--space-6); }
+  .band { min-height: var(--min-h); padding: var(--space-4) 0 var(--space-5); display: flex; flex-direction: column; justify-content: center; }
+  .band > .wrap { width: 100%; }
   .dark { background: var(--navy); color: var(--paper-ink); }
-  .chapter { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-4); }
-  .rule { width: 72px; border-top: var(--rule) solid currentColor; }
+  .chapter { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-3); font-size: 0.95rem; letter-spacing: 0.04em; }
+  .rule { width: 72px; border-top: 1px solid currentColor; }
 </style>

@@ -1,0 +1,86 @@
+---
+// Career phylogeny, hand-laid on a year axis: x = 60 + (year - 2015) * 118.
+// ponytail: coordinates are hand-placed; generate from src/data when nodes change often.
+const x = (year: number) => 60 + (year - 2015) * 118;
+const years = Array.from({ length: 12 }, (_, i) => 2015 + i);
+---
+<div class="scroll">
+  <svg viewBox="0 0 1600 432" role="img" aria-labelledby="phylo-desc">
+    <desc id="phylo-desc">Career phylogeny from 2015 to today. A biotechnology trunk (BSc Industrial Biotechnology 2015–2019, MSc Molecular Biotechnology 2019–2021, QC technician at Terapia in 2021) branches into Computer Science at the University of Twente (2021–2025) and a bioinformatics thread; both merge into the MSc Data Science at the University of Amsterdam (September 2025 to now).</desc>
+
+    <!-- year axis -->
+    <g class="axis">
+      <line x1="60" x2="1520" y1="392" y2="392" />
+      {years.map((y) => (<>
+        <line x1={x(y)} x2={x(y)} y1="386" y2="398" />
+        <text x={x(y)} y="424" text-anchor="middle">{y}</text>
+      </>))}
+    </g>
+
+    <!-- branches -->
+    <g class="line degree">
+      <path d={`M60 110 H${x(2021.5)}`} />
+      <path d={`M${x(2021)} 110 C 820 110, 815 200, 875 200 H1280 C 1300 200, 1295 250, ${x(2025.67)} 250`} />
+      <path d={`M${x(2025.67)} 250 H${x(2026.73)}`} />
+    </g>
+    <path class="line thread" d={`M${x(2020)} 110 C 700 110, 700 300, 760 300 H1250 C 1285 300, 1280 250, ${x(2025.67)} 250`} />
+    <path class="line ongoing" d={`M${x(2026.73)} 250 H1540`} />
+
+    <!-- nodes -->
+    <g class="node">
+      <circle cx="60" cy="110" r="7" />
+      <circle cx={x(2019)} cy="110" r="7" />
+      <circle cx={x(2021.5)} cy="110" r="5" />
+      <circle cx={x(2025.5)} cy="200" r="5" />
+      <circle cx="1400" cy="250" r="5" />
+      <circle cx={x(2025.67)} cy="250" r="8" />
+    </g>
+    <circle class="now" cx={x(2026.73)} cy="250" r="7" />
+
+    <!-- labels: biotech trunk -->
+    <text class="date" x="60" y="36">2015 – 2019</text>
+    <text class="title" x="60" y="62">BSc Industrial Biotechnology</text>
+    <text class="sub" x="60" y="86">Babeș-Bolyai University · ancient DNA from archaeological wood</text>
+
+    <text class="date" x={x(2019) + 10} y="36">2019 – 2021</text>
+    <text class="title" x={x(2019) + 10} y="62">MSc Molecular Biotechnology</text>
+    <text class="sub" x={x(2019) + 10} y="86">Babeș-Bolyai · Movile Cave microbiomes</text>
+
+    <text class="date" x={x(2021.5) + 14} y="106">Jan – Jul 2021</text>
+    <text class="sub" x={x(2021.5) + 14} y="128">QC technician · Terapia Cluj</text>
+
+    <!-- computer science -->
+    <text class="date" x="885" y="150">2021 – 2025</text>
+    <text class="title" x="885" y="176">BSc Computer Science</text>
+    <text class="sub" x="885" y="228">Twente · vision transformers for camera traps</text>
+
+    <!-- bioinformatics thread -->
+    <text class="date" x="780" y="288">Bioinformatics thread</text>
+    <text class="sub" x="780" y="326">metagenomics → multiomics</text>
+
+    <!-- data science -->
+    <text class="sub" x="1392" y="226">Data Analyst · EHA</text>
+    <text class="date" x={x(2025.67) + 10} y="284">Sept 2025 – now</text>
+    <text class="title" x={x(2025.67) + 10} y="310">MSc Data Science</text>
+    <text class="sub" x={x(2025.67) + 10} y="334">UvA · multiomics networks thesis</text>
+    <text class="date accent" x="1552" y="255">Now</text>
+  </svg>
+</div>
+
+<style>
+  .scroll { overflow-x: auto; }
+  svg { display: block; width: 100%; height: auto; min-width: 900px; }
+  .line { fill: none; stroke: currentColor; }
+  .degree { stroke-width: 2.5; }
+  .thread { stroke-width: 1.5; stroke-dasharray: 6 6; opacity: 0.75; }
+  .ongoing { stroke-width: 2; stroke-dasharray: 2 6; }
+  .node { fill: var(--navy); stroke: currentColor; stroke-width: 2; }
+  .now { fill: var(--accent); }
+  .axis { stroke: var(--hair); fill: currentColor; }
+  .axis text { stroke: none; font: 500 13px var(--sans); letter-spacing: 0.1em; opacity: 0.7; }
+  text { fill: currentColor; }
+  .date { font: 500 13px var(--sans); letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.75; }
+  .title { font: 600 21px var(--serif); }
+  .sub { font: italic 15.5px var(--serif); opacity: 0.85; }
+  .accent { fill: var(--accent); opacity: 1; }
+</style>

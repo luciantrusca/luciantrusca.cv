@@ -1,0 +1,134 @@
+---
+// Schematic figures, one per featured project. Swap for real plots/screenshots when available.
+import type { Figure } from '../data/site';
+interface Props { kind: Figure; label: string }
+const { kind, label } = Astro.props;
+
+// forecast: 56 days history + 28-day horizon, weekly pattern peaking at the weekend
+const week = [0, 0.05, 0.1, 0.15, 0.4, 1, 0.75];
+const fx = (d: number) => 40 + d * 5.1;
+const fy = (d: number, noise = true) => 205 - d * 0.6 - 60 * week[d % 7] - (noise ? 7 * Math.sin(d * 1.7) : 0);
+const hist = Array.from({ length: 56 }, (_, d) => `${fx(d).toFixed(1)},${fy(d).toFixed(1)}`).join(' ');
+const fdays = Array.from({ length: 29 }, (_, i) => 55 + i);
+const fmean = fdays.map((d) => `${fx(d).toFixed(1)},${fy(d, false).toFixed(1)}`).join(' ');
+const band = [
+  ...fdays.map((d) => `${fx(d).toFixed(1)},${(fy(d, false) - 6 - (d - 55) * 0.8).toFixed(1)}`),
+  ...fdays.toReversed().map((d) => `${fx(d).toFixed(1)},${(fy(d, false) + 6 + (d - 55) * 0.8).toFixed(1)}`),
+].join(' ');
+
+// cave: relative abundance of 5 taxa per sample, rows grouped by cluster
+const rows = [
+  [0.34, 0.26, 0.18, 0.14, 0.08], [0.3, 0.28, 0.2, 0.12, 0.1],
+  [0.18, 0.36, 0.22, 0.14, 0.1], [0.16, 0.4, 0.2, 0.12, 0.12],
+  [0.1, 0.14, 0.2, 0.38, 0.18], [0.08, 0.16, 0.18, 0.4, 0.18],
+];
+const shades = [1, 0.72, 0.48, 0.28, 0.14];
+const stacked = rows.map((r) => r.map((v, j) => ({ x: 170 + 290 * r.slice(0, j).reduce((a, b) => a + b, 0), w: 290 * v, o: shades[j] })));
+---
+<svg viewBox="0 0 480 300" preserveAspectRatio="xMidYMid slice" role="img" aria-label={label} class="fig">
+  {kind === 'birds' && (
+    <>
+      <defs>
+        <g id="fig-bird" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <ellipse cx="0" cy="0" rx="34" ry="16" fill="var(--fig-bg)" />
+          <circle cx="32" cy="-18" r="11" fill="var(--fig-bg)" />
+          <path d="M42 -18 L56 -15 M28 -28 C 22 -42, 12 -42, 6 -38 M-20 -4 C -4 -14, 14 -10, 22 -2 M-34 0 L-52 -6 M-6 16 V40 M8 16 V40" />
+        </g>
+      </defs>
+      <rect width="240" height="300" fill="var(--fig-bg)" />
+      <rect x="240" width="240" height="300" fill="var(--navy-2)" />
+      <g stroke="var(--navy)" stroke-width="1.2" opacity="0.6">
+        <path d="M0 205 H240 M20 225 l4 -12 M60 232 l3 -10 M170 228 l-3 -11 M210 236 l4 -12 M110 240 l2 -9" />
+        <circle cx="200" cy="58" r="14" fill="none" />
+      </g>
+      <g stroke="var(--paper-ink)" stroke-width="1.2" opacity="0.5">
+        <path d="M240 205 H480 M270 230 l4 -12 M330 236 l3 -10 M420 228 l-3 -11 M455 238 l4 -12" />
+        <path d="M442 46 a14 14 0 1 0 12 22 a11 11 0 1 1 -12 -22z" fill="none" />
+      </g>
+      <circle cx="148" cy="148" r="30" fill="var(--accent)" opacity="0.28" />
+      <circle cx="148" cy="148" r="15" fill="var(--accent)" opacity="0.45" />
+      <use href="#fig-bird" x="114" y="168" style="color: var(--navy)" />
+      <use href="#fig-bird" x="354" y="172" style="color: var(--paper-ink); --fig-bg: var(--navy-2)" />
+      <g fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="5 4">
+        <rect x="56" y="120" width="130" height="96" />
+        <rect x="296" y="124" width="130" height="96" />
+      </g>
+      <g class="t">
+        <text x="14" y="38" fill="var(--navy)">Day</text>
+        <text x="254" y="38" fill="var(--paper-ink)">Night</text>
+        <text x="56" y="112" fill="var(--navy)">meadow bird</text>
+        <text x="296" y="116" fill="var(--paper-ink)">meadow bird</text>
+        <text x="14" y="272" fill="var(--navy)">attention map</text>
+      </g>
+    </>
+  )}
+
+  {kind === 'forecast' && (
+    <>
+      <rect width="480" height="300" fill="var(--fig-bg)" />
+      <g stroke="var(--navy)" fill="none">
+        <path d="M40 40 V262 H470" stroke-width="1" opacity="0.5" />
+        <path d={`M${fx(55)} 40 V262`} stroke-dasharray="4 4" opacity="0.6" />
+        <polygon points={band} fill="var(--accent)" stroke="none" opacity="0.3" />
+        <polyline points={hist} stroke-width="1.6" />
+        <polyline points={fmean} stroke-width="1.6" stroke-dasharray="5 3" />
+        <path d={`M${fx(56)} 52 V46 H${fx(83)} V52`} stroke-width="1" />
+      </g>
+      <g class="t" fill="var(--navy)">
+        <text x={fx(56)} y="36">28-day horizon</text>
+        <text x="48" y="36">Daily sales</text>
+        <text x={fx(55) - 6} y="284" text-anchor="end">history</text>
+        <text x={fx(57)} y="284">forecast</text>
+      </g>
+    </>
+  )}
+
+  {kind === 'signs' && (
+    <>
+      <rect width="480" height="300" fill="var(--fig-bg)" />
+      <g fill="none" stroke="var(--navy)" stroke-width="2" stroke-linejoin="round">
+        <circle cx="60" cy="96" r="24" />
+        <path d="M132 72 L158 118 H106 Z" />
+        <path d="M200 72 h20 l14 14 v20 l-14 14 h-20 l-14 -14 v-20 z" />
+        <path d="M60 158 L84 182 L60 206 L36 182 Z" />
+        <path d="M106 162 H158 L132 208 Z" />
+        <circle cx="210" cy="184" r="24" /><path d="M196 184 H224" />
+      </g>
+      <rect x="100" y="64" width="64" height="62" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="5 4" />
+      <path d="M270 70 V242" stroke="var(--navy)" opacity="0.4" />
+      <g fill="var(--navy)">
+        <rect x="270" y="98" width={170 * 0.99} height="26" />
+        <rect x="270" y="170" width={170 * 0.75} height="26" opacity="0.55" />
+      </g>
+      <g class="t" fill="var(--navy)">
+        <text x="36" y="44">Classes on device</text>
+        <text x="270" y="60">Accuracy</text>
+        <text x="270" y="90">6 classes</text>
+        <text x="270" y="162">42 classes</text>
+        <text x="430" y="116" text-anchor="end" fill="var(--paper)">&gt;99%</text>
+        <text x={270 + 170 * 0.75 + 8} y="188">75%</text>
+        <text x="36" y="262">Arduino · Edge Impulse</text>
+      </g>
+    </>
+  )}
+
+  {kind === 'cave' && (
+    <>
+      <rect width="480" height="300" fill="var(--fig-bg)" />
+      <path d="M150 58 H112 V98 H150 M150 138 H122 V178 H150 M150 218 H102 V258 H150 M112 78 H72 V158 H122 M72 118 H40 V238 H102"
+        fill="none" stroke="var(--navy)" stroke-width="1.5" />
+      {stacked.map((segs, i) => segs.map((s) => (
+        <rect x={s.x.toFixed(1)} y={47 + i * 40} width={s.w.toFixed(1)} height="22" fill="var(--navy)" fill-opacity={s.o} />
+      )))}
+      <g class="t" fill="var(--navy)">
+        <text x="40" y="30">Cluster</text>
+        <text x="170" y="30">Relative abundance per sample</text>
+      </g>
+    </>
+  )}
+</svg>
+
+<style>
+  .fig { display: block; width: 100%; height: auto; }
+  .t text { font: 500 11px var(--sans); letter-spacing: 0.14em; text-transform: uppercase; }
+</style>

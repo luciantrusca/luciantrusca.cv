@@ -137,28 +137,32 @@ Project frontmatter should include at least: `title`, `order`, `featured`, `size
 ## Work plan
 
 1. **Content architecture** — four chapters fixed (done, recorded here).
-2. **Wireframe** — grayscale, low-detail full-page layout with exact proportions, column grid, section heights, text/image/figure/caption placement and the band alternation. (done, see "Wireframe decisions" below)
-3. **Design system** — exact serif + sans pairing, paper white, deep navy, one accent color, spacing scale, grid, line weights, caption style, numbering style, button treatment. Lives in `tokens.css`. ← **next step**
+2. **Wireframe** — grayscale, low-detail full-page layout with exact proportions, column grid, section heights, text/image/figure/caption placement and the band alternation. (done, see "Current build" below)
+3. **Design system** — exact serif + sans pairing, paper white, deep navy, one accent color, spacing scale, grid, line weights, caption style, numbering style, button treatment. Lives in `tokens.css`. (first pass done)
 4. **Prototype** — responsive Astro build with sticky nav, section anchors, hover states, project features, career diagram, GitHub Pages deploy. Placeholders allowed.
 5. **Content** — shape the story from the CV, not a verbatim dump. Decide which roles, degrees, theses, projects, tools and achievements get prominence, and rewrite to fit the editorial format.
 
 Do not polish individual project descriptions before the layout exists; the wireframe sets how much room each element has.
 
-## Wireframe decisions
+## Current build (steps 2–3, plus first content pass)
 
-The wireframe is the Astro page itself (`npm run dev`), in grayscale. Tick "grid" in the header to overlay the 12-column grid. Step 3 restyles it by changing `src/styles/tokens.css`; the layout stays.
+The page follows the mockup's visual language: warm paper `#f7f7f3` and navy `#0e2638` sampled from `docs/mockup-v1.png`, Source Serif 4 (bold headlines, italic quotes) with Inter for letterspaced labels, `01 / 04` chapter labels with a rule, quote columns behind thin vertical rules, navy + outline buttons, brass `#c29a5b` as the single accent. Structure keeps this brief's changes over the mockup: branching phylogeny instead of an equal-column timeline, asymmetric Work grid instead of four equal cards, 2/3 capability map + 1/3 Direction.
+
+All copy comes from `Resume_DS.tex` and lives in `src/data/site.ts`. Measured at 1440×900: Profile 71vh (+ header), Journey 86vh, Work 150vh, Toolkit 82vh, Footer 28vh.
 
 - **Grid:** 12 columns, max content width 1280 px, 24 px gutter, side margin `clamp(20px, 5vw, 64px)`.
-- **Profile:** text in cols 1–6 (headline, statement, buttons); convergence figure in cols 8–12 with its caption.
-- **Journey:** title cols 1–5 with one annotation in cols 8–12; phylogeny figure spans all 12 columns at 10:3; two short annotations under it.
-- **Work:** row 1 = large project cols 1–7, regular project cols 9–12 pushed down ~12% to break the baseline; row 2 mirrors it (regular cols 1–5, large cols 7–12). Large figures 3:2, regular 4:3. Measured at 1440×900 with placeholder copy: Work ≈ 220vh, over the 120–150vh target. Hitting 150vh would need figures around 300 px tall, which works against "bigger project imagery"; the wireframe keeps the imagery and accepts the longer chapter. Decide in step 3.
-- **Toolkit:** capability map cols 1–8 as a 2×2 taxonomy; Direction cols 10–12 behind a vertical rule.
-- **Mobile (< 860 px):** everything stacks to one column in source order; the Work stagger and the vertical rule are dropped. The phylogeny SVG gets unreadably small on phones: it needs a vertical variant in the prototype step. This is the default answer to the open question below until someone argues otherwise.
+- **Profile:** text cols 1–6 · quote + triad cols 7–8 · etched illustration cols 9–12 (cropped from the mockup; replace with hi-res art).
+- **Journey:** title cols 1–4 · text cols 5–9 · quote cols 10–12; phylogeny on a 2015–2026 year axis. The dashed bioinformatics thread leaves the MSc and rejoins CS in the Data Science MSc.
+- **Work:** title column cols 1–3 with an "Also built" list; large 01 (cols 4–8), regular 02 (9–12, offset down), regular 03 (4–7), large 04 (8–12, offset up). Figures are schematic SVGs at 16:9; swap for real plots or screenshots.
+- **Toolkit:** 2×2 capability map cols 1–8, Direction cols 9–12.
+- **Mobile (< 860 px):** single column in source order; the phylogeny scrolls horizontally instead of shrinking; nav hidden.
 
 ## Open decisions
 
-- Typeface pairing (serif + sans).
-- Exact paper white, navy and accent values.
+- ~~Typeface pairing~~ Source Serif 4 + Inter for now.
+- ~~Colors~~ sampled from the mockup; accent brass `#c29a5b`.
+- EHA Data Analyst role has no dates in the CV; it sits on the Data Science branch without a date.
+- No per-project links yet (no repo URLs in the CV).
 - Which 4 projects are featured and which two get the large slots.
 - Final headline and positioning statement for Profile.
 - Whether the phylogeny is static SVG first or interactive from the start.

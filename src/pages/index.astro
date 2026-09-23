@@ -1,155 +1,168 @@
 ---
 import '../styles/tokens.css';
 import ChapterBand from '../components/ChapterBand.astro';
+import Phylogeny from '../components/Phylogeny.astro';
+import ProjectFigure from '../components/ProjectFigure.astro';
+import { person, profile, journey, projects, alsoBuilt, capabilities, languages, direction } from '../data/site';
 
-// ponytail: placeholder data inline; moves to content collections (typed schema) in the prototype step.
-const projects = [
-  { n: '01', size: 'large',   title: 'Large project title', area: 'Computational biology' },
-  { n: '02', size: 'regular', title: 'Project title',       area: 'Structural biology' },
-  { n: '03', size: 'regular', title: 'Project title',       area: 'Robotics & automation' },
-  { n: '04', size: 'large',   title: 'Large project title', area: 'Data science & ML' },
-];
+const base = import.meta.env.BASE_URL;
+const cv = `${base}cv.pdf`;
+const nav = [['profile', 'Profile'], ['journey', 'Journey'], ['work', 'Work'], ['toolkit', 'Toolkit']];
+const pad = (n: number) => String(n).padStart(2, '0');
 
-const capabilities = [
-  { group: 'Biology',             items: ['Molecular biotechnology', 'Wet-lab methods', 'Genomics'] },
-  { group: 'Data & ML',           items: ['Statistical modelling', 'Machine learning', 'Visualisation'] },
-  { group: 'Software',            items: ['Python', 'Pipelines & tooling', 'Web'] },
-  { group: 'Systems & Robotics',  items: ['Automation', 'Hardware–software', 'Prototyping'] },
-];
-
-const nav = [['profile', '01 Profile'], ['journey', '02 Journey'], ['work', '03 Work'], ['toolkit', '04 Toolkit']];
+// 24px stroke icons
+const icons: Record<string, string> = {
+  dna: '<path d="M7 3c0 5 10 4 10 9s-10 4-10 9M17 3c0 5-10 4-10 9s10 4 10 9M8.5 6.5h7M8.5 17.5h7M10 12h4"/>',
+  network: '<circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M7 6h10M6 8l5 8M18 8l-5 8"/>',
+  code: '<path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/>',
+  chip: '<rect x="6" y="6" width="12" height="12"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/>',
+  compass: '<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
+  mail: '<rect x="3" y="5" width="18" height="14"/><path d="M3 6l9 7 9-7"/>',
+  git: '<circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="8" r="2"/><path d="M6 7v10M18 10c0 4-6 3-11 7"/>',
+  linkedin: '<rect x="3" y="3" width="18" height="18"/><path d="M8 10v7M8 7v.01M12 17v-7M12 13c0-2 1.5-3 3-3s2 1 2 3v4"/>',
+};
 ---
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lucian Trusca — Wireframe</title>
+  <title>{person.name} · Biology × Computation × Data</title>
+  <meta name="description" content={profile.statement} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet" />
 </head>
 <body>
   <header class="site-header">
     <div class="wrap bar">
-      <a class="name" href="#profile">Lucian Trusca</a>
+      <a class="brand" href="#profile">
+        <span class="name">{person.name}</span>
+        <span class="label">Biology × Computation × Data</span>
+      </a>
       <nav aria-label="Sections">
-        {nav.map(([id, text]) => <a class="label" href={`#${id}`}>{text}</a>)}
+        {nav.map(([id, text], i) => <a href={`#${id}`}><span>{pad(i + 1)}</span> {text}</a>)}
       </nav>
-      <label class="label grid-toggle"><input id="grid-toggle" type="checkbox" /> grid</label>
+      <p class="label where">Based in<br />{person.location}</p>
     </div>
   </header>
 
   <main>
-    <ChapterBand id="profile" num="01" name="Profile" minH="78vh">
+    <!-- 01 PROFILE -->
+    <ChapterBand id="profile" num={1} minH="calc(76vh - var(--header-h))">
       <div class="grid profile">
-        <div class="profile-text">
-          <h1 id="profile-title" class="hero">Large headline<br />on two lines.</h1>
-          <p class="lead">Positioning statement, two to three sentences. Who this person is and where biology,
-            computation and engineering meet in their work. Roughly this long, no longer.</p>
+        <div class="intro">
+          <h1 id="profile-title" class="hero">{profile.headline[0]}<br />{profile.headline[1]}</h1>
+          <p class="lead">{profile.statement}</p>
           <p class="actions">
-            <a class="btn primary" href="#work">View work</a>
-            <a class="btn" href="/cv.pdf">Download CV</a>
-            <a class="label" href="https://github.com/luciantrusca">GitHub ↗</a>
+            <a class="btn primary" href="#work">View my work <span aria-hidden="true">→</span></a>
+            <a class="btn" href={cv} download>Download CV <span aria-hidden="true">↓</span></a>
           </p>
+          <p class="label kicker">Biotechnology × Computer science × Data science</p>
         </div>
-        <figure class="profile-fig">
-          <div class="ph ratio-4-5"></div>
-          <figcaption><span class="label">Fig. 1</span>Convergence visual: biology, computation and engineering meeting.</figcaption>
+        <div class="vrule side">
+          <p class="quote big">“{profile.quote.map((l, i) => <>{l}{i < profile.quote.length - 1 && <br />}</>)}”</p>
+          <span class="short-rule"></span>
+          <ul class="label triad">{profile.triad.map((t) => <li>{t}</li>)}</ul>
+        </div>
+        <figure class="art">
+          <img src={`${base}img/convergence.jpg`} alt="Etched illustration: a DNA helix and a plant in front of mountains and a lake." width="596" height="676" />
+          <figcaption><span class="label">Fig. 1</span>{profile.caption}</figcaption>
         </figure>
       </div>
     </ChapterBand>
 
-    <ChapterBand id="journey" num="02" name="Journey" dark minH="88vh">
+    <!-- 02 JOURNEY -->
+    <ChapterBand id="journey" num={2} dark minH="86vh">
       <div class="grid journey-head">
-        <h2 id="journey-title" class="chapter-title">Chapter<br />title.</h2>
-        <p class="annotation">One annotation: why the path branches, in one or two lines.</p>
+        <div class="title-block">
+          <h2 id="journey-title" class="chapter-title">My Journey.</h2>
+          <p class="label subtitle">{journey.subtitle}</p>
+        </div>
+        <p class="vrule journey-text">{journey.text}</p>
+        <p class="vrule quote journey-quote">“{journey.quote}”</p>
       </div>
       <figure class="journey-fig">
-        <svg viewBox="0 70 1600 480" role="img" aria-label="Placeholder career phylogeny">
-          <g fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke">
-            <path d="M40 330 H760" />
-            <path d="M360 330 C 440 330, 460 170, 580 170" stroke-dasharray="6 6" />
-            <path d="M760 330 C 860 330, 900 230, 1080 230" />
-            <path d="M1080 230 C 1200 230, 1240 120, 1420 120" />
-            <path d="M1080 230 C 1200 230, 1240 340, 1420 340" stroke-dasharray="6 6" />
-            <path d="M760 330 C 860 330, 900 470, 1080 470" stroke-dasharray="6 6" />
-          </g>
-          <g fill="currentColor" font-family="system-ui, sans-serif" font-size="20">
-            <circle cx="200" cy="330" r="7" /><text x="200" y="370" text-anchor="middle">BSc Industrial Biotech · UBB</text>
-            <circle cx="360" cy="330" r="7" /><text x="360" y="300" text-anchor="middle">MSc Molecular Biotech · UBB</text>
-            <circle cx="580" cy="170" r="7" /><text x="600" y="176">Bioinformatics (role)</text>
-            <circle cx="760" cy="330" r="7" /><text x="760" y="370" text-anchor="middle">BSc Computer Science · Twente</text>
-            <circle cx="1080" cy="230" r="7" /><text x="1080" y="200" text-anchor="middle">MSc Data Science · UvA (2025–)</text>
-            <circle cx="1080" cy="470" r="7" /><text x="1100" y="476">Role</text>
-            <circle cx="1420" cy="120" r="7" /><text x="1400" y="96" text-anchor="end">ML / robotics</text>
-            <circle cx="1420" cy="340" r="7" /><text x="1400" y="380" text-anchor="end">Direction</text>
-          </g>
-        </svg>
-        <figcaption><span class="label">Fig. 2</span>Career phylogeny. Solid: degrees. Dashed: roles and side branches.</figcaption>
+        <Phylogeny />
+        <figcaption><span class="label">Fig. 2</span>{journey.caption}</figcaption>
       </figure>
-      <div class="grid journey-notes">
-        <p class="annotation n1">Short annotation tied to one branch point.</p>
-        <p class="annotation n2">Short annotation tied to another branch point.</p>
-      </div>
     </ChapterBand>
 
-    <ChapterBand id="work" num="03" name="Selected work" minH="135vh">
-      <div class="grid work-head">
-        <h2 id="work-title" class="chapter-title">Chapter title.</h2>
-        <p class="lead work-intro">One-line intro to the selected work.</p>
-      </div>
+    <!-- 03 WORK -->
+    <ChapterBand id="work" num={3} minH="140vh">
       <div class="grid work">
-        {projects.map((p) => (
-          <article class:list={['project', p.size, `p${p.n}`]}>
+        <div class="work-head">
+          <h2 id="work-title" class="chapter-title">Selected Work.</h2>
+          <p class="label subtitle">Ideas into outcomes</p>
+          <p class="work-intro">Four projects across the path: computer vision, forecasting, embedded ML and bioinformatics.</p>
+          <div class="also">
+            <p class="label">Also built</p>
+            <ul>{alsoBuilt.map((a) => <li>{a}</li>)}</ul>
+          </div>
+          <a class="btn" href={cv}>All projects in CV <span aria-hidden="true">→</span></a>
+        </div>
+        {projects.map((p, i) => (
+          <article class:list={['project', p.size, `p${i + 1}`]}>
             <figure>
-              <div class:list={['ph', p.size === 'large' ? 'ratio-3-2' : 'ratio-4-3']}></div>
-              <figcaption><span class="label">Fig. 3.{+p.n}</span>Figure caption describing what the image shows.</figcaption>
+              <ProjectFigure kind={p.figure} label={p.caption} />
+              <figcaption><span class="label">Fig. 3.{i + 1}</span>{p.caption}</figcaption>
             </figure>
-            <p class="label kicker">{p.n} · {p.area}</p>
+            <p class="label kicker"><span class="num">{pad(i + 1)}</span> {p.area} · {p.role}</p>
             <h3>{p.title}</h3>
-            <p class="desc">Short description, two lines at most. What it is and why it matters.</p>
+            <p class="summary">{p.summary}</p>
             <dl class="meta">
-              <div><dt class="label">Role</dt><dd>Role</dd></div>
-              <div><dt class="label">Methods</dt><dd>Method, method</dd></div>
-              <div><dt class="label">Outcome</dt><dd>One-line outcome</dd></div>
+              <div><dt class="label">Methods</dt><dd>{p.methods}</dd></div>
+              <div><dt class="label">Outcome</dt><dd>{p.outcome}</dd></div>
             </dl>
-            <p class="links"><a class="label" href="#">Code ↗</a> <a class="label" href="#">Read more ↗</a></p>
           </article>
         ))}
       </div>
     </ChapterBand>
 
-    <ChapterBand id="toolkit" num="04" name="Toolkit & Direction" dark minH="80vh">
+    <!-- 04 TOOLKIT & DIRECTION -->
+    <ChapterBand id="toolkit" num={4} dark minH="78vh">
       <div class="grid toolkit">
-        <div class="capabilities">
-          <h2 id="toolkit-title" class="chapter-title">Chapter title.</h2>
+        <div class="toolkit-main">
+          <h2 id="toolkit-title" class="chapter-title">My Toolkit &amp; Direction.</h2>
+          <p class="label subtitle">Skills today. Bigger questions tomorrow.</p>
           <div class="cap-map">
-            {capabilities.map((c) => (
+            {capabilities.map((c, i) => (
               <div class="cap">
-                <h3 class="label">{c.group}</h3>
-                <ul>{c.items.map((i) => <li>{i}</li>)}</ul>
+                <h3><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[c.icon]} /><span class="label">{pad(i + 1)}</span> {c.group}</h3>
+                <ul>{c.items.map((it) => <li>{it}</li>)}</ul>
               </div>
             ))}
           </div>
+          <p class="languages"><span class="label">Languages</span> {languages}</p>
         </div>
-        <aside class="direction" aria-label="Where I'm heading">
-          <p class="big-num" aria-hidden="true">→</p>
-          <p class="label">Where I'm heading</p>
-          <p class="direction-text">A strong statement about direction, set large, three lines at most.</p>
-          <p class="annotation">One supporting line.</p>
+        <aside class="vrule direction" aria-labelledby="direction-title">
+          <svg class="icon big" viewBox="0 0 24 24" aria-hidden="true" set:html={icons.compass} />
+          <p id="direction-title" class="label">Direction</p>
+          <p class="direction-text">{direction.statement}</p>
+          <p class="note">{direction.now}</p>
+          <p class="note">{direction.aim}</p>
         </aside>
       </div>
     </ChapterBand>
   </main>
 
   <footer class="site-footer">
-    <div class="wrap grid">
-      <p class="tagline">Short tagline, one line.</p>
-      <ul class="contact">
-        <li><a class="label" href="mailto:">Email</a></li>
-        <li><a class="label" href="https://github.com/luciantrusca">GitHub</a></li>
-        <li><a class="label" href="#">LinkedIn</a></li>
-        <li><a class="label" href="/cv.pdf">CV</a></li>
+    <div class="wrap grid foot">
+      <div class="foot-brand">
+        <p class="name">{person.name}</p>
+        <p class="label">Data science with a biotech background</p>
+      </div>
+      <div class="vrule pitch">
+        <p class="pitch-title">Let’s build what’s next.</p>
+        <p>Open to collaborations, ideas and opportunities where biology meets data.</p>
+      </div>
+      <ul class="vrule contact">
+        <li><a href={`mailto:${person.email}`}><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons.mail} />{person.email}</a></li>
+        <li><a href={person.github}><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons.git} />github.com/luciantrusca</a></li>
+        <li><a href={person.linkedin}><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons.linkedin} />linkedin.com/in/lucian-trusca</a></li>
+        <li><a href={cv} download><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons.code} />Download CV (PDF)</a></li>
       </ul>
-      <p class="label open">Open to collaborations</p>
+      <p class="label open">Same questions.<br />Better tools.</p>
     </div>
   </footer>
 </body>
@@ -157,79 +170,106 @@ const nav = [['profile', '01 Profile'], ['journey', '02 Journey'], ['work', '03 
 
 <style>
   /* Header */
-  .site-header { position: sticky; top: 0; z-index: 10; height: var(--header-h); background: var(--paper); border-bottom: var(--rule) solid var(--ink); }
+  .site-header { position: sticky; top: 0; z-index: 10; height: var(--header-h); background: var(--paper); }
   .bar { height: 100%; display: flex; align-items: center; gap: var(--space-4); }
-  .name { font-size: var(--step-1); text-decoration: none; margin-right: auto; }
-  nav { display: flex; gap: var(--space-3); }
-  nav a { text-decoration: none; }
-  .grid-toggle { opacity: 0.5; cursor: pointer; }
+  .bar::after { content: ''; position: absolute; left: var(--margin); right: var(--margin); bottom: 0; border-bottom: 1px solid var(--hair); }
+  .brand { display: flex; flex-direction: column; text-decoration: none; margin-right: auto; }
+  .brand .name { font-size: 1.55rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+  .brand .label { font-size: 0.62rem; color: var(--muted); }
+  nav { display: flex; gap: var(--space-4); }
+  nav a { text-decoration: none; font-size: 0.98rem; }
+  nav a span { font-size: 0.85em; margin-right: 0.3em; }
+  nav a:hover { text-decoration: underline; text-decoration-color: var(--accent); }
+  .where { text-align: right; font-size: 0.62rem; color: var(--muted); }
 
   /* Shared */
-  .ratio-3-2 { aspect-ratio: 3 / 2; }
-  .ratio-4-3 { aspect-ratio: 4 / 3; }
-  .ratio-4-5 { aspect-ratio: 4 / 5; }
-  .chapter-title { font-size: var(--step-4); }
-  .lead { font-size: var(--step-1); max-width: 34em; }
-  .annotation { font-style: italic; font-size: var(--step-1); line-height: 1.4; opacity: 0.8; }
+  .icon { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+  .kicker { color: var(--muted); }
 
-  /* 01 Profile */
-  .profile { align-items: end; }
-  .profile-text { grid-column: 1 / 7; }
-  .hero { font-size: var(--step-4); margin-bottom: var(--space-4); }
-  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); margin-top: var(--space-4); }
-  .profile-fig { grid-column: 8 / 13; }
-  .profile-fig .ph { max-height: 52vh; width: 100%; }
+  /* 01 Profile: text | quote | art */
+  .profile { align-items: center; }
+  .intro { grid-column: 1 / 7; }
+  .hero { font-size: clamp(3rem, 1rem + 5.6vw, 6.6rem); font-weight: 700; line-height: 0.92; letter-spacing: -0.04em; margin-bottom: var(--space-3); }
+  .lead { font-size: var(--step-1); line-height: 1.45; max-width: 31em; }
+  .actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: var(--space-4) 0 var(--space-3); }
+  .side { grid-column: 7 / 9; align-self: stretch; display: flex; flex-direction: column; justify-content: center; gap: var(--space-3); padding-left: var(--space-3); }
+  .quote.big { font-size: clamp(1.3rem, 0.8rem + 1vw, 1.9rem); }
+  .short-rule { width: 44px; border-top: 1px solid currentColor; }
+  .triad { font-size: 0.64rem; color: var(--muted); display: grid; gap: 0.3em; }
+  .art { grid-column: 9 / 13; }
+  .art img { display: block; width: 100%; height: auto; max-height: 56vh; object-fit: contain; mix-blend-mode: multiply; }
 
   /* 02 Journey */
-  .journey-head { align-items: end; margin-bottom: var(--space-4); }
-  .journey-head h2 { grid-column: 1 / 6; }
-  .journey-head .annotation { grid-column: 8 / 13; }
-  .journey-fig svg { display: block; width: 100%; height: auto; border-top: var(--rule) solid; border-bottom: var(--rule) solid; }
-  .journey-notes { margin-top: var(--space-4); }
-  .n1 { grid-column: 2 / 6; }
-  .n2 { grid-column: 8 / 12; }
+  .journey-head { align-items: start; margin-bottom: var(--space-4); }
+  .title-block { grid-column: 1 / 5; }
+  .journey-text { grid-column: 5 / 10; font-size: 1.08rem; line-height: 1.6; }
+  .journey-quote { grid-column: 10 / 13; }
+  .journey-fig { border-top: 1px solid var(--hair); padding-top: var(--space-2); }
+  .journey-fig figcaption { color: color-mix(in srgb, var(--paper-ink) 75%, transparent); }
 
-  /* 03 Work: asymmetric, staggered */
-  .work-head { align-items: end; margin-bottom: var(--space-4); }
-  .work-head h2 { grid-column: 1 / 7; }
-  .work-intro { grid-column: 8 / 13; }
-  .work { row-gap: var(--space-5); align-items: start; }
-  .p01 { grid-column: 1 / 8; }
-  .p02 { grid-column: 9 / 13; margin-top: 12%; }
-  .p03 { grid-column: 1 / 6; }
-  .p04 { grid-column: 7 / 13; margin-top: -6%; }
-  .project figure { margin-bottom: var(--space-3); }
-  .kicker { opacity: 0.7; margin-bottom: var(--space-1); }
-  .project h3 { font-size: var(--step-2); margin-bottom: var(--space-2); }
-  .large h3 { font-size: var(--step-3); }
-  .desc { max-width: 32em; }
-  .meta { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: var(--space-3); margin: var(--space-3) 0; padding-top: var(--space-2); border-top: var(--rule) solid; font-size: 1rem; }
-  .meta dt { opacity: 0.7; }
-  .links { display: flex; gap: var(--space-3); }
+  /* 03 Work: title column + asymmetric 2x2 */
+  .work { row-gap: var(--space-4); align-items: start; }
+  .work-head { grid-column: 1 / 4; grid-row: 1 / 3; align-self: stretch; display: flex; flex-direction: column; gap: var(--space-3); padding-right: var(--space-2); }
+  .work-head .chapter-title { font-size: clamp(2.75rem, 1rem + 3.6vw, 4.6rem); }
+  .work-head .subtitle { margin-top: calc(-1 * var(--space-2)); }
+  .work-intro { font-size: 1.05rem; }
+  .also { border-top: 1px solid var(--hair); padding-top: var(--space-2); }
+  .also ul { margin-top: var(--space-1); font-size: 0.95rem; line-height: 1.45; display: grid; gap: 0.45em; }
+  .work-head .btn { align-self: start; margin-top: auto; }
+  .p1 { grid-column: 4 / 9; grid-row: 1; }
+  .p2 { grid-column: 9 / 13; grid-row: 1; margin-top: var(--space-3); }
+  .p3 { grid-column: 4 / 8; grid-row: 2; }
+  .p4 { grid-column: 8 / 13; grid-row: 2; margin-top: calc(-1 * var(--space-4)); }
+  .project { border-top: 1px solid var(--ink); padding-top: var(--space-2); }
+  .project figure { margin-bottom: var(--space-2); }
+  .project .kicker { margin-bottom: 0.3rem; }
+  .project .num { color: var(--ink); font-weight: 600; margin-right: 0.6em; }
+  .project h3 { font-size: 1.5rem; font-weight: 600; line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 0.4rem; }
+  .large h3 { font-size: 1.85rem; }
+  .project :global(.fig) { aspect-ratio: 16 / 9; }
+  .summary { font-size: 1rem; line-height: 1.5; color: color-mix(in srgb, var(--ink) 85%, transparent); }
+  .meta { margin-top: var(--space-2); font-size: 0.9rem; line-height: 1.4; display: grid; gap: 0.35rem; }
+  .meta div { display: grid; grid-template-columns: 5.5rem 1fr; gap: var(--space-1); border-top: 1px solid var(--hair); padding-top: 0.35rem; }
+  .meta dt { color: var(--muted); font-size: 0.62rem; padding-top: 0.2em; }
 
-  /* 04 Toolkit: 2/3 + 1/3 */
+  /* 04 Toolkit: map 2/3 + direction 1/3 */
   .toolkit { align-items: stretch; }
-  .capabilities { grid-column: 1 / 9; }
-  .capabilities h2 { margin-bottom: var(--space-5); }
-  .cap-map { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4) var(--gutter); }
-  .cap { border-top: var(--rule) solid; padding-top: var(--space-2); }
-  .cap ul { list-style: none; padding: 0; margin: var(--space-2) 0 0; font-size: var(--step-1); line-height: 1.6; }
-  .direction { grid-column: 10 / 13; border-left: var(--rule) solid; padding-left: var(--space-4); display: flex; flex-direction: column; justify-content: end; gap: var(--space-3); }
-  .big-num { font-size: var(--step-5); line-height: 0.8; }
-  .direction-text { font-size: var(--step-2); line-height: 1.25; }
+  .toolkit-main { grid-column: 1 / 9; }
+  .cap-map { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4) var(--space-4); margin-top: var(--space-4); }
+  .cap h3 { display: flex; align-items: center; gap: 0.7rem; font-size: 1.25rem; font-weight: 600; padding-bottom: 0.6rem; border-bottom: 1px solid var(--hair); }
+  .cap h3 .label { font-weight: 400; opacity: 0.7; }
+  .cap ul { margin-top: 0.7rem; line-height: 1.75; font-size: 1rem; }
+  .languages { margin-top: var(--space-4); font-size: 0.95rem; }
+  .languages .label { margin-right: 1em; opacity: 0.7; }
+  .direction { grid-column: 9 / 13; display: flex; flex-direction: column; justify-content: center; gap: var(--space-2); }
+  .icon.big { width: 44px; height: 44px; color: var(--accent); }
+  .direction-text { font-size: clamp(1.9rem, 1rem + 2vw, 2.8rem); font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; }
+  .note { font-style: italic; font-size: 1.02rem; line-height: 1.45; opacity: 0.85; }
 
   /* Footer */
-  .site-footer { min-height: 30vh; padding: var(--space-5) 0; display: flex; align-items: center; }
-  .site-footer .wrap { width: 100%; align-items: end; row-gap: var(--space-3); }
-  .tagline { grid-column: 1 / 7; font-size: var(--step-3); line-height: 1.05; }
-  .contact { grid-column: 8 / 11; list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-3); }
-  .open { grid-column: 11 / 13; text-align: right; opacity: 0.7; }
+  .site-footer { min-height: 28vh; display: flex; align-items: center; padding: var(--space-4) 0; }
+  .foot { width: 100%; align-items: center; row-gap: var(--space-3); }
+  .foot-brand { grid-column: 1 / 4; }
+  .foot-brand .name { font-size: 1.55rem; font-weight: 700; letter-spacing: -0.02em; }
+  .foot-brand .label { font-size: 0.62rem; color: var(--muted); }
+  .pitch { grid-column: 4 / 7; padding-left: var(--space-3); font-size: 0.95rem; }
+  .pitch-title { font-size: 1.35rem; font-weight: 600; margin-bottom: 0.2rem; }
+  .contact { grid-column: 7 / 11; padding-left: var(--space-3); display: grid; gap: 0.5rem; font-size: 0.95rem; }
+  .contact a { display: inline-flex; align-items: center; gap: 0.7rem; text-decoration: none; }
+  .contact a:hover { text-decoration: underline; text-decoration-color: var(--accent); }
+  .contact .icon { width: 20px; height: 20px; }
+  .open { grid-column: 11 / 13; text-align: right; font-size: 0.64rem; color: var(--muted); }
 
+  @media (max-width: 1099px) {
+    nav { gap: var(--space-2); }
+    .where { display: none; }
+  }
   @media (max-width: 859px) {
-    nav { display: none; } /* ponytail: no mobile menu yet; add in prototype step */
-    .p02, .p04 { margin-top: 0; }
-    .direction { border-left: 0; padding-left: 0; border-top: var(--rule) solid; padding-top: var(--space-4); margin-top: var(--space-5); }
+    nav { display: none; } /* ponytail: no mobile menu; sections are one scroll away */
+    .work-head, .p1, .p2, .p3, .p4 { grid-row: auto; margin-top: 0; }
+    .art img { max-height: none; }
     .cap-map { grid-template-columns: 1fr; }
     .open { text-align: left; }
+    .journey-head, .profile, .foot { row-gap: var(--space-3); }
   }
 </style>
