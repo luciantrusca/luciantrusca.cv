@@ -1,24 +1,39 @@
 ---
 interface Props {
   id: string;
-  num: number;       // 1..4, shown as "02 / 04"
-  dark?: boolean;
-  minH: string;      // starting height, content can push past it
+  num: number;          // 1..4, shown as an oversized "02"
+  name: string;         // "Journey", shown as "/ JOURNEY"
+  keywords: string[];   // short list at the foot of the rail
+  splash: 'red' | 'blue';
+  minH: string;         // starting height, content can push past it
 }
-const { id, num, dark = false, minH } = Astro.props;
-const pad = (n: number) => String(n).padStart(2, '0');
+const { id, num, name, keywords, splash, minH } = Astro.props;
 ---
-<section id={id} class:list={['band', { dark }]} style={`--min-h:${minH}`} aria-labelledby={`${id}-title`}>
-  <div class="wrap">
-    <p class="chapter"><span>{pad(num)} / 04</span><span class="rule"></span></p>
-    <slot />
+<section id={id} class="band" style={`--min-h:${minH}; --c: var(--${splash})`} aria-labelledby={`${id}-title`}>
+  <div class="wrap grid">
+    <div class="rail" aria-hidden="true">
+      <p class="num">{String(num).padStart(2, '0')}</p>
+      <p class="label name"><span class="rule"></span>/ {name}</p>
+      <ul class="label keywords">{keywords.map((k) => <li>{k}</li>)}</ul>
+    </div>
+    <div class="body"><slot /></div>
   </div>
 </section>
 
 <style>
-  .band { min-height: var(--min-h); padding: calc(var(--band-pad) * 0.7) 0 var(--band-pad); display: flex; flex-direction: column; justify-content: center; }
+  .band { min-height: var(--min-h); padding: var(--band-pad) 0; display: flex; flex-direction: column; justify-content: center; border-top: 1px solid var(--card-line); }
   .band > .wrap { width: 100%; }
-  .dark { background: var(--navy); color: var(--paper-ink); }
-  .chapter { display: flex; align-items: center; gap: 1.1rem; margin-bottom: 0.8rem; font-size: 0.95rem; letter-spacing: 0.06em; }
-  .rule { width: 84px; border-top: 1px solid currentColor; }
+  .grid { display: grid; grid-template-columns: clamp(130px, 11vw, 170px) minmax(0, 1fr); column-gap: clamp(1.25rem, 2.5vw, 2.5rem); }
+  .rail { display: flex; flex-direction: column; border-right: 1px solid var(--hair); padding-right: 1rem; }
+  .num { font-size: clamp(4.5rem, 2.5rem + 4vw, 7rem); font-weight: 700; line-height: 0.8; letter-spacing: -0.06em; margin-left: -0.05em; }
+  .name { display: flex; align-items: center; gap: 0.9rem; margin-top: 1.1rem; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.3em; }
+  .rule { width: 28px; border-top: 4px solid var(--c); }
+  .keywords { margin-top: auto; padding-top: 2rem; font-size: 0.6rem; line-height: 2.1; color: var(--muted); }
+
+  @media (max-width: 1099px) {
+    .grid { grid-template-columns: 1fr; }
+    .rail { flex-direction: row; align-items: flex-end; gap: 1.25rem; border-right: 0; padding: 0 0 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--hair); }
+    .num { font-size: 4rem; }
+    .keywords { display: none; }
+  }
 </style>

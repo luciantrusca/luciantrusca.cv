@@ -7,7 +7,9 @@
   --paper-ink: #f3f1ea;    /* text on navy */
   --fig-bg: #ecebe4;       /* figure panels on paper */
   --card-line: #d9d8cf;
-  --accent: #c29a5b;       /* brass: "now" markers, hover */
+  --red: #b3342b;          /* colour splashes, as in docs/mockup-v2 */
+  --blue: #2359c4;
+  --accent: var(--red);
   --muted: color-mix(in srgb, currentColor 70%, transparent);
   --hair: color-mix(in srgb, currentColor 30%, transparent);
 
@@ -56,18 +58,25 @@ a:hover { text-decoration-color: var(--accent); }
 .btn {
   display: inline-flex; align-items: center; gap: 1rem; padding: 0.95em 1.7em;
   font: 400 1.02rem / 1 var(--serif); text-decoration: none;
-  border: 1px solid var(--navy); color: var(--navy);
-  transition: background 0.2s, color 0.2s;
+  border: 1.5px solid var(--red);
+  /* filled when lit: the buttons sit in a .spot, so the fill follows the hover */
+  background: color-mix(in srgb, var(--red) calc(var(--lit, 0) * 100%), transparent);
+  color: color-mix(in srgb, var(--paper) calc(var(--lit, 0) * 100%), var(--red));
+  transition: background 0.25s, color 0.25s;
 }
 .btn .icon { width: 18px; height: 18px; transition: transform 0.2s; }
-.btn:hover { background: var(--navy); color: var(--paper); }
 .btn:hover .icon { transform: translateX(3px); }
-.btn.primary { background: var(--navy); color: var(--paper); }
-.btn.primary:hover { background: var(--ink); }
 
 @media (max-width: 899px) {
   .vrule { border-left: 0; padding-left: 0; border-top: 1px solid var(--hair); padding-top: 1.5rem; }
 }
+
+/* Spotlight: inside .spot, the .best children are lit (--lit: 1) until another
+   child is hovered or focused, then the light moves there. Components read
+   --lit with color-mix, e.g. color-mix(in srgb, var(--c) calc(var(--lit) * 100%), transparent). */
+.spot > * { --lit: 0; }
+.spot > .best, .spot > :hover, .spot > :focus-within { --lit: 1; }
+.spot:has(> :hover, > :focus-within) > .best:not(:hover, :focus-within) { --lit: 0; }
 
 /* Visually hidden, still read by screen readers */
 .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

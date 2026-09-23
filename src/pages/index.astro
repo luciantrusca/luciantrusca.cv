@@ -38,13 +38,13 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
   <main>
     <!-- 01 PROFILE -->
-    <ChapterBand id="profile" num={1} minH="0">
+    <ChapterBand id="profile" num={1} name="Profile" keywords={profile.keywords} splash="red" minH="0">
       <div class="profile">
         <div class="intro">
           <h1 id="profile-title" class="hero">{profile.headline[0]}<br />{profile.headline[1]}</h1>
           <p class="lead">{profile.statement}</p>
-          <p class="actions">
-            <a class="btn primary" href="#work">View My Work <Icon name="arrow" /></a>
+          <p class="actions spot">
+            <a class="btn best" href="#work">View My Work <Icon name="arrow" /></a>
             <a class="btn" href={cv} download>Download CV <Icon name="down" /></a>
           </p>
           <p class="label kicker">{profile.kicker.map((t, i) => <>{i > 0 && <span class="x">×</span>}{t}</>)}</p>
@@ -64,7 +64,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     </ChapterBand>
 
     <!-- 02 JOURNEY -->
-    <ChapterBand id="journey" num={2} dark minH="0">
+    <ChapterBand id="journey" num={2} name="Journey" keywords={journey.keywords} splash="blue" minH="0">
       <div class="journey-head">
         <div>
           <h2 id="journey-title" class="chapter-title">My Journey.</h2>
@@ -78,9 +78,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
         </div>
       </div>
 
-      <ol class="timeline">
+      <ol class="timeline spot">
         {journey.steps.map((s, i) => (
-          <li class:list={['step', { last: i === journey.steps.length - 1 }]}>
+          <li class:list={['step', { 'last best': i === journey.steps.length - 1 }]}>
             <p class="dates">{s.dates}{s.now && <em>{s.now}</em>}</p>
             <h3>{s.phase}</h3>
             <p class="role">{s.title}</p>
@@ -95,7 +95,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     </ChapterBand>
 
     <!-- 03 WORK -->
-    <ChapterBand id="work" num={3} minH="0">
+    <ChapterBand id="work" num={3} name="Work" keywords={work.keywords} splash="red" minH="0">
       <div class="work-head">
         <div>
           <h2 id="work-title" class="chapter-title">Selected Work.</h2>
@@ -104,9 +104,10 @@ const pad = (n: number) => String(n).padStart(2, '0');
         <p class="work-intro">{work.intro}</p>
       </div>
 
-      <div class="cards">
+      <div class="cards spot">
         {work.projects.map((p, i) => (
-          <article class="card">
+          <article class:list={['card', { best: p.badge }]} style={p.badge && `--c: var(--${p.badge === 'new' ? 'red' : 'blue'})`}>
+            {p.badge && <span class="badge">{p.badge}</span>}
             <p class="card-top"><span class="num">{pad(i + 1)}</span><span class="label">{p.area}</span></p>
             <ProjectFigure kind={p.figure} label={`${p.title}: schematic figure`} />
             <h3>{p.title}</h3>
@@ -134,19 +135,26 @@ const pad = (n: number) => String(n).padStart(2, '0');
     </ChapterBand>
 
     <!-- 04 TOOLKIT & DIRECTION -->
-    <ChapterBand id="toolkit" num={4} dark minH="0">
+    <ChapterBand id="toolkit" num={4} name="Toolkit" keywords={toolkit.keywords} splash="blue" minH="0">
       <div class="toolkit">
         <div class="toolkit-title">
-          <h2 id="toolkit-title" class="chapter-title">My Toolkit &amp;<br />Direction.</h2>
-          <p class="label subtitle">{toolkit.subtitle}</p>
+          <h2 id="toolkit-title" class="chapter-title">{toolkit.title[0]}<br />{toolkit.title[1]}</h2>
+          <p class="toolkit-sub">{toolkit.subtitle}</p>
           <p class="languages">{toolkit.languages}</p>
         </div>
-        {toolkit.columns.map((c) => (
-          <div class:list={['vrule', 'tool', { direction: c.icon === 'compass' }]}>
-            <h3><Icon name={c.icon} size={28} />{c.title}</h3>
-            <ul>{c.items.map((it) => <li>{it}</li>)}</ul>
-          </div>
-        ))}
+        <div class="tiles spot">
+          {toolkit.tiles.map((t) => (
+            <div class:list={['tile', { best: t.title === toolkit.best }]}>
+              <span class="tile-icon"><Icon name={t.icon} size={28} /></span>
+              <h3 class="label">{t.title}</h3>
+              <ul>{t.items.map((it) => <li>{it}</li>)}</ul>
+            </div>
+          ))}
+        </div>
+        <div class="vrule next">
+          <h3 class="label"><Icon name="compass" size={18} />{toolkit.next.title}</h3>
+          <ul>{toolkit.next.items.map((it) => <li>{it}</li>)}</ul>
+        </div>
       </div>
     </ChapterBand>
   </main>
@@ -179,11 +187,13 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .brand .label { font-size: 0.62rem; color: var(--muted); }
   nav { display: flex; gap: clamp(1.25rem, 2.6vw, 2.75rem); margin-right: clamp(1rem, 4vw, 4.5rem); }
   nav a { text-decoration: none; font-size: 1.02rem; padding: 0.3rem 0; border-bottom: 1px solid transparent; }
-  nav a:hover { border-bottom-color: var(--accent); }
+  nav a { border-bottom-width: 2px; transition: border-color 0.2s; }
+  nav a:hover { border-bottom-color: var(--red); }
+  nav .n { color: var(--red); }
   nav .n { margin-right: 0.55em; font-variant-numeric: lining-nums; }
   .motto { text-align: right; font-size: 0.62rem; line-height: 1.9; color: var(--muted); }
 
-  .short-rule { display: block; width: 52px; border-top: 1px solid currentColor; opacity: 0.8; }
+  .short-rule { display: block; width: 52px; border-top: 2px solid var(--c, currentColor); }
 
   /* ── 01 Profile: text | rule | quote + art ─────────────── */
   .profile { display: grid; grid-template-columns: 44fr 56fr; column-gap: clamp(1.5rem, 3vw, 3rem); align-items: stretch; }
@@ -206,14 +216,16 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .journey-quote { display: flex; flex-direction: column; justify-content: center; gap: 1.1rem; }
   .journey-quote .label { font-size: 0.6rem; line-height: 2; opacity: 0.8; }
 
-  .timeline { --gap: clamp(1rem, 2vw, 1.75rem); display: grid; grid-template-columns: repeat(5, 1fr) 0.85fr; column-gap: var(--gap); padding-top: 1rem; }
+  .timeline { --c: var(--red); --gap: clamp(1rem, 2vw, 1.75rem); display: grid; grid-template-columns: repeat(5, 1fr) 0.85fr; column-gap: var(--gap); padding-top: 1rem; }
   .timeline li { position: relative; }
   /* track: each item draws its own segment to the next column */
-  .timeline li::after { content: ''; position: absolute; top: 0; left: 0; right: calc(-1 * var(--gap)); border-top: 1.5px solid color-mix(in srgb, var(--paper-ink) 80%, transparent); }
+  .timeline li::after { content: ''; position: absolute; top: 0; left: 0; right: calc(-1 * var(--gap)); border-top: 1.5px solid var(--blue); }
   .timeline .last::after, .timeline .end::after { border-top-style: dotted; border-top-width: 2px; }
   .timeline .end::after { right: 38px; }
-  .step::before { content: ''; position: absolute; z-index: 1; top: -6px; left: -6px; width: 13px; height: 13px; border-radius: 50%; background: var(--paper-ink); }
-  .step { padding: 2.1rem 0.25rem 0.4rem 1.2rem; border-left: 1px solid; border-image: linear-gradient(to bottom, transparent 1.4rem, var(--hair) 1.4rem) 1; }
+  .step::before { content: ''; position: absolute; z-index: 1; top: -6px; left: -6px; width: 13px; height: 13px; border-radius: 50%; background: color-mix(in srgb, var(--c) calc(var(--lit) * 100%), var(--navy)); transition: background 0.25s, transform 0.25s; transform: scale(calc(1 + var(--lit) * 0.25)); }
+  .step { padding: 2.1rem 0.9rem 0.9rem 1.2rem; border-left: 1px solid; border-image: linear-gradient(to bottom, transparent 1.4rem, var(--hair) 1.4rem) 1;
+    background: linear-gradient(color-mix(in srgb, var(--c) calc(var(--lit) * 9%), transparent) 0 0) 0 1.4rem / 100% calc(100% - 1.4rem) no-repeat; transition: background-color 0.25s; }
+  .step .dates { color: color-mix(in srgb, var(--c) calc(var(--lit) * 100%), currentColor); }
   .dates { font-size: 0.98rem; opacity: 0.85; margin-bottom: 0.45rem; font-variant-numeric: lining-nums; }
   .dates em { margin-left: 0.3em; }
   .step h3 { font-size: 1.18rem; font-weight: 600; letter-spacing: -0.005em; margin-bottom: 0.9rem; }
@@ -221,15 +233,16 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .desc { font-size: 0.95rem; line-height: 1.55; opacity: 0.78; }
   .end { display: flex; align-items: center; padding-left: clamp(1rem, 2vw, 1.75rem); border-left: 1px solid; border-image: linear-gradient(to bottom, transparent 2.6rem, var(--hair) 2.6rem) 1; }
   .end p { font-style: italic; font-size: 1.2rem; line-height: 1.45; padding-top: 2rem; }
-  .arrow { position: absolute; top: -17px; right: 0; width: 34px; height: 34px; border: 1.5px solid var(--paper-ink); border-radius: 50%; display: grid; place-items: center; background: var(--navy); }
+  .arrow { position: absolute; top: -17px; right: 0; width: 34px; height: 34px; border: 1.5px solid var(--red); color: var(--red); border-radius: 50%; display: grid; place-items: center; background: var(--paper); }
 
   /* ── 03 Work: head row, four equal cards, also-built strip ── */
   .work-head { display: grid; grid-template-columns: 40fr 60fr; column-gap: clamp(1.5rem, 3vw, 3rem); align-items: center; margin-bottom: clamp(1.5rem, 3.5vh, 2.5rem); }
   .work-intro { font-size: 1.12rem; line-height: 1.6; max-width: 30em; }
 
   .cards { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(0.85rem, 1.3vw, 1.25rem); }
-  .card { display: flex; flex-direction: column; border: 1px solid var(--card-line); padding: clamp(1rem, 1.3vw, 1.3rem); background: color-mix(in srgb, var(--paper) 60%, white); transition: border-color 0.2s; }
-  .card:hover { border-color: var(--navy); }
+  .card { position: relative; display: flex; flex-direction: column; border: 1px solid var(--card-line); padding: clamp(1rem, 1.3vw, 1.3rem); background: color-mix(in srgb, var(--paper) 60%, white);
+    outline: 2px solid color-mix(in srgb, var(--c) calc(var(--lit) * 100%), transparent); outline-offset: -1px; transition: outline-color 0.25s; }
+  .badge { position: absolute; top: -0.75em; right: 1rem; padding: 0.35em 0.75em; background: var(--c); color: var(--paper); font: 600 0.58rem / 1.2 var(--sans); letter-spacing: 0.18em; text-transform: uppercase; }
   .card-top { display: flex; align-items: baseline; gap: 1.1rem; margin-bottom: 1rem; }
   .card-top .num { font-size: 1.2rem; font-weight: 700; }
   .card-top .label { font-size: 0.62rem; color: var(--muted); }
@@ -257,15 +270,21 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .also strong { font-weight: 600; font-size: 1rem; }
   .also span { opacity: 0.78; }
 
-  /* ── 04 Toolkit: title | 3 skill columns | direction ─────── */
-  .toolkit { display: grid; grid-template-columns: 1.5fr repeat(4, 1fr); column-gap: clamp(1rem, 2vw, 1.8rem); align-items: stretch; }
-  .toolkit-title { padding-right: 0.5rem; }
-  .toolkit-title .chapter-title { font-size: clamp(2.4rem, 1rem + 2.6vw, 3.4rem); }
-  .languages { margin-top: 1.5rem; font-size: 0.92rem; font-style: italic; opacity: 0.75; }
-  .tool { padding-top: 0.25rem; padding-bottom: 0.25rem; padding-left: clamp(1rem, 1.6vw, 1.5rem); }
-  .tool h3 { display: flex; align-items: center; gap: 0.8rem; font-size: 1.3rem; font-weight: 400; margin-bottom: 1.1rem; }
-  .tool ul { padding-left: calc(28px + 0.8rem); font-size: 0.98rem; line-height: 2; opacity: 0.88; }
-  .direction h3 :global(.icon) { color: var(--accent); }
+  /* ── 04 Toolkit: title | three icon tiles | heading toward ── */
+  .toolkit { display: grid; grid-template-columns: 1.1fr 3fr 0.8fr; column-gap: clamp(1.25rem, 2.5vw, 2.5rem); align-items: center; }
+  .toolkit-title .chapter-title { font-size: clamp(2.2rem, 1rem + 2vw, 3rem); }
+  .toolkit-sub { margin-top: 0.9rem; font-size: 1.1rem; }
+  .languages { margin-top: 1.25rem; font-size: 0.92rem; font-style: italic; opacity: 0.75; }
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .tile { display: grid; grid-template-columns: auto 1fr; align-items: center; align-content: start; column-gap: 0.9rem; row-gap: 0.9rem; padding: 0.4rem clamp(1rem, 1.6vw, 1.5rem); border-left: 1px solid var(--hair); }
+  .tile-icon { width: 52px; height: 52px; display: grid; place-items: center;
+    background: color-mix(in srgb, var(--c) calc(12% + var(--lit) * 88%), transparent);
+    color: color-mix(in srgb, var(--paper) calc(var(--lit) * 100%), var(--c)); transition: background 0.25s, color 0.25s; }
+  .tile h3 { font-size: 0.68rem; font-weight: 600; margin: 0; color: color-mix(in srgb, var(--c) calc(var(--lit) * 100%), currentColor); transition: color 0.25s; }
+  .tile ul { grid-column: 1 / -1; }
+  .tile ul, .next ul { font-size: 0.95rem; line-height: 1.85; opacity: 0.88; }
+  .next h3 { display: flex; align-items: center; gap: 0.6rem; font-size: 0.68rem; font-weight: 600; margin-bottom: 0.6rem; }
+  .next h3 :global(.icon) { color: var(--red); }
 
   /* ── Footer ─────────────────────────────── */
   .site-footer { display: flex; align-items: center; padding: 1.5rem 0; }
@@ -283,7 +302,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   @media (max-width: 1099px) {
     /* vertical timeline: six columns get too narrow below this */
     .timeline { grid-template-columns: 1fr; padding: 0 0 0 0.5rem; max-width: 40rem; }
-    .timeline li::after { top: 0; bottom: 0; left: 0; right: auto; border-top: 0; border-left: 1.5px solid color-mix(in srgb, var(--paper-ink) 80%, transparent); }
+    .timeline li::after { top: 0; bottom: 0; left: 0; right: auto; border-top: 0; border-left: 1.5px solid var(--blue); }
     .timeline .last::after { border-left-style: dotted; }
     .step { border: 0; padding: 0 0 2.25rem 1.75rem; }
     .step::before { top: 0.35rem; }
@@ -291,11 +310,11 @@ const pad = (n: number) => String(n).padStart(2, '0');
   }
   @media (max-width: 1199px) {
     .motto { display: none; }
-    .toolkit { grid-template-columns: repeat(4, 1fr); row-gap: 2.5rem; }
+    .toolkit { grid-template-columns: 3fr 1fr; row-gap: 2.5rem; }
     .card { padding: 0.9rem; }
     .card-top { gap: 0.6rem; }
     .toolkit-title { grid-column: 1 / -1; }
-    .tool:nth-child(2) { border-left: 0; padding-left: 0; }
+    .tile:first-child { border-left: 0; padding-left: 0; }
     .also ul { grid-template-columns: repeat(2, 1fr); row-gap: 1.25rem; }
     .also li:nth-child(3) { border-left: 0; padding-left: 0; }
   }
@@ -307,8 +326,10 @@ const pad = (n: number) => String(n).padStart(2, '0');
     .side { width: auto; }
     .art-note, .hand { display: none; }
 
-    .cards, .toolkit { grid-template-columns: 1fr; }
-    .tool { border-left: 0; padding-left: 0; }
+    .cards, .toolkit, .tiles { grid-template-columns: 1fr; }
+    .cards { row-gap: 1.5rem; }
+    .tiles { row-gap: 1.5rem; }
+    .tile { border-left: 0; padding-left: 0; }
     .also ul { grid-template-columns: 1fr; row-gap: 1rem; }
     .also li { border-left: 0; padding-left: 0; }
     .foot > .vrule { justify-content: flex-start; min-height: 0; }

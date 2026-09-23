@@ -148,6 +148,8 @@ Do not polish individual project descriptions before the layout exists; the wire
 
 **Revision 2 (owner feedback): the mockup's layout now wins over this brief's structural changes.** The owner found the phylogeny, asymmetric Work grid and 2/3 + 1/3 Toolkit "all over the place" and asked to follow the mockup. So: horizontal timeline, four equal project cards, title + four toolkit columns.
 
+**Revision 4 (owner feedback): follow `docs/mockup-v2.png` for colour and chapter chrome, keep revision 3's section heights.** All bands are paper now, split by hairlines. Each band has a left rail: an oversized numeral, a short red or blue rule, `/ NAME` and a keyword list (the rail folds into a header row below 1100 px). Red `#b3342b` and blue `#2359c4` replace brass. A CSS-only spotlight (`.spot` / `.best` in `tokens.css`) lights the best item in a group, and hovering or focusing another item moves the light there. It is used on the buttons (View My Work), the timeline (Present), the cards (FEATURED Meadow Bird in blue, NEW Sales Forecasting in red) and the toolkit tiles (Computation). Toolkit is now "Skills for What's Next.": three icon tiles plus a "Heading toward" column.
+
 Visual language from `docs/mockup-v1.png`: paper `#f7f7f3`, navy `#0e2638`, Source Serif 4 (bold headlines, italic quotes) + Inter for letterspaced labels + Caveat for the one handwritten note, `01 / 04` labels with a rule, quote columns behind thin vertical rules, navy + outline buttons with arrow icons, brass `#c29a5b` as the single accent. All copy comes from `Resume_DS.tex` and lives in `src/data/site.ts`.
 
 Measured at 1440×900 (content-driven, tightened in revision 3): Profile 64vh, Journey 76vh, Work 95vh, Toolkit 39vh, Footer 14vh.

@@ -10,6 +10,7 @@ export const person = {
 };
 
 export const profile = {
+  keywords: ['Questions', 'Data', 'Models', 'Decisions'],
   headline: ['Curiosity', 'Bridges Worlds.'],
   statement:
     'I’m a data scientist with a background in biotechnology. I turn messy data into models, pipelines and dashboards ' +
@@ -22,6 +23,7 @@ export const profile = {
 };
 
 export const journey = {
+  keywords: ['Curiosity', 'Discipline', 'The pivot', 'Convergence'],
   subtitle: 'A nonlinear path, one direction.',
   text:
     'I trained as a biotechnologist, then retrained in computer science. Each step added a new way of looking at the same ' +
@@ -39,19 +41,21 @@ export const journey = {
 };
 
 export type Figure = 'birds' | 'forecast' | 'dashboard' | 'signs' | 'cave';
+export type Badge = 'featured' | 'new';
 
 export const work = {
+  keywords: ['Theses', 'Course projects', 'Hackathons', 'Prototypes'],
   intro: 'Projects from across the path, from camera traps to cave sediment, each turning data into a decision.',
   projects: [
     {
-      area: 'Computer vision', figure: 'birds' as Figure, title: 'Meadow Bird Detection',
+      badge: 'featured' as Badge, area: 'Computer vision', figure: 'birds' as Figure, title: 'Meadow Bird Detection',
       text: 'Vision transformers that spot meadow birds in camera-trap images, day and night, explained with XAI.',
       tags: ['ViT', 'Detection', 'XAI'],
       role: 'BSc thesis, University of Twente',
       outcome: 'Benchmarked models across lighting conditions and showed where they work and where they fail.',
     },
     {
-      area: 'Time series', figure: 'forecast' as Figure, title: 'Sales Forecasting',
+      badge: 'new' as Badge, area: 'Time series', figure: 'forecast' as Figure, title: 'Sales Forecasting',
       text: 'An end-to-end pipeline predicting 28 days of daily Walmart sales, from diagnostics to model comparison.',
       tags: ['Python', 'SARIMAX', 'ETS'],
       role: 'Course project, Applied Forecasting',
@@ -88,14 +92,17 @@ export const work = {
 };
 
 export const toolkit = {
-  subtitle: 'Skills today. Bigger questions tomorrow.',
-  languages: 'English & Romanian native · Dutch A2',
-  columns: [
-    { icon: 'dna', title: 'Biology', items: ['Molecular biotech', 'Metagenomics', 'Phylogenetics', 'Ancient DNA', 'Pharma QC, HPLC'] },
-    { icon: 'code', title: 'Computation', items: ['Python, R, SQL', 'Machine learning', 'NLP & XAI', 'Computer vision', 'Time series'] },
-    { icon: 'gear', title: 'Engineering', items: ['React, TypeScript', 'Flask, Node.js', 'Docker & Git', 'Embedded ML', 'Figma prototyping'] },
-    { icon: 'compass', title: 'Direction', items: ['Life-science AI', 'Network biology', 'AI-assisted tools', 'Data people use', 'The bigger picture'] },
+  keywords: ['Wet lab', 'Code', 'Systems', 'Next'],
+  title: ['Skills for', 'What’s Next.'],
+  subtitle: 'A toolkit for bigger questions tomorrow.',
+  best: 'Computation',
+  tiles: [
+    { icon: 'dna', title: 'Biology', items: ['Molecular biotechnology', 'Metagenomics & phylogenetics', 'Ancient DNA', 'Pharma QC, HPLC'] },
+    { icon: 'code', title: 'Computation', items: ['Python, R, SQL', 'Machine learning & XAI', 'Computer vision, NLP', 'Time series forecasting'] },
+    { icon: 'gear', title: 'Engineering', items: ['React, TypeScript', 'Flask, Node.js', 'Docker & Git', 'Embedded ML, Figma'] },
   ],
+  next: { title: 'Heading toward', items: ['Life-science AI', 'Network biology', 'AI-assisted tools', 'Data people use'] },
+  languages: 'English & Romanian native · Dutch A2',
 };
 
 export const footer = {
