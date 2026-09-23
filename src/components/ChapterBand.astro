@@ -1,0 +1,23 @@
+---
+interface Props {
+  id: string;
+  num: string;       // "02"
+  name: string;      // "Journey"
+  dark?: boolean;
+  minH: string;      // starting height, content can push past it
+}
+const { id, num, name, dark = false, minH } = Astro.props;
+---
+<section id={id} class:list={['band', { dark }]} style={`--min-h:${minH}`} aria-labelledby={`${id}-title`}>
+  <div class="wrap">
+    <p class="chapter label"><span>{num} / {name}</span><span class="rule"></span></p>
+    <slot />
+  </div>
+</section>
+
+<style>
+  .band { min-height: var(--min-h); padding: var(--space-5) 0 var(--space-6); }
+  .dark { background: var(--navy); color: var(--paper-ink); }
+  .chapter { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-4); }
+  .rule { width: 72px; border-top: var(--rule) solid currentColor; }
+</style>

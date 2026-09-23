@@ -1,0 +1,86 @@
+/* Wireframe tokens: grayscale on purpose. Step 3 (design system) replaces
+   the color and font values here; layout reads only these variables. */
+:root {
+  --paper: #f4f4f2;
+  --ink: #1c1c1c;
+  --navy: #2e2e2e;        /* stand-in for deep navy */
+  --paper-ink: #efefef;   /* text on dark bands */
+  --ph: #d6d6d4;          /* placeholder fill on light */
+  --ph-dark: #454545;     /* placeholder fill on dark */
+
+  --serif: Georgia, 'Times New Roman', serif;
+  --sans: system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+
+  --step--1: 0.8125rem;   /* labels, kickers */
+  --step-0: 1.125rem;     /* body */
+  --step-1: 1.3rem;       /* captions, lead */
+  --step-2: clamp(1.5rem, 1.1rem + 1.2vw, 2rem);
+  --step-3: clamp(2.5rem, 1.4rem + 3.5vw, 4.5rem);
+  --step-4: clamp(3rem, 1.2rem + 6vw, 7rem);     /* chapter headlines */
+  --step-5: clamp(6rem, 3rem + 10vw, 13rem);     /* oversized section numbers */
+
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 4rem;
+  --space-6: 6rem;
+
+  --max: 1280px;
+  --gutter: 24px;
+  --margin: clamp(20px, 5vw, 64px);
+  --header-h: 64px;
+  --rule: 1px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: var(--header-h); }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: var(--step-0) / 1.55 var(--serif);
+}
+h1, h2, h3, p, figure, dl, dd { margin: 0; }
+h1, h2, h3 { font-weight: 400; line-height: 1.02; letter-spacing: -0.02em; }
+a { color: inherit; }
+
+/* 12-column grid */
+.wrap { max-width: calc(var(--max) + 2 * var(--margin)); margin: 0 auto; padding: 0 var(--margin); }
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
+
+/* Small letterspaced uppercase sans: labels, kickers, captions' figure numbers */
+.label { font: 500 var(--step--1) / 1.4 var(--sans); letter-spacing: 0.16em; text-transform: uppercase; }
+
+/* Figure placeholder: crossed box */
+.ph {
+  background:
+    linear-gradient(to top right, transparent calc(50% - 0.5px), currentColor 50%, transparent calc(50% + 0.5px)),
+    linear-gradient(to bottom right, transparent calc(50% - 0.5px), currentColor 50%, transparent calc(50% + 0.5px)),
+    var(--ph);
+  color: color-mix(in srgb, currentColor 25%, transparent);
+}
+.dark .ph { --ph: var(--ph-dark); }
+
+/* Captions are first-class: larger than typical UI captions */
+figcaption { margin-top: var(--space-2); font-size: var(--step-1); line-height: 1.4; font-style: italic; }
+figcaption .label { font-style: normal; margin-right: 0.6em; }
+
+.btn {
+  display: inline-block; padding: 0.9em 1.6em; text-decoration: none;
+  font: 500 var(--step--1) / 1 var(--sans); letter-spacing: 0.12em; text-transform: uppercase;
+  border: var(--rule) solid currentColor;
+}
+.btn.primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+@media (max-width: 859px) {
+  .grid > * { grid-column: 1 / -1 !important; }
+}
+
+/* Wireframe-only column overlay, toggled from the header checkbox (no JS) */
+html:has(#grid-toggle:checked) .wrap {
+  background: repeating-linear-gradient(to right,
+    rgb(255 0 80 / 0.07) 0 calc((100% - 11 * var(--gutter)) / 12),
+    transparent 0 calc((100% - 11 * var(--gutter)) / 12 + var(--gutter)));
+  background-origin: content-box; background-clip: content-box;
+}

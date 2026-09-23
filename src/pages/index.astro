@@ -1,0 +1,235 @@
+---
+import '../styles/tokens.css';
+import ChapterBand from '../components/ChapterBand.astro';
+
+// ponytail: placeholder data inline; moves to content collections (typed schema) in the prototype step.
+const projects = [
+  { n: '01', size: 'large',   title: 'Large project title', area: 'Computational biology' },
+  { n: '02', size: 'regular', title: 'Project title',       area: 'Structural biology' },
+  { n: '03', size: 'regular', title: 'Project title',       area: 'Robotics & automation' },
+  { n: '04', size: 'large',   title: 'Large project title', area: 'Data science & ML' },
+];
+
+const capabilities = [
+  { group: 'Biology',             items: ['Molecular biotechnology', 'Wet-lab methods', 'Genomics'] },
+  { group: 'Data & ML',           items: ['Statistical modelling', 'Machine learning', 'Visualisation'] },
+  { group: 'Software',            items: ['Python', 'Pipelines & tooling', 'Web'] },
+  { group: 'Systems & Robotics',  items: ['Automation', 'Hardware–software', 'Prototyping'] },
+];
+
+const nav = [['profile', '01 Profile'], ['journey', '02 Journey'], ['work', '03 Work'], ['toolkit', '04 Toolkit']];
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lucian Trusca — Wireframe</title>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap bar">
+      <a class="name" href="#profile">Lucian Trusca</a>
+      <nav aria-label="Sections">
+        {nav.map(([id, text]) => <a class="label" href={`#${id}`}>{text}</a>)}
+      </nav>
+      <label class="label grid-toggle"><input id="grid-toggle" type="checkbox" /> grid</label>
+    </div>
+  </header>
+
+  <main>
+    <ChapterBand id="profile" num="01" name="Profile" minH="78vh">
+      <div class="grid profile">
+        <div class="profile-text">
+          <h1 id="profile-title" class="hero">Large headline<br />on two lines.</h1>
+          <p class="lead">Positioning statement, two to three sentences. Who this person is and where biology,
+            computation and engineering meet in their work. Roughly this long, no longer.</p>
+          <p class="actions">
+            <a class="btn primary" href="#work">View work</a>
+            <a class="btn" href="/cv.pdf">Download CV</a>
+            <a class="label" href="https://github.com/luciantrusca">GitHub ↗</a>
+          </p>
+        </div>
+        <figure class="profile-fig">
+          <div class="ph ratio-4-5"></div>
+          <figcaption><span class="label">Fig. 1</span>Convergence visual: biology, computation and engineering meeting.</figcaption>
+        </figure>
+      </div>
+    </ChapterBand>
+
+    <ChapterBand id="journey" num="02" name="Journey" dark minH="88vh">
+      <div class="grid journey-head">
+        <h2 id="journey-title" class="chapter-title">Chapter<br />title.</h2>
+        <p class="annotation">One annotation: why the path branches, in one or two lines.</p>
+      </div>
+      <figure class="journey-fig">
+        <svg viewBox="0 70 1600 480" role="img" aria-label="Placeholder career phylogeny">
+          <g fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke">
+            <path d="M40 330 H760" />
+            <path d="M360 330 C 440 330, 460 170, 580 170" stroke-dasharray="6 6" />
+            <path d="M760 330 C 860 330, 900 230, 1080 230" />
+            <path d="M1080 230 C 1200 230, 1240 120, 1420 120" />
+            <path d="M1080 230 C 1200 230, 1240 340, 1420 340" stroke-dasharray="6 6" />
+            <path d="M760 330 C 860 330, 900 470, 1080 470" stroke-dasharray="6 6" />
+          </g>
+          <g fill="currentColor" font-family="system-ui, sans-serif" font-size="20">
+            <circle cx="200" cy="330" r="7" /><text x="200" y="370" text-anchor="middle">BSc Industrial Biotech · UBB</text>
+            <circle cx="360" cy="330" r="7" /><text x="360" y="300" text-anchor="middle">MSc Molecular Biotech · UBB</text>
+            <circle cx="580" cy="170" r="7" /><text x="600" y="176">Bioinformatics (role)</text>
+            <circle cx="760" cy="330" r="7" /><text x="760" y="370" text-anchor="middle">BSc Computer Science · Twente</text>
+            <circle cx="1080" cy="230" r="7" /><text x="1080" y="200" text-anchor="middle">MSc Data Science · UvA (2025–)</text>
+            <circle cx="1080" cy="470" r="7" /><text x="1100" y="476">Role</text>
+            <circle cx="1420" cy="120" r="7" /><text x="1400" y="96" text-anchor="end">ML / robotics</text>
+            <circle cx="1420" cy="340" r="7" /><text x="1400" y="380" text-anchor="end">Direction</text>
+          </g>
+        </svg>
+        <figcaption><span class="label">Fig. 2</span>Career phylogeny. Solid: degrees. Dashed: roles and side branches.</figcaption>
+      </figure>
+      <div class="grid journey-notes">
+        <p class="annotation n1">Short annotation tied to one branch point.</p>
+        <p class="annotation n2">Short annotation tied to another branch point.</p>
+      </div>
+    </ChapterBand>
+
+    <ChapterBand id="work" num="03" name="Selected work" minH="135vh">
+      <div class="grid work-head">
+        <h2 id="work-title" class="chapter-title">Chapter title.</h2>
+        <p class="lead work-intro">One-line intro to the selected work.</p>
+      </div>
+      <div class="grid work">
+        {projects.map((p) => (
+          <article class:list={['project', p.size, `p${p.n}`]}>
+            <figure>
+              <div class:list={['ph', p.size === 'large' ? 'ratio-3-2' : 'ratio-4-3']}></div>
+              <figcaption><span class="label">Fig. 3.{+p.n}</span>Figure caption describing what the image shows.</figcaption>
+            </figure>
+            <p class="label kicker">{p.n} · {p.area}</p>
+            <h3>{p.title}</h3>
+            <p class="desc">Short description, two lines at most. What it is and why it matters.</p>
+            <dl class="meta">
+              <div><dt class="label">Role</dt><dd>Role</dd></div>
+              <div><dt class="label">Methods</dt><dd>Method, method</dd></div>
+              <div><dt class="label">Outcome</dt><dd>One-line outcome</dd></div>
+            </dl>
+            <p class="links"><a class="label" href="#">Code ↗</a> <a class="label" href="#">Read more ↗</a></p>
+          </article>
+        ))}
+      </div>
+    </ChapterBand>
+
+    <ChapterBand id="toolkit" num="04" name="Toolkit & Direction" dark minH="80vh">
+      <div class="grid toolkit">
+        <div class="capabilities">
+          <h2 id="toolkit-title" class="chapter-title">Chapter title.</h2>
+          <div class="cap-map">
+            {capabilities.map((c) => (
+              <div class="cap">
+                <h3 class="label">{c.group}</h3>
+                <ul>{c.items.map((i) => <li>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+        </div>
+        <aside class="direction" aria-label="Where I'm heading">
+          <p class="big-num" aria-hidden="true">→</p>
+          <p class="label">Where I'm heading</p>
+          <p class="direction-text">A strong statement about direction, set large, three lines at most.</p>
+          <p class="annotation">One supporting line.</p>
+        </aside>
+      </div>
+    </ChapterBand>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap grid">
+      <p class="tagline">Short tagline, one line.</p>
+      <ul class="contact">
+        <li><a class="label" href="mailto:">Email</a></li>
+        <li><a class="label" href="https://github.com/luciantrusca">GitHub</a></li>
+        <li><a class="label" href="#">LinkedIn</a></li>
+        <li><a class="label" href="/cv.pdf">CV</a></li>
+      </ul>
+      <p class="label open">Open to collaborations</p>
+    </div>
+  </footer>
+</body>
+</html>
+
+<style>
+  /* Header */
+  .site-header { position: sticky; top: 0; z-index: 10; height: var(--header-h); background: var(--paper); border-bottom: var(--rule) solid var(--ink); }
+  .bar { height: 100%; display: flex; align-items: center; gap: var(--space-4); }
+  .name { font-size: var(--step-1); text-decoration: none; margin-right: auto; }
+  nav { display: flex; gap: var(--space-3); }
+  nav a { text-decoration: none; }
+  .grid-toggle { opacity: 0.5; cursor: pointer; }
+
+  /* Shared */
+  .ratio-3-2 { aspect-ratio: 3 / 2; }
+  .ratio-4-3 { aspect-ratio: 4 / 3; }
+  .ratio-4-5 { aspect-ratio: 4 / 5; }
+  .chapter-title { font-size: var(--step-4); }
+  .lead { font-size: var(--step-1); max-width: 34em; }
+  .annotation { font-style: italic; font-size: var(--step-1); line-height: 1.4; opacity: 0.8; }
+
+  /* 01 Profile */
+  .profile { align-items: end; }
+  .profile-text { grid-column: 1 / 7; }
+  .hero { font-size: var(--step-4); margin-bottom: var(--space-4); }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); margin-top: var(--space-4); }
+  .profile-fig { grid-column: 8 / 13; }
+  .profile-fig .ph { max-height: 52vh; width: 100%; }
+
+  /* 02 Journey */
+  .journey-head { align-items: end; margin-bottom: var(--space-4); }
+  .journey-head h2 { grid-column: 1 / 6; }
+  .journey-head .annotation { grid-column: 8 / 13; }
+  .journey-fig svg { display: block; width: 100%; height: auto; border-top: var(--rule) solid; border-bottom: var(--rule) solid; }
+  .journey-notes { margin-top: var(--space-4); }
+  .n1 { grid-column: 2 / 6; }
+  .n2 { grid-column: 8 / 12; }
+
+  /* 03 Work: asymmetric, staggered */
+  .work-head { align-items: end; margin-bottom: var(--space-4); }
+  .work-head h2 { grid-column: 1 / 7; }
+  .work-intro { grid-column: 8 / 13; }
+  .work { row-gap: var(--space-5); align-items: start; }
+  .p01 { grid-column: 1 / 8; }
+  .p02 { grid-column: 9 / 13; margin-top: 12%; }
+  .p03 { grid-column: 1 / 6; }
+  .p04 { grid-column: 7 / 13; margin-top: -6%; }
+  .project figure { margin-bottom: var(--space-3); }
+  .kicker { opacity: 0.7; margin-bottom: var(--space-1); }
+  .project h3 { font-size: var(--step-2); margin-bottom: var(--space-2); }
+  .large h3 { font-size: var(--step-3); }
+  .desc { max-width: 32em; }
+  .meta { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: var(--space-3); margin: var(--space-3) 0; padding-top: var(--space-2); border-top: var(--rule) solid; font-size: 1rem; }
+  .meta dt { opacity: 0.7; }
+  .links { display: flex; gap: var(--space-3); }
+
+  /* 04 Toolkit: 2/3 + 1/3 */
+  .toolkit { align-items: stretch; }
+  .capabilities { grid-column: 1 / 9; }
+  .capabilities h2 { margin-bottom: var(--space-5); }
+  .cap-map { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4) var(--gutter); }
+  .cap { border-top: var(--rule) solid; padding-top: var(--space-2); }
+  .cap ul { list-style: none; padding: 0; margin: var(--space-2) 0 0; font-size: var(--step-1); line-height: 1.6; }
+  .direction { grid-column: 10 / 13; border-left: var(--rule) solid; padding-left: var(--space-4); display: flex; flex-direction: column; justify-content: end; gap: var(--space-3); }
+  .big-num { font-size: var(--step-5); line-height: 0.8; }
+  .direction-text { font-size: var(--step-2); line-height: 1.25; }
+
+  /* Footer */
+  .site-footer { min-height: 30vh; padding: var(--space-5) 0; display: flex; align-items: center; }
+  .site-footer .wrap { width: 100%; align-items: end; row-gap: var(--space-3); }
+  .tagline { grid-column: 1 / 7; font-size: var(--step-3); line-height: 1.05; }
+  .contact { grid-column: 8 / 11; list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  .open { grid-column: 11 / 13; text-align: right; opacity: 0.7; }
+
+  @media (max-width: 859px) {
+    nav { display: none; } /* ponytail: no mobile menu yet; add in prototype step */
+    .p02, .p04 { margin-top: 0; }
+    .direction { border-left: 0; padding-left: 0; border-top: var(--rule) solid; padding-top: var(--space-4); margin-top: var(--space-5); }
+    .cap-map { grid-template-columns: 1fr; }
+    .open { text-align: left; }
+  }
+</style>
