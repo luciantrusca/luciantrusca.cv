@@ -63,10 +63,10 @@ a:hover { text-decoration-color: var(--accent); }
 .btn {
   display: inline-flex; align-items: center; gap: 1rem; padding: 0.95em 1.7em;
   font: 400 1.02rem / 1 var(--serif); text-decoration: none;
-  border: 1.5px solid var(--red);
+  border: 1.5px solid var(--btn, var(--navy));
   /* filled when lit: the buttons sit in a .spot, so the fill follows the hover */
-  background: color-mix(in srgb, var(--red) calc(var(--lit, 0) * 100%), transparent);
-  color: color-mix(in srgb, var(--paper) calc(var(--lit, 0) * 100%), var(--red));
+  background: color-mix(in srgb, var(--btn, var(--navy)) calc(var(--lit, 0) * 100%), transparent);
+  color: color-mix(in srgb, var(--btn-ink, var(--paper)) calc(var(--lit, 0) * 100%), var(--btn, var(--navy)));
   transition: background 0.25s, color 0.25s;
 }
 .btn .icon { width: 18px; height: 18px; transition: transform 0.2s; }
