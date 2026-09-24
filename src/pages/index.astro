@@ -6,7 +6,6 @@ import Icon from '../components/Icon.astro';
 import { person, profile, journey, work, skills, footer } from '../data/site';
 
 const base = import.meta.env.BASE_URL;
-const cv = `${base}cv.pdf`;
 const nav = [['profile', 'Profile'], ['journey', 'Journey'], ['work', 'Work'], ['skills', 'Skills']];
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
@@ -45,16 +44,14 @@ const pad = (n: number) => String(n).padStart(2, '0');
           <p class="lead">{profile.statement}</p>
           <ul class="pills">{profile.pills.map((t) => <li class="pill">{t}</li>)}</ul>
           <p class="actions spot">
-            <a class="btn best" href={cv} download>View My CV <Icon name="arrow" /></a>
+            <a class="btn best" href={work.moreProjects}>View more projects <Icon name="arrow" /></a>
             <a class="btn" href={person.github}><Icon name="github" /> GitHub</a>
-            <a class="btn" href={`mailto:${person.email}`}><Icon name="mail" /> Contact Me</a>
+            <a class="btn contact" href={`mailto:${person.email}`}><Icon name="mail" /><span>Contact Me<small>{person.email}</small></span></a>
           </p>
         </div>
 
         <div class="vrule visual">
-          <span class="block b1" aria-hidden="true"></span>
-          <span class="block b2" aria-hidden="true"></span>
-          <img class="art" src={`${base}img/convergence.jpg`} alt="Etched illustration: a DNA helix and a young plant in front of mountains, a lake and a hiker." width="832" height="680" />
+          <img class="art" src={`${base}img/leaf.png`} alt="Botanical illustration of a leafy green stem over pale beige squares." width="548" height="396" />
         </div>
 
         <aside class="glance" aria-labelledby="glance-title">
@@ -69,7 +66,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     </ChapterBand>
 
     <!-- 02 JOURNEY -->
-    <ChapterBand id="journey" num={2} name="Journey" keywords={journey.keywords} tone="sky" minH="79vh">
+    <ChapterBand id="journey" num={2} name="Journey" keywords={journey.keywords} tone="sky" minH="0">
       <div class="journey-head">
         <h2 id="journey-title" class="chapter-title">{journey.title}</h2>
         <p class="journey-sub">{journey.subtitle}</p>
@@ -92,8 +89,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
     <ChapterBand id="work" num={3} name="Work" keywords={work.keywords} tone="cream" minH="91vh">
       <div class="work-head">
         <h2 id="work-title" class="chapter-title">Selected Work.</h2>
-        <p class="work-intro">{work.intro}</p>
-        <a class="all" href={work.allProjects}>View all projects <Icon name="arrow" size={20} /></a>
+        <p class="work-intro">{work.projects.length} featured projects · {work.extra.length} more below</p>
+        <a class="all" href={work.moreProjects}>View more projects <Icon name="arrow" size={20} /></a>
       </div>
 
       <div class="cards spot">
@@ -104,19 +101,26 @@ const pad = (n: number) => String(n).padStart(2, '0');
             <ProjectFigure kind={p.figure} label={`${p.title}: schematic figure`} />
             <h3>{p.title}</h3>
             <p class="role">{p.role}</p>
-            <p class="card-text">{p.text}</p>
             <ul class="bullets">{p.bullets.map((b) => <li>{b}</li>)}</ul>
             <p class="tags">{p.tags.map((t, j) => <span class="tag">{t}{j < p.tags.length - 1 && <span class="sep"><span aria-hidden="true">•</span><span class="vh">, </span></span>}</span>)}</p>
           </article>
         ))}
       </div>
 
-      <div class="also">
-        <p class="label also-title">Also built</p>
-        <ul>
-          {work.also.map((a) => <li><strong>{a.title}</strong><span>{a.text}</span></li>)}
-        </ul>
-      </div>
+      <details class="see-more">
+        <summary><span class="see-label">See more projects</span><span class="see-count">+{work.extra.length}</span></summary>
+        <div class="cards extra spot">
+          {work.extra.map((p, i) => (
+            <article class="card">
+              <p class="card-top"><span class="num">{pad(work.projects.length + i + 1)}</span><span class="label">{p.area}</span></p>
+              <h3>{p.title}</h3>
+              <p class="role">{p.role}</p>
+              <ul class="bullets">{p.bullets.map((b) => <li>{b}</li>)}</ul>
+              <p class="tags">{p.tags.map((t, j) => <span class="tag">{t}{j < p.tags.length - 1 && <span class="sep"><span aria-hidden="true">•</span><span class="vh">, </span></span>}</span>)}</p>
+            </article>
+          ))}
+        </div>
+      </details>
     </ChapterBand>
 
     <!-- 04 SKILLS & WHAT'S NEXT -->
@@ -125,17 +129,20 @@ const pad = (n: number) => String(n).padStart(2, '0');
         <div class="skills-title">
           <h2 id="skills-title" class="chapter-title">{skills.title}</h2>
           <p class="skills-sub">{skills.subtitle}</p>
+          <ul class="label legend">{['Familiar', 'Proficient', 'Advanced'].map((t, i) => <li><span class={`lvl l${i + 1}`}><i></i><i></i><i></i></span>{t}</li>)}</ul>
         </div>
         {skills.groups.map((g) => (
           <div class="vrule group">
             <h3 class="label">{g.title}</h3>
-            <ul class="pills spot">{g.pills.map((p) => <li class:list={['pill', { best: p.best }]}>{p.name}</li>)}</ul>
+            <ul class="pills spot">{g.pills.map((p) => (
+              <li class:list={['pill', { best: p.best }]}>{p.name}<span class={`lvl l${p.level}`} role="img" aria-label={`${['', 'familiar', 'proficient', 'advanced'][p.level]}`}><i></i><i></i><i></i></span></li>
+            ))}</ul>
           </div>
         ))}
         <div class="direction">
           <p class="label"><Icon name="target" size={26} />Current direction</p>
           <p class="direction-text">{skills.direction}</p>
-          <p class="spot"><a class="btn talk" href={`mailto:${person.email}`}>Let’s Talk <Icon name="arrow" /></a></p>
+          <p class="spot"><a class="btn talk contact" href={`mailto:${person.email}`}><span>Let’s Talk<small>{person.email}</small></span><Icon name="arrow" /></a></p>
         </div>
       </div>
     </ChapterBand>
@@ -156,6 +163,14 @@ const pad = (n: number) => String(n).padStart(2, '0');
       <p class="vrule label open">{footer.open[0]}<br />{footer.open[1]}</p>
     </div>
   </footer>
+  <script>
+    // Nav underline follows the section in view.
+    const links = new Map([...document.querySelectorAll('nav a')].map((a) => [a.hash.slice(1), a]));
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) if (e.isIntersecting) links.forEach((a, id) => a.toggleAttribute('aria-current', id === e.target.id));
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    document.querySelectorAll('main > section, footer').forEach((el) => io.observe(el));
+  </script>
 </body>
 </html>
 
@@ -170,7 +185,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   nav { display: flex; gap: clamp(1.25rem, 2.6vw, 2.75rem); margin-right: clamp(1rem, 4vw, 4.5rem); }
   nav a { text-decoration: none; font-size: 1.02rem; padding: 0.3rem 0; border-bottom: 1px solid transparent; }
   nav a { border-bottom-width: 2px; transition: border-color 0.2s; }
-  nav a:hover { border-bottom-color: var(--red); }
+  nav a:hover, nav a[aria-current] { border-bottom-color: var(--red); }
   nav .n { color: var(--red); }
   nav .n { margin-right: 0.55em; font-variant-numeric: lining-nums; }
   .motto { text-align: right; font-size: 0.62rem; line-height: 1.9; color: var(--muted); }
@@ -178,25 +193,27 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .short-rule { display: block; width: 52px; border-top: 2px solid var(--c, currentColor); }
 
   /* ── 01 Profile: text | art | at a glance ─────────────── */
-  .profile { display: grid; grid-template-columns: 54fr 22fr 24fr; column-gap: clamp(1.25rem, 2.5vw, 2.5rem); align-items: center; }
+  .profile { display: grid; grid-template-columns: 46fr 30fr 24fr; column-gap: clamp(1.25rem, 2.5vw, 2.5rem); align-items: center; }
   .intro { display: flex; flex-direction: column; justify-content: center; }
   .stop { color: var(--red); }
-  .hero { font-size: clamp(2.4rem, 1.2rem + 2.4vw, 3.6rem); font-weight: 700; line-height: 0.98; letter-spacing: -0.04em; margin: 0 0 1.4rem -0.04em; }
+  .hero { font-size: clamp(2.3rem, 1.2rem + 2.1vw, 3.3rem); font-weight: 700; line-height: 0.98; letter-spacing: -0.04em; margin: 0 0 1.4rem -0.04em; }
   .lead { font-size: clamp(1.05rem, 0.95rem + 0.35vw, 1.25rem); line-height: 1.5; max-width: 32em; }
   .pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
   .intro .pills { margin-top: 1.25rem; }
-  .pill { padding: 0.3em 0.95em; border-radius: 999px; font-size: 0.9rem; line-height: 1.4;
+  .pill { white-space: nowrap; padding: 0.3em 0.95em; border-radius: 999px; font-size: 0.9rem; line-height: 1.4;
     background: color-mix(in srgb, var(--c, var(--blue)) calc(14% + var(--lit, 0) * 86%), transparent);
     color: color-mix(in srgb, var(--pill-on, var(--paper)) calc(var(--lit, 0) * 100%), currentColor);
     transition: background 0.25s, color 0.25s; }
   .intro .pill { --c: var(--blue); }
   .actions { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 1.6rem; }
   .actions .btn { padding: 0.85em 1.4em; gap: 0.7rem; }
+  /* contact buttons carry the address as a second line */
+  .contact span { line-height: 1.15; }
+  .contact small { display: block; margin-top: 0.3em; font: 400 0.7rem / 1 var(--sans); letter-spacing: 0.02em; opacity: 0.75; }
+  .actions .contact { padding-block: 0.6em; }
   .visual { position: relative; align-self: stretch; min-height: clamp(280px, 38vh, 420px); }
-  .block { position: absolute; background: #e6dcc8; }  /* beige offset squares, as in the mockup */
-  .b1 { top: 8%; right: 0; width: 62%; height: 62%; }
-  .b2 { bottom: 6%; left: 8%; width: 48%; height: 42%; background: #ddd1b9; }
-  .art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; mix-blend-mode: multiply; filter: brightness(1.05) contrast(1.06); -webkit-mask-image: radial-gradient(ellipse 70% 75% at 55% 50%, #000 55%, transparent 100%); mask-image: radial-gradient(ellipse 70% 75% at 55% 50%, #000 55%, transparent 100%); }
+  .art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply;
+    -webkit-mask-image: radial-gradient(closest-side, #000 80%, transparent); mask-image: radial-gradient(closest-side, #000 80%, transparent); }  /* soft edge so its off-white ground melts into the cream */
   .glance { background: color-mix(in srgb, var(--sky) 70%, white); padding: 1.4rem 1.4rem 1.2rem; }
   .glance-title { font-size: 0.62rem; font-weight: 600; margin-bottom: 1rem; }
   .glance li { display: flex; gap: 0.9rem; align-items: flex-start; padding: 0.6rem 0; font-size: 0.85rem; line-height: 1.35; }
@@ -224,7 +241,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .desc { font-size: 0.95rem; line-height: 1.55; opacity: 0.8; }
   .ring { position: absolute; top: -15px; right: 0; width: 30px; height: 30px; border: 2px solid var(--navy); border-radius: 50%; background: var(--sky); }
 
-  /* ── 03 Work: head row, five cards with bullets, also-built strip ── */
+  /* ── 03 Work: head row, five cards with bullets, see-more cards ── */
   .work-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.75rem clamp(1.25rem, 2.5vw, 2.5rem); margin-bottom: clamp(1.75rem, 3.5vh, 2.5rem); }
   .work-intro { font-size: 1.08rem; line-height: 1.5; }
   .all { margin-left: auto; display: inline-flex; align-items: center; gap: 0.6rem; text-decoration: none; padding-bottom: 0.2rem; border-bottom: 1.5px solid var(--navy); }
@@ -242,8 +259,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .card-top .label { font-size: 0.6rem; color: var(--muted); }
   .card :global(.fig) { margin-bottom: 1.1rem; }
   .card h3 { font-size: 1.12rem; font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; }
-  .role { font-size: 0.82rem; font-style: italic; opacity: 0.7; margin: 0.25rem 0 0.6rem; }
-  .card-text { font-size: 0.92rem; line-height: 1.5; opacity: 0.88; margin-bottom: 0.6rem; }
+  .role { font-size: 0.82rem; font-style: italic; opacity: 0.7; margin: 0.25rem 0 0.75rem; }
   .bullets { list-style: disc; padding-left: 1.1em; font-size: 0.86rem; line-height: 1.45; margin-bottom: 1.1rem; }
   .bullets li + li { margin-top: 0.25rem; }
   .bullets li::marker { color: var(--c); }
@@ -251,17 +267,19 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .tag { white-space: nowrap; }
   .sep { margin: 0 0.5em; color: var(--accent); }
 
-  .also { margin-top: clamp(1.75rem, 3.5vh, 2.5rem); }
-  .also-title { display: flex; align-items: center; gap: 1.1rem; font-size: 0.64rem; color: var(--muted); margin-bottom: 1.25rem; }
-  .also-title::after { content: ''; flex: 1; border-top: 1px solid var(--hair); }
-  .also ul { display: grid; grid-template-columns: repeat(4, 1fr); }
-  .also li { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.1rem 1.25rem; border-left: 1px solid var(--hair); font-size: 0.92rem; line-height: 1.45; }
-  .also li:first-child { border-left: 0; padding-left: 0; }
-  .also strong { font-weight: 600; font-size: 1rem; }
-  .also span { opacity: 0.78; }
+  /* "See more projects": native <details>, no JS */
+  .see-more { margin-top: clamp(1.5rem, 3vh, 2.25rem); }
+  .see-more summary { display: flex; align-items: center; gap: 1rem; cursor: pointer; list-style: none; font: 500 0.7rem / 1 var(--sans); letter-spacing: 0.26em; text-transform: uppercase; }
+  .see-more summary::-webkit-details-marker { display: none; }
+  .see-more summary::after { content: ''; flex: 1; border-top: 1px solid var(--hair); }
+  .see-label { border-bottom: 1.5px solid var(--navy); padding-bottom: 0.3rem; }
+  .see-more[open] .see-label::after { content: ' (hide)'; letter-spacing: 0.1em; opacity: 0.6; }
+  .see-count { padding: 0.35em 0.6em; background: var(--red); color: var(--paper); letter-spacing: 0.1em; }
+  .see-more[open] .see-count { display: none; }
+  .cards.extra { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 1.5rem; }
 
   /* ── 04 Skills: title | two pill groups | direction card ── */
-  .skills { --pill-on: var(--navy); display: grid; grid-template-columns: 1.15fr 1.25fr 1fr 1.05fr; column-gap: clamp(1.25rem, 2.5vw, 2.5rem); align-items: center; }
+  .skills { --pill-on: var(--navy); display: grid; grid-template-columns: 0.95fr 1.45fr 1.15fr 1fr; column-gap: clamp(1.25rem, 2.5vw, 2.5rem); align-items: center; }
   .skills-title .chapter-title { font-size: clamp(2.2rem, 1rem + 2vw, 3rem); }
   .skills-sub { margin-top: 0.9rem; font-size: 1.05rem; opacity: 0.9; }
   .group { align-self: stretch; }
@@ -269,8 +287,14 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .group .pill { --c: var(--blue); font-size: 0.86rem; }
   .direction { background: var(--navy-2); padding: 1.4rem; }
   .direction .label { display: flex; align-items: center; gap: 0.8rem; font-size: 0.64rem; font-weight: 600; }
+  /* skill level: three dots, filled up to the level; currentColor so lit pills invert them */
+  .lvl { display: inline-flex; gap: 3px; margin-left: 0.55em; vertical-align: 0.05em; }
+  .lvl i { width: 6px; height: 6px; border-radius: 50%; border: 1px solid currentColor; opacity: 0.85; }
+  .l1 i:nth-child(1), .l2 i:nth-child(-n + 2), .l3 i { background: currentColor; }
+  .legend { margin-top: 1.1rem; display: grid; gap: 0.35rem; font-size: 0.58rem; opacity: 0.8; }
+  .legend .lvl { margin: 0 0.8em 0 0; }
   .direction-text { font-size: 0.95rem; line-height: 1.5; margin: 0.9rem 0 1.2rem; opacity: 0.92; }
-  .talk { --btn: var(--paper-ink); --btn-ink: var(--navy); padding: 0.7em 1.4em; }
+  .talk { --btn: var(--paper-ink); --btn-ink: var(--navy); padding: 0.6em 1.3em; }
 
   /* ── Footer ─────────────────────────────── */
   .site-footer { display: flex; align-items: center; padding: 1.5rem 0; }
@@ -300,18 +324,15 @@ const pad = (n: number) => String(n).padStart(2, '0');
     .skills { grid-template-columns: 1fr 1fr; row-gap: 2rem; }
     .card { padding: 0.9rem; }
     .card-top { gap: 0.6rem; }
-    .also ul { grid-template-columns: repeat(2, 1fr); row-gap: 1.25rem; }
-    .also li:nth-child(3) { border-left: 0; padding-left: 0; }
+    .cards.extra { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   @media (max-width: 899px) {
     nav { display: none; } /* ponytail: no mobile menu; the page is one scroll */
     .profile, .skills, .foot { grid-template-columns: 1fr; row-gap: 1.75rem; }
     .visual { min-height: 260px; }
     .all { margin-left: 0; }
-    .cards { grid-template-columns: 1fr; row-gap: 1.5rem; }
+    .cards, .cards.extra { grid-template-columns: 1fr; row-gap: 1.5rem; }
     .group { border-left: 0; padding-left: 0; }
-    .also ul { grid-template-columns: 1fr; row-gap: 1rem; }
-    .also li { border-left: 0; padding-left: 0; }
     .foot > .vrule { justify-content: flex-start; min-height: 0; }
     .open { text-align: left; }
   }

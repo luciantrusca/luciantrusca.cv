@@ -5,7 +5,7 @@ export const person = {
   email: 'lucianmtrusca@gmail.com',
   github: 'https://github.com/luciantrusca',
   linkedin: 'https://www.linkedin.com/in/lucian-trusca/',
-  tagline: ['Data scientist', 'Engineer', 'Problem solver'],
+  tagline: ['Data scientist', 'Life sciences'],
   motto: ['From cells', 'to code.'],
 };
 
@@ -27,7 +27,7 @@ export const profile = {
 export const journey = {
   keywords: ['Curiosity', 'Discipline', 'The pivot', 'Convergence'],
   title: 'Education & Career Journey.',
-  subtitle: 'A path from the wet lab to data science, each step adding a new way of looking at the same questions.',
+  subtitle: 'From the wet lab to data science.',
   steps: [
     { dates: '2015 – 2019', title: 'BSc Industrial Biotechnology', place: 'Babeș-Bolyai University', text: 'Thesis on recovering ancient DNA from archaeological wood.' },
     { dates: '2019 – 2021', title: 'MSc Molecular Biotechnology', place: 'Babeș-Bolyai University', text: 'Bioinformatics thesis on Movile Cave sediment microbiomes.' },
@@ -42,50 +42,53 @@ export type Badge = 'featured' | 'new';
 
 export const work = {
   keywords: ['Theses', 'Course projects', 'Hackathons', 'Prototypes'],
-  intro: 'Projects from across the path, each turning data into a decision.',
-  allProjects: 'https://github.com/luciantrusca?tab=repositories',
+  moreProjects: 'https://github.com/luciantrusca?tab=repositories',
   projects: [
     {
       badge: 'featured' as Badge, area: 'Computer vision', figure: 'birds' as Figure, title: 'Meadow Bird Detection',
-      text: 'Vision transformers that spot meadow birds in camera-trap images.',
       bullets: ['Benchmarked ViT models on camera-trap data', 'Tested robustness day and night', 'Explained predictions with XAI'],
       tags: ['ViT', 'Detection', 'XAI'],
       role: 'BSc thesis, University of Twente',
     },
     {
       badge: 'new' as Badge, area: 'Time series', figure: 'forecast' as Figure, title: 'Sales Forecasting',
-      text: 'An end-to-end pipeline for daily Walmart sales.',
       bullets: ['Forecasts 28 days of demand', 'Found weekly seasonality and shifting volatility', 'Compared seasonal naive, ETS, SARIMAX'],
       tags: ['Python', 'SARIMAX', 'ETS'],
       role: 'Course project, Applied Forecasting',
     },
     {
       area: 'Data viz', figure: 'dashboard' as Figure, title: 'Security Dashboard',
-      text: 'An interactive dashboard for the DeepCase security tool.',
       bullets: ['Turned a CLI tool into a Dash app', 'Prototyped the interface in Figma', 'Metrics defined with stakeholders weekly'],
       tags: ['Dash', 'Figma', 'SQL'],
       role: 'Team project',
     },
     {
       area: 'Embedded ML', figure: 'signs' as Figure, title: 'Edge Traffic Signs',
-      text: 'A real-time image classifier running on an Arduino.',
       bullets: ['Over 99% accurate on 6 classes', '75% on the full 42-class set', 'Field-tested across distance, angle, light'],
       tags: ['Arduino', 'Edge Impulse'],
       role: 'Course project, Intelligent Embedded Systems',
     },
     {
       area: 'Bioinformatics', figure: 'cave' as Figure, title: 'Life in Movile Cave',
-      text: 'Microbial diversity in an isolated Romanian cave.',
-      bullets: ['Metagenomic and transcriptomic data', 'Abundance and cluster analysis', 'Patterns in community structure'],
+      bullets: ['Characterised taxonomic diversity of cave sediment microbiomes', 'Metagenomic and transcriptomic profiling', 'Abundance and cluster analysis across samples'],
       tags: ['Metagenomics', 'Clustering'],
       role: 'MSc thesis, Babeș-Bolyai University',
     },
   ],
-  also: [
-    { title: 'Cottage listings', text: 'NLP cleanup with spaCy, ML imputation' },
-    { title: 'Training platform', text: 'Role-based web app with progress dashboards' },
-    { title: 'Chessmate', text: 'Real-time move assistant with OpenCV' },
-    { title: 'Cassini Hackathon', text: 'Flood prediction from time series, 6th place' },
+  // revealed by "See more projects"
+  extra: [
+    { area: 'NLP', title: 'Cottage Listings Cleanup', role: 'Data science & AI project',
+      bullets: ['Cleaned a real-world JSON dataset of listings', 'Standardised descriptions with spaCy', 'Filled missing values with ML models'],
+      tags: ['Python', 'spaCy', 'NLP'] },
+    { area: 'Web app', title: 'Training Management System', role: 'Course project, Data & Information',
+      bullets: ['Role-based app for admins, trainers, trainees', 'Courses, groups and progress tracking', 'Trainee dashboards with schedules'],
+      tags: ['JavaScript', 'SQL', 'REST'] },
+    { area: 'HCI', title: 'Chessmate Helper', role: 'Course project, Human Computer Interaction',
+      bullets: ['AI chess assistant with real-time object detection', 'User research with players of all levels', 'Personas and feedback flows'],
+      tags: ['Python', 'OpenCV', 'Figma'] },
+    { area: 'Hackathon', title: 'Flood Prediction', role: 'Cassini Hackathon, 6th place',
+      bullets: ['Humanitarian-focused team hackathon', 'ML flood prediction from time series', 'Presented the solution to a jury'],
+      tags: ['Python', 'ML', 'Geospatial'] },
   ],
 };
 
@@ -95,21 +98,23 @@ export const skills = {
   subtitle: 'Technical depth, a life-science background, and a drive for useful problems.',
   // `best` pills are lit by default; hovering another pill moves the light
   groups: [
+    // level: 1 familiar, 2 proficient, 3 advanced
     { title: 'Technical skills', pills: [
-      { name: 'Python', best: true }, { name: 'R' }, { name: 'SQL' }, { name: 'Machine learning', best: true },
-      { name: 'Computer vision' }, { name: 'NLP & XAI' }, { name: 'Time series' }, { name: 'Dash' },
-      { name: 'Docker & Git' }, { name: 'React, TypeScript' },
+      { name: 'Python', level: 3, best: true }, { name: 'Machine learning', level: 3, best: true },
+      { name: 'R', level: 2 }, { name: 'SQL', level: 2 }, { name: 'Computer vision', level: 2 },
+      { name: 'NLP & XAI', level: 2 }, { name: 'Time series', level: 2 }, { name: 'Dash', level: 2 },
+      { name: 'Docker & Git', level: 2 }, { name: 'React, TypeScript', level: 1 },
     ] },
     { title: 'Domain experience', pills: [
-      { name: 'Life sciences', best: true }, { name: 'Biotechnology' }, { name: 'Metagenomics' }, { name: 'Pharma QC' },
-      { name: 'Wildlife monitoring' }, { name: 'Security tooling' },
+      { name: 'Life sciences', level: 3, best: true }, { name: 'Biotechnology', level: 3 }, { name: 'Metagenomics', level: 2 },
+      { name: 'Pharma QC', level: 1 }, { name: 'Wildlife monitoring', level: 1 }, { name: 'Security tooling', level: 1 },
     ] },
   ],
   direction: 'Looking for data science roles in life-science AI, network biology and AI-assisted tools.',
 };
 
 export const footer = {
-  role: 'Data scientist × Engineer × Problem solver',
+  role: 'MSc Data Science · University of Amsterdam',
   quote: 'Same questions, better tools.',
   open: ['Open to collaborations', 'and new ideas.'],
 };
