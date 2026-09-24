@@ -46,7 +46,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
           <p class="actions spot">
             <a class="btn best" href={work.moreProjects}>View more projects <Icon name="arrow" /></a>
             <a class="btn" href={person.github}><Icon name="github" /> GitHub</a>
-            <a class="btn contact" href={`mailto:${person.email}`}><Icon name="mail" /><span>Contact Me<small>{person.email}</small></span></a>
+            <a class="btn" href={`mailto:${person.email}`}><Icon name="mail" /> Contact Me</a>
           </p>
         </div>
 
@@ -199,34 +199,36 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .short-rule { display: block; width: 52px; border-top: 2px solid var(--c, currentColor); }
 
   /* ── 01 Profile: text | art | at a glance ─────────────── */
-  .profile { display: grid; grid-template-columns: 58fr 20fr 22fr; column-gap: clamp(1.25rem, 2.5vw, 2.5rem); align-items: center; }
-  .intro { display: flex; flex-direction: column; justify-content: center; }
+  .profile { display: grid; grid-template-columns: 47fr 29fr 24fr; column-gap: clamp(1.25rem, 2.5vw, 2.5rem); align-items: start; }
+  .intro { display: flex; flex-direction: column; }
   .stop { color: var(--red); }
   .hero { font-size: clamp(2.3rem, 1.2rem + 2.1vw, 3.3rem); font-weight: 700; line-height: 0.98; letter-spacing: -0.04em; margin: 0 0 1.4rem -0.04em; }
   .lead { font-size: clamp(1.05rem, 0.95rem + 0.35vw, 1.25rem); line-height: 1.5; max-width: 32em; }
   .pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
   .intro .pills { margin-top: 1.25rem; }
-  .pill { white-space: nowrap; padding: 0.3em 0.95em; border-radius: 999px; font-size: 0.9rem; line-height: 1.4;
+  .pill { white-space: nowrap; padding: 0.28em 0.85em; border-radius: 999px; font-size: 0.9rem; line-height: 1.4;
     background: color-mix(in srgb, var(--c, var(--blue)) calc(14% + var(--lit, 0) * 86%), transparent);
     color: color-mix(in srgb, var(--pill-on, var(--paper)) calc(var(--lit, 0) * 100%), currentColor);
     transition: background 0.25s, color 0.25s; }
-  .intro .pill { --c: var(--blue); }
+  .intro .pill { --c: var(--blue); font-size: 0.8rem; padding: 0.25em 0.75em; }
+  .intro .pills { gap: 0.4rem; }
   .actions { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 1.6rem; }
-  .actions { gap: 0.7rem; }
-  .actions .btn { padding: 0.85em 1.15em; gap: 0.6rem; }
-  /* contact buttons carry the address as a second line */
-  .contact span { line-height: 1.15; }
-  .contact small { display: block; margin-top: 0.3em; font: 400 0.7rem / 1 var(--sans); letter-spacing: 0.02em; opacity: 0.75; }
-  .actions .contact { padding-block: 0.6em; }
-  .visual { position: relative; align-self: stretch; min-height: clamp(280px, 38vh, 420px); }
-  .art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply;
-    -webkit-mask-image: radial-gradient(closest-side, #000 80%, transparent); mask-image: radial-gradient(closest-side, #000 80%, transparent); }  /* soft edge so its off-white ground melts into the cream */
-  .glance { background: color-mix(in srgb, var(--sky) 70%, white); padding: 1.4rem 1.4rem 1.2rem; }
+  .actions { gap: 0.6rem; }
+  .actions .btn { padding: 0.8em 1em; gap: 0.55rem; font-size: 0.95rem; }
+  .visual { position: relative; align-self: stretch; }
+  /* near-square crop keeps the whole leaf large; feathered edges melt its off-white ground into the cream */
+  .art { display: block; width: 100%; height: auto; aspect-ratio: 0.9; object-fit: cover; object-position: 50% 45%; mix-blend-mode: multiply;
+    --fade-x: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    --fade-y: linear-gradient(to bottom, transparent, #000 8%, #000 92%, transparent);
+    -webkit-mask-image: var(--fade-x), var(--fade-y); -webkit-mask-composite: source-in;
+    mask-image: var(--fade-x), var(--fade-y); mask-composite: intersect; }
+  .glance { align-self: stretch; display: flex; flex-direction: column; background: color-mix(in srgb, var(--sky) 70%, white); padding: 1.3rem 1.2rem 1.1rem; }
   .glance-title { font-size: 0.62rem; font-weight: 600; margin-bottom: 1rem; }
-  .glance li { display: flex; gap: 0.9rem; align-items: flex-start; padding: 0.6rem 0; font-size: 0.85rem; line-height: 1.35; }
+  .glance ul { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+  .glance li { display: flex; gap: 0.8rem; align-items: flex-start; padding: 0.6rem 0; font-size: 0.85rem; line-height: 1.35; }
   .glance li + li { border-top: 1px solid var(--hair); }
   .glance li :global(.icon) { flex: none; color: var(--navy); margin-top: 0.1rem; }
-  .glance strong { display: block; font-weight: 600; font-size: 0.95rem; }
+  .glance strong { display: block; font-weight: 600; font-size: 0.92rem; }
 
   /* ── 02 Journey: title + subtitle, horizontal timeline ─────────── */
   .journey-head { margin-bottom: clamp(2rem, 5vh, 3.5rem); }
