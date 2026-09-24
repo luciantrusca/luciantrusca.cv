@@ -13,8 +13,8 @@ export const profile = {
   keywords: ['Questions', 'Data', 'Models', 'Decisions'],
   headline: ['Data Science', 'for Real-World Impact.'],
   statement:
-    'I’m a data scientist with a background in biotechnology. I turn messy data into models, pipelines and dashboards ' +
-    'that people can actually use, from camera-trap images to multiomics networks.',
+    'I started in the lab as a biotechnologist and retrained in computer science. Now I build machine learning models, ' +
+    'data pipelines and web tools for the life sciences, from camera-trap images to multiomics networks.',
   pills: ['Machine Learning', 'Data Analysis', 'Explainable AI', 'Bioinformatics'],
   glance: [
     { icon: 'pin', title: 'Based in the Netherlands', text: 'Studying in Amsterdam' },
@@ -77,16 +77,16 @@ export const work = {
   ],
   // revealed by "See more projects"
   extra: [
-    { area: 'NLP', title: 'Cottage Listings Cleanup', role: 'Data science & AI project',
+    { area: 'NLP', title: 'Cottage Listings Cleanup', text: 'NLP cleanup with spaCy, ML imputation', role: 'Data science & AI project',
       bullets: ['Cleaned a real-world JSON dataset of listings', 'Standardised descriptions with spaCy', 'Filled missing values with ML models'],
       tags: ['Python', 'spaCy', 'NLP'] },
-    { area: 'Web app', title: 'Training Management System', role: 'Course project, Data & Information',
+    { area: 'Web app', title: 'Training Management System', text: 'Role-based web app with progress dashboards', role: 'Course project, Data & Information',
       bullets: ['Role-based app for admins, trainers, trainees', 'Courses, groups and progress tracking', 'Trainee dashboards with schedules'],
       tags: ['JavaScript', 'SQL', 'REST'] },
-    { area: 'HCI', title: 'Chessmate Helper', role: 'Course project, Human Computer Interaction',
+    { area: 'HCI', title: 'Chessmate Helper', text: 'Real-time move assistant with OpenCV', role: 'Course project, Human Computer Interaction',
       bullets: ['AI chess assistant with real-time object detection', 'User research with players of all levels', 'Personas and feedback flows'],
       tags: ['Python', 'OpenCV', 'Figma'] },
-    { area: 'Hackathon', title: 'Flood Prediction', role: 'Cassini Hackathon, 6th place',
+    { area: 'Hackathon', title: 'Flood Prediction', text: 'Flood prediction from time series, 6th place', role: 'Cassini Hackathon, 6th place',
       bullets: ['Humanitarian-focused team hackathon', 'ML flood prediction from time series', 'Presented the solution to a jury'],
       tags: ['Python', 'ML', 'Geospatial'] },
   ],
@@ -94,7 +94,7 @@ export const work = {
 
 export const skills = {
   keywords: ['Code', 'Domains', 'Next'],
-  title: 'Skills & What’s Next.',
+  title: 'Skills.',
   subtitle: 'Technical depth, a life-science background, and a drive for useful problems.',
   // `best` pills are lit by default; hovering another pill moves the light
   groups: [
@@ -115,6 +115,6 @@ export const skills = {
 
 export const footer = {
   role: 'MSc Data Science · University of Amsterdam',
-  quote: 'Same questions, better tools.',
+  quote: 'From pipettes to pipelines, one curiosity.',
   open: ['Open to collaborations', 'and new ideas.'],
 };

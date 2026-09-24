@@ -107,8 +107,13 @@ const pad = (n: number) => String(n).padStart(2, '0');
         ))}
       </div>
 
+      <div class="more-wrap">
+      <div class="also">
+        <p class="label also-title">Also built</p>
+        <ul>{work.extra.map((a) => <li><strong>{a.title}</strong><span>{a.text}</span></li>)}</ul>
+      </div>
       <details class="see-more">
-        <summary><span class="see-label">See more projects</span><span class="see-count">+{work.extra.length}</span></summary>
+        <summary><span class="see-label"><span class="when-closed">Expand these projects</span><span class="when-open">Collapse</span></span></summary>
         <div class="cards extra spot">
           {work.extra.map((p, i) => (
             <article class="card">
@@ -121,6 +126,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
           ))}
         </div>
       </details>
+      </div>
     </ChapterBand>
 
     <!-- 04 SKILLS & WHAT'S NEXT -->
@@ -142,7 +148,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
         <div class="direction">
           <p class="label"><Icon name="target" size={26} />Current direction</p>
           <p class="direction-text">{skills.direction}</p>
-          <p class="spot"><a class="btn talk contact" href={`mailto:${person.email}`}><span>Let’s Talk<small>{person.email}</small></span><Icon name="arrow" /></a></p>
+          <p class="spot"><a class="btn talk" href={`mailto:${person.email}`}><Icon name="mail" /> Contact Me</a></p>
         </div>
       </div>
     </ChapterBand>
@@ -193,7 +199,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .short-rule { display: block; width: 52px; border-top: 2px solid var(--c, currentColor); }
 
   /* ── 01 Profile: text | art | at a glance ─────────────── */
-  .profile { display: grid; grid-template-columns: 46fr 30fr 24fr; column-gap: clamp(1.25rem, 2.5vw, 2.5rem); align-items: center; }
+  .profile { display: grid; grid-template-columns: 58fr 20fr 22fr; column-gap: clamp(1.25rem, 2.5vw, 2.5rem); align-items: center; }
   .intro { display: flex; flex-direction: column; justify-content: center; }
   .stop { color: var(--red); }
   .hero { font-size: clamp(2.3rem, 1.2rem + 2.1vw, 3.3rem); font-weight: 700; line-height: 0.98; letter-spacing: -0.04em; margin: 0 0 1.4rem -0.04em; }
@@ -206,7 +212,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
     transition: background 0.25s, color 0.25s; }
   .intro .pill { --c: var(--blue); }
   .actions { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 1.6rem; }
-  .actions .btn { padding: 0.85em 1.4em; gap: 0.7rem; }
+  .actions { gap: 0.7rem; }
+  .actions .btn { padding: 0.85em 1.15em; gap: 0.6rem; }
   /* contact buttons carry the address as a second line */
   .contact span { line-height: 1.15; }
   .contact small { display: block; margin-top: 0.3em; font: 400 0.7rem / 1 var(--sans); letter-spacing: 0.02em; opacity: 0.75; }
@@ -267,15 +274,24 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .tag { white-space: nowrap; }
   .sep { margin: 0 0.5em; color: var(--accent); }
 
-  /* "See more projects": native <details>, no JS */
-  .see-more { margin-top: clamp(1.5rem, 3vh, 2.25rem); }
-  .see-more summary { display: flex; align-items: center; gap: 1rem; cursor: pointer; list-style: none; font: 500 0.7rem / 1 var(--sans); letter-spacing: 0.26em; text-transform: uppercase; }
+  /* Also-built preview; "Expand" (native <details>) swaps it for full cards */
+  .also { margin-top: clamp(1.75rem, 3.5vh, 2.5rem); }
+  .also-title { display: flex; align-items: center; gap: 1.1rem; font-size: 0.64rem; color: var(--muted); margin-bottom: 1.25rem; }
+  .also-title::after { content: ''; flex: 1; border-top: 1px solid var(--hair); }
+  .also ul { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .also li { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.1rem 1.25rem; border-left: 1px solid var(--hair); font-size: 0.92rem; line-height: 1.45; }
+  .also li:first-child { border-left: 0; padding-left: 0; }
+  .also strong { font-weight: 600; font-size: 1rem; }
+  .also span { opacity: 0.78; }
+  .more-wrap:has(> .see-more[open]) > .also { display: none; }
+  .see-more { margin-top: 1.25rem; }
+  .see-more summary { display: inline-flex; cursor: pointer; list-style: none; font: 500 0.66rem / 1 var(--sans); letter-spacing: 0.26em; text-transform: uppercase; }
   .see-more summary::-webkit-details-marker { display: none; }
-  .see-more summary::after { content: ''; flex: 1; border-top: 1px solid var(--hair); }
   .see-label { border-bottom: 1.5px solid var(--navy); padding-bottom: 0.3rem; }
-  .see-more[open] .see-label::after { content: ' (hide)'; letter-spacing: 0.1em; opacity: 0.6; }
-  .see-count { padding: 0.35em 0.6em; background: var(--red); color: var(--paper); letter-spacing: 0.1em; }
-  .see-more[open] .see-count { display: none; }
+  .see-label::after { content: ' ↓'; }
+  .see-more[open] .see-label::after { content: ' ↑'; }
+  .see-more .when-open, .see-more[open] .when-closed { display: none; }
+  .see-more[open] .when-open { display: inline; }
   .cards.extra { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 1.5rem; }
 
   /* ── 04 Skills: title | two pill groups | direction card ── */
@@ -324,14 +340,16 @@ const pad = (n: number) => String(n).padStart(2, '0');
     .skills { grid-template-columns: 1fr 1fr; row-gap: 2rem; }
     .card { padding: 0.9rem; }
     .card-top { gap: 0.6rem; }
-    .cards.extra { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cards.extra, .also ul { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 1.25rem; }
+    .also li:nth-child(3) { border-left: 0; padding-left: 0; }
   }
   @media (max-width: 899px) {
     nav { display: none; } /* ponytail: no mobile menu; the page is one scroll */
     .profile, .skills, .foot { grid-template-columns: 1fr; row-gap: 1.75rem; }
     .visual { min-height: 260px; }
     .all { margin-left: 0; }
-    .cards, .cards.extra { grid-template-columns: 1fr; row-gap: 1.5rem; }
+    .cards, .cards.extra, .also ul { grid-template-columns: 1fr; row-gap: 1.25rem; }
+    .also li { border-left: 0; padding-left: 0; }
     .group { border-left: 0; padding-left: 0; }
     .foot > .vrule { justify-content: flex-start; min-height: 0; }
     .open { text-align: left; }
