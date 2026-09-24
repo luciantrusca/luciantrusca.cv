@@ -38,10 +38,10 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
   <main>
     <!-- 01 PROFILE -->
-    <ChapterBand id="profile" num={1} name="Profile" keywords={profile.keywords} splash="red" minH="0">
+    <ChapterBand id="profile" num={1} name="Profile" keywords={profile.keywords} tone="cream" minH="0">
       <div class="profile">
         <div class="intro">
-          <h1 id="profile-title" class="hero">{profile.headline[0]}<br />{profile.headline[1]}</h1>
+          <h1 id="profile-title" class="hero">{profile.headline[0]}<br />{profile.headline[1].replace(/\.$/, '')}<span class="stop">.</span></h1>
           <p class="lead">{profile.statement}</p>
           <p class="actions spot">
             <a class="btn best" href="#work">View My Work <Icon name="arrow" /></a>
@@ -51,6 +51,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
         </div>
 
         <div class="vrule visual">
+          <span class="art-block" aria-hidden="true"></span>
           <img class="art" src={`${base}img/convergence.jpg`} alt="Etched illustration: a DNA helix and a young plant in front of mountains, a lake and a hiker." width="832" height="680" />
           <div class="side">
             <p class="quote big">“{profile.quote.map((l, i) => <>{l}{i < profile.quote.length - 1 && <br />}</>)}”</p>
@@ -64,7 +65,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     </ChapterBand>
 
     <!-- 02 JOURNEY -->
-    <ChapterBand id="journey" num={2} name="Journey" keywords={journey.keywords} splash="blue" minH="0">
+    <ChapterBand id="journey" num={2} name="Journey" keywords={journey.keywords} tone="sky" minH="0">
       <div class="journey-head">
         <div>
           <h2 id="journey-title" class="chapter-title">My Journey.</h2>
@@ -95,7 +96,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     </ChapterBand>
 
     <!-- 03 WORK -->
-    <ChapterBand id="work" num={3} name="Work" keywords={work.keywords} splash="red" minH="0">
+    <ChapterBand id="work" num={3} name="Work" keywords={work.keywords} tone="navy" minH="0">
       <div class="work-head">
         <div>
           <h2 id="work-title" class="chapter-title">Selected Work.</h2>
@@ -135,7 +136,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     </ChapterBand>
 
     <!-- 04 TOOLKIT & DIRECTION -->
-    <ChapterBand id="toolkit" num={4} name="Toolkit" keywords={toolkit.keywords} splash="blue" minH="0">
+    <ChapterBand id="toolkit" num={4} name="Toolkit" keywords={toolkit.keywords} tone="sand" minH="0">
       <div class="toolkit">
         <div class="toolkit-title">
           <h2 id="toolkit-title" class="chapter-title">{toolkit.title[0]}<br />{toolkit.title[1]}</h2>
@@ -179,7 +180,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
 <style>
   /* ── Header ─────────────────────────────── */
-  .site-header { position: sticky; top: 0; z-index: 10; height: var(--header-h); background: var(--paper); }
+  .site-header { position: sticky; top: 0; z-index: 10; height: var(--header-h); background: var(--cream); }
   .bar { height: 100%; display: flex; align-items: center; gap: 2rem; position: relative; }
   .bar::after { content: ''; position: absolute; left: var(--margin); right: var(--margin); bottom: 0; border-bottom: 1px solid var(--hair); }
   .brand { display: flex; flex-direction: column; gap: 0.15rem; text-decoration: none; margin-right: auto; }
@@ -198,17 +199,19 @@ const pad = (n: number) => String(n).padStart(2, '0');
   /* ── 01 Profile: text | rule | quote + art ─────────────── */
   .profile { display: grid; grid-template-columns: 44fr 56fr; column-gap: clamp(1.5rem, 3vw, 3rem); align-items: stretch; }
   .intro { display: flex; flex-direction: column; justify-content: center; padding-bottom: 0.5rem; }
+  .stop { color: var(--red); }
   .hero { font-size: var(--hero); font-weight: 700; line-height: 0.95; letter-spacing: -0.045em; margin: 0 0 1.75rem -0.04em; }
   .lead { font-size: clamp(1.1rem, 0.95rem + 0.45vw, 1.35rem); line-height: 1.5; max-width: 30em; }
   .actions { display: flex; flex-wrap: wrap; gap: 1.25rem; margin: 1.75rem 0 1.5rem; }
   .kicker { font-size: 0.64rem; color: var(--muted); }
   .visual { position: relative; min-height: clamp(320px, 44vh, 460px); }
+  .art-block { position: absolute; top: 24%; bottom: 16%; right: -3%; width: 22%; background: #4a6a92; }  /* dusty steel blue, as in the mockup */
   .art { position: absolute; right: -3%; top: 0; width: 68%; height: 100%; object-fit: cover; object-position: 62% 50%; mix-blend-mode: multiply; filter: brightness(1.07) contrast(1.06); -webkit-mask-image: radial-gradient(ellipse 64% 80% at 62% 50%, #000 55%, transparent 100%); mask-image: radial-gradient(ellipse 64% 80% at 62% 50%, #000 55%, transparent 100%); }
   .side { position: relative; z-index: 1; height: 100%; width: 34%; display: flex; flex-direction: column; justify-content: center; gap: 1.6rem; }
   .quote.big { font-size: clamp(1.35rem, 1rem + 0.9vw, 1.85rem); line-height: 1.28; text-indent: -0.4em; }
   .triad { font-size: 0.6rem; line-height: 2.1; color: var(--muted); }
   .art-note { position: absolute; top: 0.25rem; right: 0; font-size: 0.6rem; line-height: 2; color: var(--muted); }
-  .hand { position: absolute; right: 0; bottom: 0.5rem; width: 9.5em; font: 500 clamp(1.1rem, 0.8rem + 0.6vw, 1.45rem) / 1.15 var(--hand); color: var(--navy); transform: rotate(-9deg); text-align: center; text-shadow: 0 0 6px var(--paper), 0 0 3px var(--paper), 0 0 1px var(--paper); }
+  .hand { position: absolute; right: 0; bottom: 0.5rem; width: 9.5em; font: 500 clamp(1.1rem, 0.8rem + 0.6vw, 1.45rem) / 1.15 var(--hand); color: var(--navy); transform: rotate(-9deg); text-align: center; text-shadow: 0 0 6px var(--cream), 0 0 3px var(--cream), 0 0 1px var(--cream); }
 
   /* ── 02 Journey: head row + horizontal timeline ─────────── */
   .journey-head { display: grid; grid-template-columns: 34fr 44fr 22fr; column-gap: clamp(1.5rem, 3vw, 3rem); align-items: stretch; margin-bottom: clamp(1.75rem, 3.5vh, 2.75rem); }
@@ -219,12 +222,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .timeline { --c: var(--red); --gap: clamp(1rem, 2vw, 1.75rem); display: grid; grid-template-columns: repeat(5, 1fr) 0.85fr; column-gap: var(--gap); padding-top: 1rem; }
   .timeline li { position: relative; }
   /* track: each item draws its own segment to the next column */
-  .timeline li::after { content: ''; position: absolute; top: 0; left: 0; right: calc(-1 * var(--gap)); border-top: 1.5px solid var(--blue); }
+  .timeline li::after { content: ''; position: absolute; top: 0; left: 0; right: calc(-1 * var(--gap)); border-top: 1.5px solid var(--navy); }
   .timeline .last::after, .timeline .end::after { border-top-style: dotted; border-top-width: 2px; }
   .timeline .end::after { right: 38px; }
   .step::before { content: ''; position: absolute; z-index: 1; top: -6px; left: -6px; width: 13px; height: 13px; border-radius: 50%; background: color-mix(in srgb, var(--c) calc(var(--lit) * 100%), var(--navy)); transition: background 0.25s, transform 0.25s; transform: scale(calc(1 + var(--lit) * 0.25)); }
   .step { padding: 2.1rem 0.9rem 0.9rem 1.2rem; border-left: 1px solid; border-image: linear-gradient(to bottom, transparent 1.4rem, var(--hair) 1.4rem) 1;
-    background: linear-gradient(color-mix(in srgb, var(--c) calc(var(--lit) * 9%), transparent) 0 0) 0 1.4rem / 100% calc(100% - 1.4rem) no-repeat; transition: background-color 0.25s; }
+    background: linear-gradient(color-mix(in srgb, white calc(var(--lit) * 45%), transparent) 0 0) 0 1.4rem / 100% calc(100% - 1.4rem) no-repeat; transition: background-color 0.25s; }
   .step .dates { color: color-mix(in srgb, var(--c) calc(var(--lit) * 100%), currentColor); }
   .dates { font-size: 0.98rem; opacity: 0.85; margin-bottom: 0.45rem; font-variant-numeric: lining-nums; }
   .dates em { margin-left: 0.3em; }
@@ -233,16 +236,18 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .desc { font-size: 0.95rem; line-height: 1.55; opacity: 0.78; }
   .end { display: flex; align-items: center; padding-left: clamp(1rem, 2vw, 1.75rem); border-left: 1px solid; border-image: linear-gradient(to bottom, transparent 2.6rem, var(--hair) 2.6rem) 1; }
   .end p { font-style: italic; font-size: 1.2rem; line-height: 1.45; padding-top: 2rem; }
-  .arrow { position: absolute; top: -17px; right: 0; width: 34px; height: 34px; border: 1.5px solid var(--red); color: var(--red); border-radius: 50%; display: grid; place-items: center; background: var(--paper); }
+  .arrow { position: absolute; top: -17px; right: 0; width: 34px; height: 34px; border: 1.5px solid var(--red); color: var(--red); border-radius: 50%; display: grid; place-items: center; background: var(--sky); }
 
   /* ── 03 Work: head row, four equal cards, also-built strip ── */
   .work-head { display: grid; grid-template-columns: 40fr 60fr; column-gap: clamp(1.5rem, 3vw, 3rem); align-items: center; margin-bottom: clamp(1.5rem, 3.5vh, 2.5rem); }
   .work-intro { font-size: 1.12rem; line-height: 1.6; max-width: 30em; }
 
-  .cards { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(0.85rem, 1.3vw, 1.25rem); }
-  .card { position: relative; display: flex; flex-direction: column; border: 1px solid var(--card-line); padding: clamp(1rem, 1.3vw, 1.3rem); background: color-mix(in srgb, var(--paper) 60%, white);
-    outline: 2px solid color-mix(in srgb, var(--c) calc(var(--lit) * 100%), transparent); outline-offset: -1px; transition: outline-color 0.25s; }
-  .badge { position: absolute; top: -0.75em; right: 1rem; padding: 0.35em 0.75em; background: var(--c); color: var(--paper); font: 600 0.58rem / 1.2 var(--sans); letter-spacing: 0.18em; text-transform: uppercase; }
+  .cards { --c: var(--red); display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(0.85rem, 1.3vw, 1.25rem); }
+  .card { position: relative; display: flex; flex-direction: column; padding: clamp(1rem, 1.3vw, 1.3rem); background: var(--cream); color: var(--ink);
+    outline: 3px solid color-mix(in srgb, var(--c) calc(var(--lit) * 100%), transparent); outline-offset: 0;
+    transform: translateY(calc(var(--lit) * -3px)); box-shadow: 0 calc(var(--lit) * 10px) calc(var(--lit) * 24px) rgb(0 0 0 / 0.3);
+    transition: outline-color 0.25s, transform 0.25s, box-shadow 0.25s; }
+  .badge { position: absolute; top: -0.75em; right: 1rem; padding: 0.35em 0.75em; background: var(--c); color: var(--navy); font: 600 0.58rem / 1.2 var(--sans); letter-spacing: 0.18em; text-transform: uppercase; }
   .card-top { display: flex; align-items: baseline; gap: 1.1rem; margin-bottom: 1rem; }
   .card-top .num { font-size: 1.2rem; font-weight: 700; }
   .card-top .label { font-size: 0.62rem; color: var(--muted); }
@@ -263,9 +268,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
   .also { margin-top: clamp(1.75rem, 3.5vh, 2.5rem); }
   .also-title { display: flex; align-items: center; gap: 1.1rem; font-size: 0.64rem; color: var(--muted); margin-bottom: 1.25rem; }
-  .also-title::after { content: ''; flex: 1; border-top: 1px solid var(--card-line); }
+  .also-title::after { content: ''; flex: 1; border-top: 1px solid var(--hair); }
   .also ul { display: grid; grid-template-columns: repeat(4, 1fr); }
-  .also li { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.1rem 1.25rem; border-left: 1px solid var(--card-line); font-size: 0.92rem; line-height: 1.45; }
+  .also li { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.1rem 1.25rem; border-left: 1px solid var(--hair); font-size: 0.92rem; line-height: 1.45; }
   .also li:first-child { border-left: 0; padding-left: 0; }
   .also strong { font-weight: 600; font-size: 1rem; }
   .also span { opacity: 0.78; }
@@ -302,7 +307,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   @media (max-width: 1099px) {
     /* vertical timeline: six columns get too narrow below this */
     .timeline { grid-template-columns: 1fr; padding: 0 0 0 0.5rem; max-width: 40rem; }
-    .timeline li::after { top: 0; bottom: 0; left: 0; right: auto; border-top: 0; border-left: 1.5px solid var(--blue); }
+    .timeline li::after { top: 0; bottom: 0; left: 0; right: auto; border-top: 0; border-left: 1.5px solid var(--navy); }
     .timeline .last::after { border-left-style: dotted; }
     .step { border: 0; padding: 0 0 2.25rem 1.75rem; }
     .step::before { top: 0.35rem; }

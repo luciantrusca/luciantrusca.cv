@@ -10,6 +10,11 @@
   --red: #b3342b;          /* colour splashes, as in docs/mockup-v2 */
   --blue: #2359c4;
   --accent: var(--red);
+  /* colour-blocked bands, sampled from docs/mockup-v3.png */
+  --cream: #f6f1e6;
+  --sky: #c9d9e6;
+  --sand: #f3e4c6;
+  --coral: #e0664f;
   --muted: color-mix(in srgb, currentColor 70%, transparent);
   --hair: color-mix(in srgb, currentColor 30%, transparent);
 
@@ -31,7 +36,7 @@
 html { scroll-behavior: smooth; scroll-padding-top: var(--header-h); }
 body {
   margin: 0;
-  background: var(--paper);
+  background: var(--cream);
   color: var(--ink);
   font: 1.0625rem / 1.6 var(--serif);
   -webkit-font-smoothing: antialiased;
