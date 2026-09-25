@@ -71,14 +71,19 @@ const pad = (n: number) => String(n).padStart(2, '0');
         <h2 id="journey-title" class="chapter-title">{journey.title}</h2>
         <p class="journey-sub">{journey.subtitle}</p>
       </div>
+      <ul class="highlights" aria-label="Experience highlights">
+        {journey.highlights.map((h) => <li><strong>{h.area}</strong><span class="label">{h.years}</span></li>)}
+      </ul>
 
       <ol class="timeline spot">
         {journey.steps.map((s, i) => (
           <li class:list={['step', { 'last best': i === journey.steps.length - 1 }]}>
             <p class="dates">{s.dates}{s.now && <em>{s.now}</em>}</p>
+            <p class="label kind">{s.kind}</p>
             <h3>{s.title}</h3>
             <p class="place">{s.place}</p>
-            <p class="desc">{s.text}</p>
+            <p class="desc">{s.achievement}</p>
+            <p class="gained"><span class="label">Gained</span>{s.gained}</p>
           </li>
         ))}
         <li class="end" aria-hidden="true"><span class="ring"></span></li>
@@ -95,14 +100,25 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
       <div class="cards spot">
         {work.projects.map((p, i) => (
-          <article class:list={['card', { best: p.badge }]} style={p.badge && `--c: var(--${p.badge === 'new' ? 'red' : 'blue'})`}>
+          <article class:list={['card', { best: p.badge, wide: p.wide }]} style={p.badge && `--c: var(--${p.badge === 'new' ? 'red' : 'blue'})`}>
             {p.badge && <span class="badge">{p.badge}</span>}
-            <p class="card-top"><span class="num">{pad(i + 1)}</span><span class="label">{p.area}</span></p>
-            <ProjectFigure kind={p.figure} label={`${p.title}: schematic figure`} />
-            <h3>{p.title}</h3>
-            <p class="role">{p.role}</p>
-            <ul class="bullets">{p.bullets.map((b) => <li>{b}</li>)}</ul>
-            <p class="tags">{p.tags.map((t, j) => <span class="tag">{t}{j < p.tags.length - 1 && <span class="sep"><span aria-hidden="true">•</span><span class="vh">, </span></span>}</span>)}</p>
+            {p.facts ? (
+              <div class="card-side">
+                <ProjectFigure kind={p.figure} label={`${p.title}: schematic figure`} />
+                <dl class="facts">{p.facts.map(([k, v]) => <div><dt class="label">{k}</dt><dd>{v}</dd></div>)}</dl>
+              </div>
+            ) : <ProjectFigure kind={p.figure} label={`${p.title}: schematic figure`} />}
+            <div class="card-body">
+              <p class="card-top"><span class="num">{pad(i + 1)}</span><span class="label">{p.area}</span></p>
+              <h3>{p.title}</h3>
+              <p class="role">{p.role}</p>
+              <dl class="evidence">
+                <div><dt class="label">Problem</dt><dd>{p.problem}</dd></div>
+                <div><dt class="label">What I did</dt><dd>{p.did}</dd></div>
+              </dl>
+              <p class="result"><span class="label">Result</span>{p.result}</p>
+              <p class="tags">{p.tags.map((t, j) => <span class="tag">{t}{j < p.tags.length - 1 && <span class="sep"><span aria-hidden="true">•</span><span class="vh">, </span></span>}</span>)}</p>
+            </div>
           </article>
         ))}
       </div>
@@ -121,6 +137,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
               <h3>{p.title}</h3>
               <p class="role">{p.role}</p>
               <ul class="bullets">{p.bullets.map((b) => <li>{b}</li>)}</ul>
+              {p.result && <p class="result"><span class="label">Result</span>{p.result}</p>}
               <p class="tags">{p.tags.map((t, j) => <span class="tag">{t}{j < p.tags.length - 1 && <span class="sep"><span aria-hidden="true">•</span><span class="vh">, </span></span>}</span>)}</p>
             </article>
           ))}
@@ -129,7 +146,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
       </div>
     </ChapterBand>
 
-    <!-- 04 SKILLS & WHAT'S NEXT -->
+    <!-- 04 SKILLS -->
     <ChapterBand id="skills" num={4} name="Skills" keywords={skills.keywords} tone="navy" minH="36vh">
       <div class="skills">
         <div class="skills-title">
@@ -137,17 +154,19 @@ const pad = (n: number) => String(n).padStart(2, '0');
           <p class="skills-sub">{skills.subtitle}</p>
           <ul class="label legend">{['Familiar', 'Proficient', 'Advanced'].map((t, i) => <li><span class={`lvl l${i + 1}`}><i></i><i></i><i></i></span>{t}</li>)}</ul>
         </div>
+        <div class="vrule groups">
         {skills.groups.map((g) => (
-          <div class="vrule group">
+          <div class="group">
             <h3 class="label">{g.title}</h3>
             <ul class="pills spot">{g.pills.map((p) => (
               <li class:list={['pill', { best: p.best }]}>{p.name}<span class={`lvl l${p.level}`} role="img" aria-label={`${['', 'familiar', 'proficient', 'advanced'][p.level]}`}><i></i><i></i><i></i></span></li>
             ))}</ul>
           </div>
         ))}
+        </div>
         <div class="direction">
-          <p class="label"><Icon name="target" size={26} />Current direction</p>
-          <p class="direction-text">{skills.direction}</p>
+          <p class="label"><Icon name="target" size={26} />Current focus</p>
+          <ul class="focus">{skills.focus.map((f) => <li>{f}</li>)}</ul>
           <p class="spot"><a class="btn talk" href={`mailto:${person.email}`}><Icon name="mail" /> Contact Me</a></p>
         </div>
       </div>
@@ -160,7 +179,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
         <p class="name">{person.name}</p>
         <p class="label">{footer.role}</p>
       </div>
-      <p class="vrule foot-quote">“{footer.quote}”</p>
+      <p class="vrule foot-quote">{footer.now}</p>
       <ul class="vrule social">
         <li><a href={person.github} aria-label="GitHub"><Icon name="github" size={30} /></a></li>
         <li><a href={person.linkedin} aria-label="LinkedIn"><Icon name="linkedin" size={30} /></a></li>
@@ -230,8 +249,13 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .glance strong { display: block; font-weight: 600; font-size: 0.88rem; }
 
   /* ── 02 Journey: title + subtitle, horizontal timeline ─────────── */
-  .journey-head { margin-bottom: clamp(2rem, 5vh, 3.5rem); }
+  .journey-head { margin-bottom: clamp(1.25rem, 3vh, 2rem); }
   .journey-sub { margin-top: 0.8rem; font-size: 1.12rem; max-width: 40em; opacity: 0.9; }
+  /* experience highlights: a quick map of breadth before the timeline */
+  .highlights { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; margin-bottom: clamp(2rem, 4.5vh, 3rem); }
+  .highlights li { display: flex; flex-direction: column; gap: 0.3rem; padding: 0.7rem 0.9rem; background: color-mix(in srgb, white 45%, transparent); border-top: 3px solid var(--navy); }
+  .highlights strong { font-size: 0.98rem; font-weight: 600; line-height: 1.25; }
+  .highlights .label { font-size: 0.58rem; opacity: 0.75; }
 
   .timeline { --c: var(--red); --gap: clamp(1rem, 2vw, 1.75rem); display: grid; grid-template-columns: repeat(5, 1fr) 30px; column-gap: var(--gap); padding-top: 1rem; }
   .timeline li { position: relative; }
@@ -245,18 +269,21 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .dates { font-size: 0.95rem; opacity: 0.85; margin-bottom: 0.5rem; font-variant-numeric: lining-nums; }
   .dates em { margin-left: 0.3em; }
   .step h3 { font-size: 1.12rem; font-weight: 700; line-height: 1.25; letter-spacing: -0.005em; }
+  .kind { font-size: 0.56rem; font-weight: 600; opacity: 0.7; margin-bottom: 0.35rem; }
   .place { font-size: 0.98rem; margin: 0.15rem 0 0.7rem; opacity: 0.85; }
-  .desc { font-size: 0.95rem; line-height: 1.55; opacity: 0.8; }
+  .desc { font-size: 0.93rem; line-height: 1.5; opacity: 0.85; }
+  .gained { margin-top: 0.7rem; font-size: 0.88rem; line-height: 1.4; }
+  .gained .label, .result .label, .evidence dt { display: block; font-size: 0.56rem; font-weight: 600; opacity: 0.65; margin-bottom: 0.2rem; }
   .ring { position: absolute; top: -15px; right: 0; width: 30px; height: 30px; border: 2px solid var(--navy); border-radius: 50%; background: var(--sky); }
 
-  /* ── 03 Work: head row, five cards with bullets, see-more cards ── */
+  /* ── 03 Work: featured wide card + evidence cards, see-more cards ── */
   .work-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.75rem clamp(1.25rem, 2.5vw, 2.5rem); margin-bottom: clamp(1.75rem, 3.5vh, 2.5rem); }
   .work-intro { font-size: 1.08rem; line-height: 1.5; }
   .all { margin-left: auto; display: inline-flex; align-items: center; gap: 0.6rem; text-decoration: none; padding-bottom: 0.2rem; border-bottom: 1.5px solid var(--navy); }
   .all:hover :global(.icon) { transform: translateX(3px); }
   .all :global(.icon) { transition: transform 0.2s; }
 
-  .cards { --c: var(--red); display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(0.85rem, 1.3vw, 1.25rem); }
+  .cards { --c: var(--red); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 1.6vw, 1.5rem); }
   .card { position: relative; display: flex; flex-direction: column; padding: clamp(1rem, 1.3vw, 1.3rem); background: white; border: 1px solid var(--card-line);
     outline: 2px solid color-mix(in srgb, var(--c) calc(var(--lit) * 100%), transparent); outline-offset: -1px;
     transform: translateY(calc(var(--lit) * -3px)); box-shadow: 0 calc(var(--lit) * 8px) calc(var(--lit) * 20px) rgb(14 38 56 / 0.12);
@@ -266,6 +293,20 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .card-top .num { font-size: 1.1rem; font-weight: 700; }
   .card-top .label { font-size: 0.6rem; color: var(--muted); }
   .card :global(.fig) { margin-bottom: 1.1rem; }
+  .card-body { flex: 1; display: flex; flex-direction: column; }
+  /* the lead project: figure beside the text across two columns */
+  .card.wide { grid-column: span 2; flex-direction: row; gap: clamp(1.25rem, 2vw, 2rem); }
+  .card-side { flex: 0 0 52%; display: flex; flex-direction: column; gap: 1.25rem; }
+  .card-side :global(.fig) { margin: 0; }
+  .facts { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem 1rem; padding-top: 0.9rem; border-top: 1px solid var(--card-line); font-size: 0.9rem; line-height: 1.35; }
+  .facts dt { font-size: 0.56rem; font-weight: 600; opacity: 0.65; margin-bottom: 0.2rem; }
+  .card.wide { align-items: center; }
+  .card.wide h3 { font-size: 1.55rem; }
+  .card.wide .evidence { font-size: 0.98rem; gap: 0.85rem; margin-bottom: 1.1rem; }
+  .card.wide .result { font-size: 1.02rem; padding: 0.75rem 0.9rem; }
+  .card.wide .facts { font-size: 0.98rem; gap: 1rem 1.25rem; }
+  .evidence { display: grid; gap: 0.6rem; font-size: 0.88rem; line-height: 1.45; margin-bottom: 0.8rem; }
+  .result { margin-bottom: 1rem; padding: 0.55rem 0.75rem; border-left: 3px solid var(--c); background: color-mix(in srgb, var(--c) 8%, transparent); font-size: 0.92rem; font-weight: 600; line-height: 1.35; }
   .card h3 { font-size: 1.12rem; font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; }
   .role { font-size: 0.82rem; font-style: italic; opacity: 0.7; margin: 0.25rem 0 0.75rem; }
   .bullets { list-style: disc; padding-left: 1.1em; font-size: 0.86rem; line-height: 1.45; margin-bottom: 1.1rem; }
@@ -295,11 +336,11 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .see-more[open] .when-open { display: inline; }
   .cards.extra { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 1.5rem; }
 
-  /* ── 04 Skills: title | two pill groups | direction card ── */
-  .skills { --pill-on: var(--navy); display: grid; grid-template-columns: 0.95fr 1.45fr 1.15fr 1fr; column-gap: clamp(1.25rem, 2.5vw, 2.5rem); align-items: center; }
+  /* ── 04 Skills: title | 2×2 pill groups | current focus ── */
+  .skills { --pill-on: var(--navy); display: grid; grid-template-columns: 0.9fr 2.7fr 1fr; column-gap: clamp(1.25rem, 2.5vw, 2.5rem); align-items: center; }
   .skills-title .chapter-title { font-size: clamp(2.2rem, 1rem + 2vw, 3rem); }
   .skills-sub { margin-top: 0.9rem; font-size: 1.05rem; opacity: 0.9; }
-  .group { align-self: stretch; }
+  .groups { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem clamp(1.25rem, 2.5vw, 2.5rem); align-self: stretch; }
   .group h3 { font-size: 0.64rem; font-weight: 600; margin-bottom: 1rem; }
   .group .pill { --c: var(--blue); font-size: 0.86rem; }
   .direction { background: var(--navy-2); padding: 1.4rem; }
@@ -310,7 +351,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .l1 i:nth-child(1), .l2 i:nth-child(-n + 2), .l3 i { background: currentColor; }
   .legend { margin-top: 1.1rem; display: grid; gap: 0.35rem; font-size: 0.58rem; opacity: 0.8; }
   .legend .lvl { margin: 0 0.8em 0 0; }
-  .direction-text { font-size: 0.95rem; line-height: 1.5; margin: 0.9rem 0 1.2rem; opacity: 0.92; }
+  .focus { list-style: disc; padding-left: 1.1em; font-size: 0.9rem; line-height: 1.45; margin: 0.9rem 0 1.2rem; opacity: 0.92; }
+  .focus li + li { margin-top: 0.35rem; }
+  .focus li::marker { color: var(--blue); }
   .talk { --btn: var(--paper-ink); --btn-ink: var(--navy); padding: 0.6em 1.3em; }
 
   /* ── Footer ─────────────────────────────── */
@@ -319,7 +362,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .foot > .vrule { min-height: 64px; display: flex; align-items: center; }
   .foot-brand .name { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.025em; line-height: 1.1; }
   .foot-brand .label { font-size: 0.62rem; color: var(--muted); margin-top: 0.3rem; }
-  .foot-quote { justify-content: center; font-style: italic; font-size: 1.2rem; }
+  .foot-quote { justify-content: center; font-style: italic; font-size: 1.1rem; }
   .social { justify-content: center; gap: 1.75rem; }
   .social a { display: inline-flex; color: var(--navy); transition: color 0.2s, transform 0.2s; }
   .social a:hover { color: var(--accent); transform: translateY(-2px); }
@@ -341,7 +384,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
   }
   @media (max-width: 1199px) {
     .motto { display: none; }
-    .skills { grid-template-columns: 1fr 1fr; row-gap: 2rem; }
+    .skills { grid-template-columns: 1fr; row-gap: 2rem; }
+    .skills .groups { border-left: 0; padding-left: 0; }
+    .highlights { grid-template-columns: repeat(3, 1fr); }
     .card { padding: 0.9rem; }
     .card-top { gap: 0.6rem; }
     .cards.extra, .also ul { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 1.25rem; }
@@ -353,9 +398,11 @@ const pad = (n: number) => String(n).padStart(2, '0');
     .profile, .skills, .foot { grid-template-columns: 1fr; row-gap: 1.75rem; }
     .visual { min-height: 260px; }
     .all { margin-left: 0; }
-    .cards, .cards.extra, .also ul { grid-template-columns: 1fr; row-gap: 1.25rem; }
+    .cards, .cards.extra, .also ul, .groups, .highlights { grid-template-columns: 1fr; row-gap: 1.25rem; }
+    .card.wide { grid-column: auto; flex-direction: column; }
+    .card.wide { align-items: stretch; }
+    .card-side { flex: none; margin-bottom: 1.1rem; }
     .also li { border-left: 0; padding-left: 0; }
-    .group { border-left: 0; padding-left: 0; }
     .foot > .vrule { justify-content: flex-start; min-height: 0; }
     .open { text-align: left; }
   }

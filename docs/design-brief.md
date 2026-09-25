@@ -148,6 +148,15 @@ Do not polish individual project descriptions before the layout exists; the wire
 
 **Revision 2 (owner feedback): the mockup's layout now wins over this brief's structural changes.** The owner found the phylogeny, asymmetric Work grid and 2/3 + 1/3 Toolkit "all over the place" and asked to follow the mockup. So: horizontal timeline, four equal project cards, title + four toolkit columns.
 
+**Revision 8 (branch `cv-evidence`): evidence over editorial.**
+- **At a glance:** five factual rows, including "4 theses" and EHA's tools.
+- **Hero tags:** specific (ML & XAI, Computer Vision, Bioinformatics, Multiomics).
+- **Journey:** merged education and work; each stop has a kind chip, an achievement and a "Gained" line. An Experience Highlights strip (Molecular Biotech → Embedded ML) sits above the timeline.
+- **Work:** cards show Problem → What I did → Result, using CV-backed results only. Meadow Birds is a wide featured card with a key-facts grid; Traffic Signs is the second featured card.
+- **Skills:** four CV-derived groups in a 2×2 grid, plus a concrete "Current focus" list.
+- **Quotes replaced:** the header now shows the current focus, and the footer shows the current thesis.
+- **Results that still need a real number:** Meadow Birds (accuracy/mAP), Sales Forecasting (error metric), Security Dashboard (users/feedback), Movile Cave (samples/taxa).
+
 **Revision 7 (branch `cv-impact-2`): owner's cut list.** Leaf illustration (`public/img/leaf.png`, 548 px wide, replace with hi-res if available) replaces the etched art. "View My CV" and "View all projects" both became "View more projects" linking to GitHub repositories (no CV link on the page by choice). Contact Me and Let's Talk show the email address. Skill pills carry 1–3 level dots with a legend. Tagline "Data scientist × Life sciences"; footer line "MSc Data Science · University of Amsterdam". Journey subtitle shortened and the band sizes to content. Work: project count line, card description lines removed, Movile Cave bullets made specific, and a native `<details>` "See more projects" reveals four extra cards (Cottages, Training system, Chessmate, Cassini). Nav underline follows the section in view (the page's only script). Deferred: per-project links, deploy.
 
 **Revision 6 (branch `cv-impact`): layout and positioning from `docs/mockup-v4.png`.** The headline is "Data Science for Real-World Impact." and the tagline "Data scientist × Engineer × Problem solver". Profile has skill pills, three navy buttons (View My CV, GitHub, Contact Me), the etched art over beige offset squares, and an "At a glance" panel (location, MSc, EHA, languages). Journey is "Education & Career Journey." with role / institution / one line per step and an open end ring. Work is on cream: five white cards with an italic role line, three outcome bullets and tags, plus "View all projects" linking to GitHub repositories. Skills (navy) has two spotlight pill groups and a Current direction card with Let's Talk. Buttons are navy (`--btn` / `--btn-ink` tokens). Bands keep revision 5's heights via `minH`; Work grew to about 104vh because of the bullets.
