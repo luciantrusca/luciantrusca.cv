@@ -148,6 +148,13 @@ Do not polish individual project descriptions before the layout exists; the wire
 
 **Revision 2 (owner feedback): the mockup's layout now wins over this brief's structural changes.** The owner found the phylogeny, asymmetric Work grid and 2/3 + 1/3 Toolkit "all over the place" and asked to follow the mockup. So: horizontal timeline, four equal project cards, title + four toolkit columns.
 
+**Revision 9 (branch `cv-fullstack`): full-stack developer with a data & AI focus.**
+- **Role copy:** tagline "Full-stack developer × Data & AI", headline "Building Data & AI Products, End to End.", and a bio that frames biotech as the domain background.
+- **Work:** a top three of equal evidence cards: EHA internship (featured), Meadow Birds (featured), MODIN MSc thesis (new, in progress). They get new `survey` and `network` figures. The "Also built" preview holds Security Dashboard, Sales Forecasting, Traffic Signs, Training System and Chessmate, and "Expand" shows them as evidence cards. Movile Cave, Cottages and Cassini left Work.
+- **Skills:** one data set (area → capability → rows of skill / level / where used) drives three layouts: S1 capability cards, S2 stack columns, and S3 proof table (the default). Life sciences is reduced to a single domain line.
+- **Tags:** A = role tags in the hero plus a Stack row in At a glance (the default); B = stack tags plus a Focus row; C = role tags plus a stack line under the buttons.
+- **Temporary switcher:** opening the page with `?variants` shows a switcher for the tag and Skills variants (screenshots in `docs/variants/`). Delete it once the owner picks.
+
 **Revision 8 (branch `cv-evidence`): evidence over editorial.**
 - **At a glance:** five factual rows, including "4 theses" and EHA's tools.
 - **Hero tags:** specific (ML & XAI, Computer Vision, Bioinformatics, Multiomics).

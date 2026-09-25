@@ -24,6 +24,17 @@ const rows = [
 ];
 const shades = [1, 0.72, 0.48, 0.28, 0.14];
 const stacked = rows.map((r) => r.map((v, j) => ({ x: 170 + 290 * r.slice(0, j).reduce((a, b) => a + b, 0), w: 290 * v, o: shades[j] })));
+
+// survey: grant-impact indicators tracked in Researchfish (illustrative lengths)
+const indicators = [['Collaborations', 0.82], ['Publications', 0.68], ['Further funding', 0.46], ['Clinical studies', 0.3]] as const;
+
+// network: three omics layers as node clusters, sparse edges within and across layers
+const layers = [{ cx: 120, cy: 150, o: 1 }, { cx: 260, cy: 105, o: 0.6 }, { cx: 370, cy: 195, o: 0.35 }];
+const nodes = layers.flatMap((l, li) => Array.from({ length: 6 }, (_, k) => ({
+  x: l.cx + 52 * Math.cos((k / 6) * 2 * Math.PI + li), y: l.cy + 44 * Math.sin((k / 6) * 2 * Math.PI + li), o: l.o, li,
+})));
+const edges = nodes.flatMap((a, i) => nodes.slice(i + 1).map((b, j) => [a, b, i + j] as const))
+  .filter(([a, b, k]) => (a.li === b.li ? k % 3 === 0 : k % 11 === 0));
 ---
 <svg viewBox="0 0 480 300" role="img" aria-label={label} class="fig">
   {kind === 'birds' && (
@@ -145,6 +156,30 @@ const stacked = rows.map((r) => r.map((v, j) => ({ x: 170 + 290 * r.slice(0, j).
     </>
   )}
 
+  {kind === 'survey' && (
+    <>
+      <rect width="480" height="300" fill="var(--fig-bg)" />
+      {indicators.map(([name, v], i) => (
+        <g>
+          <text class="lbl" x="40" y={92 + i * 52}>{name}</text>
+          <rect x="40" y={100 + i * 52} width={(400 * v).toFixed(1)} height="16" fill={i === 0 ? 'var(--accent)' : 'var(--navy)'} fill-opacity={i === 0 ? 0.85 : 1 - i * 0.2} />
+        </g>
+      ))}
+      <g class="t" fill="var(--navy)"><text x="40" y="44">Grant impact · Researchfish</text></g>
+    </>
+  )}
+  {kind === 'network' && (
+    <>
+      <rect width="480" height="300" fill="var(--fig-bg)" />
+      {edges.map(([a, b]) => <line x1={a.x.toFixed(1)} y1={a.y.toFixed(1)} x2={b.x.toFixed(1)} y2={b.y.toFixed(1)} stroke="var(--navy)" stroke-width="1.2" opacity={a.li === b.li ? 0.45 : 0.8} stroke-dasharray={a.li === b.li ? '' : '4 3'} />)}
+      {nodes.map((n) => <circle cx={n.x.toFixed(1)} cy={n.y.toFixed(1)} r="9" fill="var(--navy)" fill-opacity={n.o} stroke="var(--navy)" stroke-width="1.2" />)}
+      <circle cx={nodes[3].x.toFixed(1)} cy={nodes[3].y.toFixed(1)} r="16" fill="none" stroke="var(--accent)" stroke-width="2" />
+      <g class="t" fill="var(--navy)">
+        <text x="30" y="36">Partial-correlation network</text>
+        <text x="30" y="282">Omics layers · priors-informed</text>
+      </g>
+    </>
+  )}
   {kind === 'cave' && (
     <>
       <rect width="480" height="300" fill="var(--fig-bg)" />
@@ -164,4 +199,5 @@ const stacked = rows.map((r) => r.map((v, j) => ({ x: 170 + 290 * r.slice(0, j).
 <style>
   .fig { display: block; width: 100%; height: auto; }
   .t text { font: 500 19px var(--sans); letter-spacing: 0.06em; text-transform: uppercase; }
+  .lbl { font: 400 17px var(--serif); fill: var(--navy); }
 </style>

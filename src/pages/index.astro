@@ -14,13 +14,13 @@ const pad = (n: number) => String(n).padStart(2, '0');
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{person.name} · Data Science for Real-World Impact</title>
+  <title>{person.name} · Full-stack developer, Data & AI</title>
   <meta name="description" content={profile.statement} />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Inter:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet" />
 </head>
-<body>
+<body class="tags-a skills-s3">
   <header class="site-header">
     <div class="wrap bar">
       <a class="brand" href="#profile">
@@ -42,12 +42,14 @@ const pad = (n: number) => String(n).padStart(2, '0');
         <div class="intro">
           <h1 id="profile-title" class="hero">{profile.headline[0]}<br />{profile.headline[1].replace(/\.$/, '')}<span class="stop">.</span></h1>
           <p class="lead">{profile.statement}</p>
-          <ul class="pills">{profile.pills.map((t) => <li class="pill">{t}</li>)}</ul>
+          <ul class="pills vt vt-a vt-c">{profile.roleTags.map((t) => <li class="pill">{t}</li>)}</ul>
+          <ul class="pills vt vt-b">{profile.stackTags.map((t) => <li class="pill">{t}</li>)}</ul>
           <p class="actions spot">
             <a class="btn best" href={work.moreProjects}>View more projects <Icon name="arrow" /></a>
             <a class="btn" href={person.github}><Icon name="github" /> GitHub</a>
             <a class="btn" href={`mailto:${person.email}`}><Icon name="mail" /> Contact Me</a>
           </p>
+          <p class="stack-line vt vt-c"><span class="label">Stack</span>{profile.stackTags.join(' · ')}</p>
         </div>
 
         <div class="vrule visual">
@@ -58,7 +60,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
           <p id="glance-title" class="label glance-title">At a glance</p>
           <ul>
             {profile.glance.map((g) => (
-              <li><Icon name={g.icon} size={22} /><span><strong>{g.title}</strong>{g.text}</span></li>
+              <li class:list={[g.variant && ['vt', `vt-${g.variant}`]]}><Icon name={g.icon} size={22} /><span><strong>{g.title}</strong>{g.text}</span></li>
             ))}
           </ul>
         </aside>
@@ -100,14 +102,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
       <div class="cards spot">
         {work.projects.map((p, i) => (
-          <article class:list={['card', { best: p.badge, wide: p.wide }]} style={p.badge && `--c: var(--${p.badge === 'new' ? 'red' : 'blue'})`}>
-            {p.badge && <span class="badge">{p.badge}</span>}
-            {p.facts ? (
-              <div class="card-side">
-                <ProjectFigure kind={p.figure} label={`${p.title}: schematic figure`} />
-                <dl class="facts">{p.facts.map(([k, v]) => <div><dt class="label">{k}</dt><dd>{v}</dd></div>)}</dl>
-              </div>
-            ) : <ProjectFigure kind={p.figure} label={`${p.title}: schematic figure`} />}
+          <article class="card best" style={`--c: var(--${p.badge === 'new' ? 'red' : 'blue'})`}>
+            <span class="badge">{p.badge}</span>
+            <ProjectFigure kind={p.figure} label={`${p.title}: schematic figure`} />
             <div class="card-body">
               <p class="card-top"><span class="num">{pad(i + 1)}</span><span class="label">{p.area}</span></p>
               <h3>{p.title}</h3>
@@ -136,8 +133,11 @@ const pad = (n: number) => String(n).padStart(2, '0');
               <p class="card-top"><span class="num">{pad(work.projects.length + i + 1)}</span><span class="label">{p.area}</span></p>
               <h3>{p.title}</h3>
               <p class="role">{p.role}</p>
-              <ul class="bullets">{p.bullets.map((b) => <li>{b}</li>)}</ul>
-              {p.result && <p class="result"><span class="label">Result</span>{p.result}</p>}
+              <dl class="evidence">
+                <div><dt class="label">Problem</dt><dd>{p.problem}</dd></div>
+                <div><dt class="label">What I did</dt><dd>{p.did}</dd></div>
+              </dl>
+              <p class="result"><span class="label">Result</span>{p.result}</p>
               <p class="tags">{p.tags.map((t, j) => <span class="tag">{t}{j < p.tags.length - 1 && <span class="sep"><span aria-hidden="true">•</span><span class="vh">, </span></span>}</span>)}</p>
             </article>
           ))}
@@ -154,15 +154,40 @@ const pad = (n: number) => String(n).padStart(2, '0');
           <p class="skills-sub">{skills.subtitle}</p>
           <ul class="label legend">{['Familiar', 'Proficient', 'Advanced'].map((t, i) => <li><span class={`lvl l${i + 1}`}><i></i><i></i><i></i></span>{t}</li>)}</ul>
         </div>
-        <div class="vrule groups">
-        {skills.groups.map((g) => (
-          <div class="group">
-            <h3 class="label">{g.title}</h3>
-            <ul class="pills spot">{g.pills.map((p) => (
-              <li class:list={['pill', { best: p.best }]}>{p.name}<span class={`lvl l${p.level}`} role="img" aria-label={`${['', 'familiar', 'proficient', 'advanced'][p.level]}`}><i></i><i></i><i></i></span></li>
-            ))}</ul>
+        <div class="vrule skill-views">
+          <!-- S1 capability cards -->
+          <div class="caps vs vs-s1">
+            {skills.areas.map((a) => (
+              <div class="cap">
+                <h3 class="label">{a.capability}</h3>
+                <p class="impact">{a.impact}</p>
+                <ul class="pills spot">{a.rows.map((r) => <li class:list={['pill', { best: r.best }]}>{r.skill}<span class={`lvl l${r.level}`} role="img" aria-label={['', 'familiar', 'proficient', 'advanced'][r.level]}><i></i><i></i><i></i></span></li>)}</ul>
+                <p class="used">Used in: {[...new Set(a.rows.flatMap((r) => r.used ? r.used.split(', ') : []))].join(', ')}</p>
+              </div>
+            ))}
           </div>
-        ))}
+          <!-- S2 stack columns -->
+          <div class="cols vs vs-s2">
+            {skills.areas.map((a) => (
+              <div class="col">
+                <h3 class="label">{a.area}</h3>
+                <ul>{a.rows.map((r) => <li><span>{r.skill}</span><span class={`lvl l${r.level}`} role="img" aria-label={['', 'familiar', 'proficient', 'advanced'][r.level]}><i></i><i></i><i></i></span></li>)}</ul>
+              </div>
+            ))}
+          </div>
+          <!-- S3 proof table -->
+          <table class="proof vs vs-s3">
+            <thead><tr><th class="label">Area</th><th class="label">Skill</th><th class="label">Level</th><th class="label">Where I used it</th></tr></thead>
+            {skills.areas.map((a) => (
+              <tbody>{a.rows.map((r, k) => (
+                <tr class:list={{ best: r.best }}>
+                  {k === 0 && <th scope="rowgroup" rowspan={a.rows.length} class="area">{a.area}</th>}
+                  <td>{r.skill}</td><td><span class={`lvl l${r.level}`} role="img" aria-label={['', 'familiar', 'proficient', 'advanced'][r.level]}><i></i><i></i><i></i></span></td><td class="where">{r.used || '—'}</td>
+                </tr>
+              ))}</tbody>
+            ))}
+          </table>
+          <p class="domain">{skills.domain}</p>
         </div>
         <div class="direction">
           <p class="label"><Icon name="target" size={26} />Current focus</p>
@@ -188,7 +213,34 @@ const pad = (n: number) => String(n).padStart(2, '0');
       <p class="vrule label open">{footer.open[0]}<br />{footer.open[1]}</p>
     </div>
   </footer>
+  <div class="variants" hidden>
+    <strong>Variants</strong>
+    <span>Tags {['a', 'b', 'c'].map((v) => <button data-group="tags" data-v={v}>{v.toUpperCase()}</button>)}</span>
+    <span>Skills {['s1', 's2', 's3'].map((v) => <button data-group="skills" data-v={v}>{v.toUpperCase()}</button>)}</span>
+  </div>
+
   <script>
+    // ponytail: temporary variant switcher for the owner to compare layouts; delete once chosen.
+    const q = new URLSearchParams(location.search);
+    const pick = (group: string, v: string) => {
+      document.body.classList.remove(...['a', 'b', 'c', 's1', 's2', 's3'].map((x) => `${group}-${x}`));
+      document.body.classList.add(`${group}-${v}`);
+      document.querySelectorAll(`.variants [data-group="${group}"]`).forEach((b) => b.toggleAttribute('aria-pressed', (b as HTMLElement).dataset.v === v));
+    };
+    if (q.has('variants')) {
+      const panel = document.querySelector('.variants') as HTMLElement;
+      panel.hidden = false;
+      pick('tags', q.get('tags') ?? 'a');
+      pick('skills', q.get('skills') ?? 's3');
+      panel.addEventListener('click', (e) => {
+        const b = (e.target as HTMLElement).closest('button');
+        if (!b) return;
+        pick(b.dataset.group!, b.dataset.v!);
+        q.set(b.dataset.group!, b.dataset.v!);
+        history.replaceState(null, '', `?${q}`);
+      });
+    }
+
     // Nav underline follows the section in view.
     const links = new Map([...document.querySelectorAll('nav a')].map((a) => [a.hash.slice(1), a]));
     const io = new IntersectionObserver((entries) => {
@@ -225,6 +277,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .lead { font-size: clamp(1rem, 0.92rem + 0.25vw, 1.12rem); line-height: 1.45; max-width: 34em; }
   .pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
   .intro .pills { margin-top: 1rem; }
+  .stack-line { margin-top: 0.9rem; font: 400 0.8rem / 1.4 var(--sans); letter-spacing: 0.02em; opacity: 0.85; }
+  .stack-line .label { margin-right: 0.9em; font-size: 0.6rem; font-weight: 600; }
   .pill { white-space: nowrap; padding: 0.28em 0.85em; border-radius: 999px; font-size: 0.9rem; line-height: 1.4;
     background: color-mix(in srgb, var(--c, var(--blue)) calc(14% + var(--lit, 0) * 86%), transparent);
     color: color-mix(in srgb, var(--pill-on, var(--paper)) calc(var(--lit, 0) * 100%), currentColor);
@@ -276,7 +330,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .gained .label, .result .label, .evidence dt { display: block; font-size: 0.56rem; font-weight: 600; opacity: 0.65; margin-bottom: 0.2rem; }
   .ring { position: absolute; top: -15px; right: 0; width: 30px; height: 30px; border: 2px solid var(--navy); border-radius: 50%; background: var(--sky); }
 
-  /* ── 03 Work: featured wide card + evidence cards, see-more cards ── */
+  /* ── 03 Work: top-three evidence cards, see-more cards ── */
   .work-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.75rem clamp(1.25rem, 2.5vw, 2.5rem); margin-bottom: clamp(1.75rem, 3.5vh, 2.5rem); }
   .work-intro { font-size: 1.08rem; line-height: 1.5; }
   .all { margin-left: auto; display: inline-flex; align-items: center; gap: 0.6rem; text-decoration: none; padding-bottom: 0.2rem; border-bottom: 1.5px solid var(--navy); }
@@ -294,17 +348,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .card-top .label { font-size: 0.6rem; color: var(--muted); }
   .card :global(.fig) { margin-bottom: 1.1rem; }
   .card-body { flex: 1; display: flex; flex-direction: column; }
-  /* the lead project: figure beside the text across two columns */
-  .card.wide { grid-column: span 2; flex-direction: row; gap: clamp(1.25rem, 2vw, 2rem); }
-  .card-side { flex: 0 0 52%; display: flex; flex-direction: column; gap: 1.25rem; }
-  .card-side :global(.fig) { margin: 0; }
-  .facts { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem 1rem; padding-top: 0.9rem; border-top: 1px solid var(--card-line); font-size: 0.9rem; line-height: 1.35; }
-  .facts dt { font-size: 0.56rem; font-weight: 600; opacity: 0.65; margin-bottom: 0.2rem; }
-  .card.wide { align-items: center; }
-  .card.wide h3 { font-size: 1.55rem; }
-  .card.wide .evidence { font-size: 0.98rem; gap: 0.85rem; margin-bottom: 1.1rem; }
-  .card.wide .result { font-size: 1.02rem; padding: 0.75rem 0.9rem; }
-  .card.wide .facts { font-size: 0.98rem; gap: 1rem 1.25rem; }
   .evidence { display: grid; gap: 0.6rem; font-size: 0.88rem; line-height: 1.45; margin-bottom: 0.8rem; }
   .result { margin-bottom: 1rem; padding: 0.55rem 0.75rem; border-left: 3px solid var(--c); background: color-mix(in srgb, var(--c) 8%, transparent); font-size: 0.92rem; font-weight: 600; line-height: 1.35; }
   .card h3 { font-size: 1.12rem; font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; }
@@ -320,7 +363,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .also { margin-top: clamp(1.75rem, 3.5vh, 2.5rem); }
   .also-title { display: flex; align-items: center; gap: 1.1rem; font-size: 0.64rem; color: var(--muted); margin-bottom: 1.25rem; }
   .also-title::after { content: ''; flex: 1; border-top: 1px solid var(--hair); }
-  .also ul { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .also ul { display: grid; grid-template-columns: repeat(5, 1fr); }
   .also li { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.1rem 1.25rem; border-left: 1px solid var(--hair); font-size: 0.92rem; line-height: 1.45; }
   .also li:first-child { border-left: 0; padding-left: 0; }
   .also strong { font-weight: 600; font-size: 1rem; }
@@ -334,15 +377,35 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .see-more[open] .see-label::after { content: ' ↑'; }
   .see-more .when-open, .see-more[open] .when-closed { display: none; }
   .see-more[open] .when-open { display: inline; }
-  .cards.extra { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 1.5rem; }
+  .cards.extra { margin-top: 1.5rem; }
 
-  /* ── 04 Skills: title | 2×2 pill groups | current focus ── */
-  .skills { --pill-on: var(--navy); display: grid; grid-template-columns: 0.9fr 2.7fr 1fr; column-gap: clamp(1.25rem, 2.5vw, 2.5rem); align-items: center; }
+  /* ── 04 Skills: title | one of three layouts (S1/S2/S3) | current focus ── */
+  .skills { --pill-on: var(--navy); display: grid; grid-template-columns: 0.62fr 3fr 0.9fr; column-gap: clamp(1.25rem, 2.5vw, 2.5rem); align-items: center; }
   .skills-title .chapter-title { font-size: clamp(2.2rem, 1rem + 2vw, 3rem); }
   .skills-sub { margin-top: 0.9rem; font-size: 1.05rem; opacity: 0.9; }
-  .groups { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem clamp(1.25rem, 2.5vw, 2.5rem); align-self: stretch; }
-  .group h3 { font-size: 0.64rem; font-weight: 600; margin-bottom: 1rem; }
-  .group .pill { --c: var(--blue); font-size: 0.86rem; }
+  .skill-views { align-self: stretch; }
+  /* S1 capability cards */
+  .caps { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .cap { padding: 1rem 1.1rem; border: 1px solid var(--hair); }
+  .cap h3 { font-size: 0.64rem; font-weight: 600; }
+  .impact { margin: 0.35rem 0 0.8rem; font-size: 0.9rem; font-style: italic; opacity: 0.8; }
+  .cap .pill { --c: var(--blue); font-size: 0.82rem; }
+  .used { margin-top: 0.7rem; font-size: 0.78rem; opacity: 0.7; }
+  /* S2 stack columns */
+  .cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(1rem, 2vw, 2rem); }
+  .col h3 { font-size: 0.64rem; font-weight: 600; padding-bottom: 0.6rem; margin-bottom: 0.4rem; border-bottom: 1px solid var(--hair); }
+  .col li { display: flex; justify-content: space-between; align-items: baseline; gap: 0.6rem; padding: 0.3rem 0; font-size: 0.9rem; line-height: 1.35; }
+  /* S3 proof table */
+  .proof { width: 100%; border-collapse: collapse; font-size: 0.9rem; line-height: 1.35; }
+  .proof th, .proof td { text-align: left; padding: 0.42rem 1rem 0.42rem 0; vertical-align: top; }
+  .proof thead th { font-size: 0.58rem; font-weight: 600; opacity: 0.7; padding-bottom: 0.6rem; border-bottom: 1px solid var(--hair); }
+  .proof tbody + tbody { border-top: 1px solid var(--hair); }
+  .proof tbody tr:first-child > * { padding-top: 0.7rem; }
+  .proof .area { font-weight: 600; white-space: nowrap; }
+  .proof .where { opacity: 0.75; }
+  .proof tr.best td:nth-of-type(1) { color: var(--blue); font-weight: 600; }
+  .proof .lvl { margin-left: 0; }
+  .domain { margin-top: 1rem; font-size: 0.82rem; opacity: 0.7; }
   .direction { background: var(--navy-2); padding: 1.4rem; }
   .direction .label { display: flex; align-items: center; gap: 0.8rem; font-size: 0.64rem; font-weight: 600; }
   /* skill level: three dots, filled up to the level; currentColor so lit pills invert them */
@@ -354,7 +417,15 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .focus { list-style: disc; padding-left: 1.1em; font-size: 0.9rem; line-height: 1.45; margin: 0.9rem 0 1.2rem; opacity: 0.92; }
   .focus li + li { margin-top: 0.35rem; }
   .focus li::marker { color: var(--blue); }
-  .talk { --btn: var(--paper-ink); --btn-ink: var(--navy); padding: 0.6em 1.3em; }
+  .talk { white-space: nowrap; --btn: var(--paper-ink); --btn-ink: var(--navy); padding: 0.6em 1.3em; }
+
+  /* temporary variant switcher (?variants): body class picks which .vt / .vs blocks show */
+  .tags-a .vt:not(.vt-a), .tags-b .vt:not(.vt-b), .tags-c .vt:not(.vt-c),
+  .skills-s1 .vs:not(.vs-s1), .skills-s2 .vs:not(.vs-s2), .skills-s3 .vs:not(.vs-s3) { display: none !important; }
+  .variants { position: fixed; z-index: 20; right: 16px; bottom: 16px; display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; padding: 0.6rem 0.8rem; background: white; color: var(--ink); border: 1px solid var(--card-line); box-shadow: 0 6px 20px rgb(0 0 0 / 0.15); font: 500 0.75rem / 1 var(--sans); }
+  .variants[hidden] { display: none; }
+  .variants button { margin-left: 0.25rem; padding: 0.35em 0.6em; border: 1px solid var(--navy); background: none; color: var(--navy); font: inherit; cursor: pointer; }
+  .variants button[aria-pressed] { background: var(--navy); color: white; }
 
   /* ── Footer ─────────────────────────────── */
   .site-footer { display: flex; align-items: center; padding: 1.5rem 0; }
@@ -385,11 +456,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
   @media (max-width: 1199px) {
     .motto { display: none; }
     .skills { grid-template-columns: 1fr; row-gap: 2rem; }
-    .skills .groups { border-left: 0; padding-left: 0; }
+    .skill-views { border-left: 0; padding-left: 0; }
     .highlights { grid-template-columns: repeat(3, 1fr); }
     .card { padding: 0.9rem; }
     .card-top { gap: 0.6rem; }
     .cards.extra, .also ul { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 1.25rem; }
+    .cols { grid-template-columns: 1fr 1fr; row-gap: 1.5rem; }
     .also li:nth-child(3) { border-left: 0; padding-left: 0; }
   }
   @media (max-width: 899px) {
@@ -398,10 +470,11 @@ const pad = (n: number) => String(n).padStart(2, '0');
     .profile, .skills, .foot { grid-template-columns: 1fr; row-gap: 1.75rem; }
     .visual { min-height: 260px; }
     .all { margin-left: 0; }
-    .cards, .cards.extra, .also ul, .groups, .highlights { grid-template-columns: 1fr; row-gap: 1.25rem; }
-    .card.wide { grid-column: auto; flex-direction: column; }
-    .card.wide { align-items: stretch; }
-    .card-side { flex: none; margin-bottom: 1.1rem; }
+    .cards, .cards.extra, .also ul, .caps, .cols, .highlights { grid-template-columns: 1fr; row-gap: 1.25rem; }
+    .proof thead { display: none; }
+    .proof tr { display: grid; grid-template-columns: 1fr auto; }
+    .proof .area { display: block; padding-top: 1rem; }
+    .proof .where { grid-column: 1 / -1; padding-top: 0; font-size: 0.82rem; }
     .also li { border-left: 0; padding-left: 0; }
     .foot > .vrule { justify-content: flex-start; min-height: 0; }
     .open { text-align: left; }
