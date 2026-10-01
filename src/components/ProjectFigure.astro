@@ -26,7 +26,7 @@ const shades = [1, 0.72, 0.48, 0.28, 0.14];
 const stacked = rows.map((r) => r.map((v, j) => ({ x: 170 + 290 * r.slice(0, j).reduce((a, b) => a + b, 0), w: 290 * v, o: shades[j] })));
 
 // survey: grant-impact indicators tracked in Researchfish (illustrative lengths)
-const indicators = [['Collaborations', 0.82], ['Publications', 0.68], ['Further funding', 0.46], ['Clinical studies', 0.3]] as const;
+const indicators = [['Collaborations', 0.82], ['Publications', 0.68], ['Funding', 0.46], ['Clinical studies', 0.3]] as const;
 
 // network: three omics layers as node clusters, sparse edges within and across layers
 const layers = [{ cx: 120, cy: 150, o: 1 }, { cx: 260, cy: 105, o: 0.6 }, { cx: 370, cy: 195, o: 0.35 }];

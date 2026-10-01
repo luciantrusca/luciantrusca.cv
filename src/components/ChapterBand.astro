@@ -3,11 +3,10 @@ interface Props {
   id: string;
   num: number;          // 1..4, shown as an oversized "02"
   name: string;         // "Journey", shown as "/ JOURNEY"
-  keywords: string[];   // short list at the foot of the rail
   tone: 'cream' | 'sky' | 'navy' | 'sand';
   minH: string;         // starting height, content can push past it
 }
-const { id, num, name, keywords, tone, minH } = Astro.props;
+const { id, num, name, tone, minH } = Astro.props;
 ---
 <section id={id} class:list={['band', tone]} style={`--min-h:${minH}`} aria-labelledby={`${id}-title`}>
   <div class="wrap grid">
@@ -15,7 +14,6 @@ const { id, num, name, keywords, tone, minH } = Astro.props;
       <p class="num">{String(num).padStart(2, '0')}</p>
       <p class="label name">/ {name}</p>
       <span class="rule"></span>
-      <ul class="label keywords">{keywords.map((k) => <li>{k}</li>)}</ul>
     </div>
     <div class="body"><slot /></div>
   </div>
@@ -35,12 +33,10 @@ const { id, num, name, keywords, tone, minH } = Astro.props;
   .num { font-size: clamp(4.5rem, 2.5rem + 4vw, 7rem); font-weight: 700; line-height: 0.8; letter-spacing: -0.06em; margin-left: -0.05em; }
   .name { margin-top: 1.1rem; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.3em; }
   .rule { display: block; width: 60px; margin-top: 0.9rem; border-top: 3px solid var(--c); }
-  .keywords { margin-top: auto; padding-top: 2rem; font-size: 0.6rem; line-height: 2.1; color: var(--muted); }
 
   @media (max-width: 1099px) {
     .grid { grid-template-columns: 1fr; }
     .rail { flex-direction: row; align-items: flex-end; gap: 1.25rem; border-right: 0; padding: 0 0 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--hair); }
     .num { font-size: 4rem; }
-    .keywords { display: none; }
   }
 </style>

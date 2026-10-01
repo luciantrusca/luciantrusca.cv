@@ -10,7 +10,6 @@ export const person = {
 };
 
 export const profile = {
-  keywords: ['Questions', 'Data', 'Models', 'Decisions'],
   headline: ['Building Data & AI', 'Products, End to End.'],
   statement:
     'I’m a full-stack developer with a data science focus. I build web apps, dashboards and ML pipelines end to end, ' +
@@ -30,7 +29,6 @@ export const profile = {
 };
 
 export const journey = {
-  keywords: ['Curiosity', 'Discipline', 'The pivot', 'Convergence'],
   title: 'Education & Career Journey.',
   subtitle: 'From the wet lab to data science.',
   steps: [
@@ -51,7 +49,6 @@ export type Figure = 'birds' | 'forecast' | 'dashboard' | 'signs' | 'cave' | 'su
 export type Badge = 'featured' | 'new';
 
 export const work = {
-  keywords: ['Theses', 'Course projects', 'Hackathons', 'Prototypes'],
   moreProjects: 'https://github.com/luciantrusca?tab=repositories',
   // top three: two featured + one new; the rest sit behind "Expand these projects"
   projects: [
@@ -111,7 +108,6 @@ export const work = {
 };
 
 export const skills = {
-  keywords: ['Build', 'Model', 'Ship'],
   title: 'Skills.',
   subtitle: 'Where each skill was used; dots show depth.',
   // level: 1 familiar, 2 proficient, 3 advanced
@@ -119,12 +115,12 @@ export const skills = {
     { area: 'Frontend', capability: 'Build interfaces', impact: 'Turns a script or CLI into a tool people actually use.', rows: [
       { skill: 'Dash · Figma', level: 2, used: 'Security Dashboard' },
       { skill: 'HTML/CSS · JavaScript', level: 2, used: 'Training System' },
-      { skill: 'React · TypeScript', level: 1, used: 'Personal blog (private repo)' },
+      { skill: 'React · TypeScript', level: 2, used: 'Personal blog' },
     ] },
     { area: 'Backend', capability: 'Build services & data', impact: 'Clean data in, reliable endpoints out.', rows: [
       { skill: 'SQL / PostgreSQL', level: 2, used: 'Training System, Security Dashboard' },
       { skill: 'REST APIs', level: 1, used: 'Training System' },
-      { skill: 'Node.js', level: 1, used: 'Personal blog (private repo)' },
+      { skill: 'Node.js', level: 2, used: 'Personal blog' },
       { skill: 'Flask · Java', level: 1, used: 'University projects, UTwente' },
     ] },
     { area: 'Data & ML', capability: 'Model & analyse', impact: 'From raw data to a model you can evaluate and explain.', rows: [
@@ -153,5 +149,4 @@ export const skills = {
 export const footer = {
   role: 'MSc Data Science · University of Amsterdam',
   now: 'Latest: MODIN, MSc thesis on multiomics networks',
-  open: ['Open to collaborations', 'and new ideas.'],
 };
