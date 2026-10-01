@@ -148,6 +148,15 @@ Do not polish individual project descriptions before the layout exists; the wire
 
 **Revision 2 (owner feedback): the mockup's layout now wins over this brief's structural changes.** The owner found the phylogeny, asymmetric Work grid and 2/3 + 1/3 Toolkit "all over the place" and asked to follow the mockup. So: horizontal timeline, four equal project cards, title + four toolkit columns.
 
+**Revision 10 (branch `cv-fullstack-2`):**
+- **Journey:** the Experience Highlights strip is removed, and the MSc runs 2025 – 2026 (finished).
+- **At a glance:** no Amsterdam line, and EHA is shown as a completed internship with its tools.
+- **EHA card:** adds Python, and "What I did" renders as bullets (a `did` array).
+- **MODIN:** complete (2026).
+- **Also built:** six projects (Cottage Listings added), with the preview in 3 columns × 2 rows.
+- **Skills:** a header row, a 2×2 grid of compact area tables (skill / dots / where used; every row filled in), and Current focus as a full-width strip.
+- **Switcher:** the S1/S2 skills layouts are removed; the `?variants` switcher now covers tags only.
+
 **Revision 9 (branch `cv-fullstack`): full-stack developer with a data & AI focus.**
 - **Role copy:** tagline "Full-stack developer × Data & AI", headline "Building Data & AI Products, End to End.", and a bio that frames biotech as the domain background.
 - **Work:** a top three of equal evidence cards: EHA internship (featured), Meadow Birds (featured), MODIN MSc thesis (new, in progress). They get new `survey` and `network` figures. The "Also built" preview holds Security Dashboard, Sales Forecasting, Traffic Signs, Training System and Chessmate, and "Expand" shows them as evidence cards. Movile Cave, Cottages and Cassini left Work.

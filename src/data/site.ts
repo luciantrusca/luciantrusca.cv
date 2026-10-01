@@ -19,9 +19,9 @@ export const profile = {
   roleTags: ['Full-Stack', 'Machine Learning', 'Data Pipelines', 'Dashboards'],
   stackTags: ['Python', 'TypeScript / React', 'SQL', 'Machine Learning'],
   glance: [
-    { icon: 'pin', title: 'Based in the Netherlands', text: 'Studying in Amsterdam' },
-    { icon: 'cap', title: 'MSc Data Science, UvA', text: 'Thesis: MODIN, multiomics networks' },
-    { icon: 'case', title: 'Data analyst intern, EHA', text: 'Impact data & reporting (Power BI)' },
+    { icon: 'pin', title: 'Based in the Netherlands', text: '' },
+    { icon: 'cap', title: 'MSc Data Science, UvA', text: '2026 · thesis: MODIN (multiomics)' },
+    { icon: 'case', title: 'EHA internship (completed)', text: 'Data analyst · Python, Power BI, Excel' },
     { icon: 'code', title: 'Stack', text: 'Python · TypeScript / React · SQL · Machine Learning', variant: 'a' },
     { icon: 'target', title: 'Focus', text: 'Full-stack · ML · data pipelines · dashboards', variant: 'b' },
     { icon: 'doc', title: '4 theses', text: 'aDNA · cave microbes · camera traps · multiomics', variant: 'c' },
@@ -33,14 +33,6 @@ export const journey = {
   keywords: ['Curiosity', 'Discipline', 'The pivot', 'Convergence'],
   title: 'Education & Career Journey.',
   subtitle: 'From the wet lab to data science.',
-  // the main areas worked in, shown above the timeline
-  highlights: [
-    { area: 'Molecular Biotechnology', years: '2015 – 21' },
-    { area: 'Bioinformatics', years: '2019 –' },
-    { area: 'Computer Science', years: '2021 – 25' },
-    { area: 'Data Science & ML', years: '2021 –' },
-    { area: 'Embedded ML', years: 'Course project' },
-  ],
   steps: [
     { kind: 'Education', dates: '2015 – 2019', title: 'BSc Industrial Biotechnology', place: 'Babeș-Bolyai University',
       achievement: 'Thesis: optimising ancient DNA recovery from archaeological wood.', gained: 'Molecular lab methods' },
@@ -50,8 +42,8 @@ export const journey = {
       achievement: 'Quality control testing with HPLC and UV-Vis under GMP.', gained: 'Regulated lab practice' },
     { kind: 'Education', dates: '2021 – 2025', title: 'BSc Computer Science', place: 'University of Twente',
       achievement: 'Thesis: vision transformers for wildlife camera-trap images.', gained: 'Software engineering, ML, computer vision' },
-    { kind: 'Education + Work', dates: '2025 – ', now: 'Present', title: 'MSc Data Science', place: 'University of Amsterdam · EHA',
-      achievement: 'Thesis (MODIN): priors-informed graphical LASSO for multiomics; data analyst intern at EHA.', gained: 'Network biology, statistical ML' },
+    { kind: 'Education + Work', dates: '2025 – 2026', title: 'MSc Data Science', place: 'University of Amsterdam · EHA',
+      achievement: 'Thesis (MODIN): priors-informed graphical LASSO for multiomics; data analyst internship at EHA.', gained: 'Network biology, statistical ML' },
   ],
 };
 
@@ -65,11 +57,12 @@ export const work = {
   projects: [
     {
       badge: 'featured' as Badge, area: 'Data analysis', figure: 'survey' as Figure, title: 'Research Impact Analytics',
-      role: 'Internship, European Hematology Association',
-      problem: 'EHA needed to show what its grants and research-training programmes achieve.',
-      did: 'Analysed the annual survey and managed Researchfish data on collaborations, publications, funding and clinical studies.',
-      result: 'Impact reporting on grants & training programmes in Power BI',
-      tags: ['Power BI', 'Excel', 'Survey analysis'],
+      role: 'Internship (completed), European Hematology Association',
+      problem: 'Show what EHA’s grants and research-training programmes achieve for researchers.',
+      // a list renders as bullets
+      did: ['Analysed the annual programme survey in Python and Excel', 'Managed Researchfish impact data: collaborations, publications, funding, clinical studies', 'Reported results in Power BI'],
+      result: 'Impact evidence for EHA’s grant and training programmes',
+      tags: ['Python', 'Power BI', 'Excel', 'Survey analysis'],
     },
     {
       badge: 'featured' as Badge, area: 'Computer vision', figure: 'birds' as Figure, title: 'Meadow Bird Detection',
@@ -81,10 +74,10 @@ export const work = {
     },
     {
       badge: 'new' as Badge, area: 'ML · multiomics', figure: 'network' as Figure, title: 'MODIN',
-      role: 'MSc thesis, University of Amsterdam (ongoing)',
+      role: 'MSc thesis, University of Amsterdam (2026)',
       problem: 'Finding meaningful interactions across several omics layers at once.',
-      did: 'Developing priors-informed graphical LASSO and network diffusion to explore multiomics data.',
-      result: 'In progress: a priors-informed network inference pipeline',
+      did: 'Built priors-informed graphical LASSO and network diffusion to explore multiomics data.',
+      result: 'Priors-informed network inference pipeline for multiomics data',
       tags: ['Python', 'Graphical LASSO', 'Networks'],
     },
   ],
@@ -110,6 +103,10 @@ export const work = {
       problem: 'Helping players of different levels see good moves on a physical board.',
       did: 'Built real-time board detection with OpenCV and ran user research with players.',
       result: 'Working prototype, shaped by personas and feedback flows', tags: ['Python', 'OpenCV', 'Figma'] },
+    { area: 'NLP · data cleaning', title: 'Cottage Listings Cleanup', text: 'NLP cleanup with spaCy, ML imputation', role: 'Data science & AI project',
+      problem: 'A real-world JSON dataset of cottage listings had messy text and missing values.',
+      did: 'Standardised descriptions with spaCy and filled gaps with ML models (logistic regression, decision trees).',
+      result: 'Cleaner, more consistent dataset ready for analysis', tags: ['Python', 'spaCy', 'scikit-learn'] },
   ],
 };
 
@@ -117,31 +114,31 @@ export const skills = {
   keywords: ['Build', 'Model', 'Ship'],
   title: 'Skills.',
   subtitle: 'Where each skill was used; dots show depth.',
-  // One data set, three layouts (switcher: ?variants): S1 capability cards, S2 stack columns, S3 proof table.
   // level: 1 familiar, 2 proficient, 3 advanced
   areas: [
     { area: 'Frontend', capability: 'Build interfaces', impact: 'Turns a script or CLI into a tool people actually use.', rows: [
       { skill: 'Dash · Figma', level: 2, used: 'Security Dashboard' },
       { skill: 'HTML/CSS · JavaScript', level: 2, used: 'Training System' },
-      { skill: 'React · TypeScript', level: 1, used: '' },
+      { skill: 'React · TypeScript', level: 1, used: 'Personal blog (private repo)' },
     ] },
     { area: 'Backend', capability: 'Build services & data', impact: 'Clean data in, reliable endpoints out.', rows: [
       { skill: 'SQL / PostgreSQL', level: 2, used: 'Training System, Security Dashboard' },
       { skill: 'REST APIs', level: 1, used: 'Training System' },
-      { skill: 'Node.js · Flask · Java', level: 1, used: '' },
+      { skill: 'Node.js', level: 1, used: 'Personal blog (private repo)' },
+      { skill: 'Flask · Java', level: 1, used: 'University projects, UTwente' },
     ] },
     { area: 'Data & ML', capability: 'Model & analyse', impact: 'From raw data to a model you can evaluate and explain.', rows: [
-      { skill: 'Python / Pandas', level: 3, used: 'MODIN, Meadow Birds, Sales Forecasting', best: true },
+      { skill: 'Python / Pandas', level: 3, used: 'MODIN, EHA internship, Meadow Birds', best: true },
       { skill: 'Computer vision', level: 2, used: 'Meadow Birds, Traffic Signs, Chessmate' },
       { skill: 'Time series', level: 2, used: 'Sales Forecasting' },
       { skill: 'Graphical models & networks', level: 2, used: 'MODIN' },
-      { skill: 'scikit-learn · NLP', level: 2, used: 'Cottage listings project' },
+      { skill: 'scikit-learn · NLP', level: 2, used: 'Cottage Listings Cleanup' },
     ] },
     { area: 'Tooling', capability: 'Ship & collaborate', impact: 'Works in a team and ships reproducibly.', rows: [
       { skill: 'Docker · Git', level: 2, used: 'Security Dashboard, Chessmate' },
       { skill: 'Agile / Scrum', level: 2, used: 'Training System, Chessmate' },
       { skill: 'Power BI · Excel', level: 2, used: 'EHA internship' },
-      { skill: 'AI-assisted dev (Copilot, Claude Code)', level: 2, used: '' },
+      { skill: 'AI-assisted dev (Copilot, Claude Code)', level: 2, used: 'Day-to-day development' },
     ] },
   ],
   domain: 'Domain: bioinformatics · metagenomics · lab & biomedical data',
@@ -155,6 +152,6 @@ export const skills = {
 
 export const footer = {
   role: 'MSc Data Science · University of Amsterdam',
-  now: 'Now: MSc thesis (MODIN) on multiomics networks, UvA',
+  now: 'Latest: MODIN, MSc thesis on multiomics networks',
   open: ['Open to collaborations', 'and new ideas.'],
 };

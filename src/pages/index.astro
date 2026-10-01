@@ -20,7 +20,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Inter:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet" />
 </head>
-<body class="tags-a skills-s3">
+<body class="tags-a">
   <header class="site-header">
     <div class="wrap bar">
       <a class="brand" href="#profile">
@@ -73,9 +73,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
         <h2 id="journey-title" class="chapter-title">{journey.title}</h2>
         <p class="journey-sub">{journey.subtitle}</p>
       </div>
-      <ul class="highlights" aria-label="Experience highlights">
-        {journey.highlights.map((h) => <li><strong>{h.area}</strong><span class="label">{h.years}</span></li>)}
-      </ul>
 
       <ol class="timeline spot">
         {journey.steps.map((s, i) => (
@@ -111,7 +108,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
               <p class="role">{p.role}</p>
               <dl class="evidence">
                 <div><dt class="label">Problem</dt><dd>{p.problem}</dd></div>
-                <div><dt class="label">What I did</dt><dd>{p.did}</dd></div>
+                <div><dt class="label">What I did</dt><dd>{Array.isArray(p.did) ? <ul class="did">{p.did.map((d) => <li>{d}</li>)}</ul> : p.did}</dd></div>
               </dl>
               <p class="result"><span class="label">Result</span>{p.result}</p>
               <p class="tags">{p.tags.map((t, j) => <span class="tag">{t}{j < p.tags.length - 1 && <span class="sep"><span aria-hidden="true">•</span><span class="vh">, </span></span>}</span>)}</p>
@@ -135,7 +132,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
               <p class="role">{p.role}</p>
               <dl class="evidence">
                 <div><dt class="label">Problem</dt><dd>{p.problem}</dd></div>
-                <div><dt class="label">What I did</dt><dd>{p.did}</dd></div>
+                <div><dt class="label">What I did</dt><dd>{Array.isArray(p.did) ? <ul class="did">{p.did.map((d) => <li>{d}</li>)}</ul> : p.did}</dd></div>
               </dl>
               <p class="result"><span class="label">Result</span>{p.result}</p>
               <p class="tags">{p.tags.map((t, j) => <span class="tag">{t}{j < p.tags.length - 1 && <span class="sep"><span aria-hidden="true">•</span><span class="vh">, </span></span>}</span>)}</p>
@@ -149,50 +146,31 @@ const pad = (n: number) => String(n).padStart(2, '0');
     <!-- 04 SKILLS -->
     <ChapterBand id="skills" num={4} name="Skills" keywords={skills.keywords} tone="navy" minH="36vh">
       <div class="skills">
-        <div class="skills-title">
+        <div class="skills-head">
           <h2 id="skills-title" class="chapter-title">{skills.title}</h2>
           <p class="skills-sub">{skills.subtitle}</p>
           <ul class="label legend">{['Familiar', 'Proficient', 'Advanced'].map((t, i) => <li><span class={`lvl l${i + 1}`}><i></i><i></i><i></i></span>{t}</li>)}</ul>
         </div>
-        <div class="vrule skill-views">
-          <!-- S1 capability cards -->
-          <div class="caps vs vs-s1">
-            {skills.areas.map((a) => (
-              <div class="cap">
-                <h3 class="label">{a.capability}</h3>
-                <p class="impact">{a.impact}</p>
-                <ul class="pills spot">{a.rows.map((r) => <li class:list={['pill', { best: r.best }]}>{r.skill}<span class={`lvl l${r.level}`} role="img" aria-label={['', 'familiar', 'proficient', 'advanced'][r.level]}><i></i><i></i><i></i></span></li>)}</ul>
-                <p class="used">Used in: {[...new Set(a.rows.flatMap((r) => r.used ? r.used.split(', ') : []))].join(', ')}</p>
-              </div>
-            ))}
-          </div>
-          <!-- S2 stack columns -->
-          <div class="cols vs vs-s2">
-            {skills.areas.map((a) => (
-              <div class="col">
-                <h3 class="label">{a.area}</h3>
-                <ul>{a.rows.map((r) => <li><span>{r.skill}</span><span class={`lvl l${r.level}`} role="img" aria-label={['', 'familiar', 'proficient', 'advanced'][r.level]}><i></i><i></i><i></i></span></li>)}</ul>
-              </div>
-            ))}
-          </div>
-          <!-- S3 proof table -->
-          <table class="proof vs vs-s3">
-            <thead><tr><th class="label">Area</th><th class="label">Skill</th><th class="label">Level</th><th class="label">Where I used it</th></tr></thead>
-            {skills.areas.map((a) => (
-              <tbody>{a.rows.map((r, k) => (
-                <tr class:list={{ best: r.best }}>
-                  {k === 0 && <th scope="rowgroup" rowspan={a.rows.length} class="area">{a.area}</th>}
-                  <td>{r.skill}</td><td><span class={`lvl l${r.level}`} role="img" aria-label={['', 'familiar', 'proficient', 'advanced'][r.level]}><i></i><i></i><i></i></span></td><td class="where">{r.used || '—'}</td>
-                </tr>
-              ))}</tbody>
-            ))}
-          </table>
-          <p class="domain">{skills.domain}</p>
+
+        <div class="areas">
+          {skills.areas.map((a) => (
+            <section class="area-block" aria-label={a.area}>
+              <h3><span class="label">{a.area}</span><span class="cap-name">{a.capability}</span></h3>
+              <ul class="rows">
+                <li class="label rows-head" aria-hidden="true"><span>Skill</span><span>Level</span><span>Where I used it</span></li>
+                {a.rows.map((r) => (
+                  <li class:list={{ best: r.best }}><span class="skill">{r.skill}</span><span class={`lvl l${r.level}`} role="img" aria-label={['', 'familiar', 'proficient', 'advanced'][r.level]}><i></i><i></i><i></i></span><span class="where">{r.used}</span></li>
+                ))}
+              </ul>
+            </section>
+          ))}
         </div>
-        <div class="direction">
-          <p class="label"><Icon name="target" size={26} />Current focus</p>
+
+        <div class="focus-strip">
+          <p class="label"><Icon name="target" size={24} />Current focus</p>
           <ul class="focus">{skills.focus.map((f) => <li>{f}</li>)}</ul>
           <p class="spot"><a class="btn talk" href={`mailto:${person.email}`}><Icon name="mail" /> Contact Me</a></p>
+          <p class="domain">{skills.domain}</p>
         </div>
       </div>
     </ChapterBand>
@@ -216,14 +194,13 @@ const pad = (n: number) => String(n).padStart(2, '0');
   <div class="variants" hidden>
     <strong>Variants</strong>
     <span>Tags {['a', 'b', 'c'].map((v) => <button data-group="tags" data-v={v}>{v.toUpperCase()}</button>)}</span>
-    <span>Skills {['s1', 's2', 's3'].map((v) => <button data-group="skills" data-v={v}>{v.toUpperCase()}</button>)}</span>
   </div>
 
   <script>
     // ponytail: temporary variant switcher for the owner to compare layouts; delete once chosen.
     const q = new URLSearchParams(location.search);
     const pick = (group: string, v: string) => {
-      document.body.classList.remove(...['a', 'b', 'c', 's1', 's2', 's3'].map((x) => `${group}-${x}`));
+      document.body.classList.remove(...['a', 'b', 'c'].map((x) => `${group}-${x}`));
       document.body.classList.add(`${group}-${v}`);
       document.querySelectorAll(`.variants [data-group="${group}"]`).forEach((b) => b.toggleAttribute('aria-pressed', (b as HTMLElement).dataset.v === v));
     };
@@ -231,7 +208,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
       const panel = document.querySelector('.variants') as HTMLElement;
       panel.hidden = false;
       pick('tags', q.get('tags') ?? 'a');
-      pick('skills', q.get('skills') ?? 's3');
       panel.addEventListener('click', (e) => {
         const b = (e.target as HTMLElement).closest('button');
         if (!b) return;
@@ -305,11 +281,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
   /* ── 02 Journey: title + subtitle, horizontal timeline ─────────── */
   .journey-head { margin-bottom: clamp(1.25rem, 3vh, 2rem); }
   .journey-sub { margin-top: 0.8rem; font-size: 1.12rem; max-width: 40em; opacity: 0.9; }
-  /* experience highlights: a quick map of breadth before the timeline */
-  .highlights { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; margin-bottom: clamp(2rem, 4.5vh, 3rem); }
-  .highlights li { display: flex; flex-direction: column; gap: 0.3rem; padding: 0.7rem 0.9rem; background: color-mix(in srgb, white 45%, transparent); border-top: 3px solid var(--navy); }
-  .highlights strong { font-size: 0.98rem; font-weight: 600; line-height: 1.25; }
-  .highlights .label { font-size: 0.58rem; opacity: 0.75; }
 
   .timeline { --c: var(--red); --gap: clamp(1rem, 2vw, 1.75rem); display: grid; grid-template-columns: repeat(5, 1fr) 30px; column-gap: var(--gap); padding-top: 1rem; }
   .timeline li { position: relative; }
@@ -348,6 +319,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .card-top .label { font-size: 0.6rem; color: var(--muted); }
   .card :global(.fig) { margin-bottom: 1.1rem; }
   .card-body { flex: 1; display: flex; flex-direction: column; }
+  .did { list-style: disc; padding-left: 1.05em; }
+  .did li + li { margin-top: 0.2rem; }
+  .did li::marker { color: var(--c); }
   .evidence { display: grid; gap: 0.6rem; font-size: 0.88rem; line-height: 1.45; margin-bottom: 0.8rem; }
   .result { margin-bottom: 1rem; padding: 0.55rem 0.75rem; border-left: 3px solid var(--c); background: color-mix(in srgb, var(--c) 8%, transparent); font-size: 0.92rem; font-weight: 600; line-height: 1.35; }
   .card h3 { font-size: 1.12rem; font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; }
@@ -363,7 +337,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .also { margin-top: clamp(1.75rem, 3.5vh, 2.5rem); }
   .also-title { display: flex; align-items: center; gap: 1.1rem; font-size: 0.64rem; color: var(--muted); margin-bottom: 1.25rem; }
   .also-title::after { content: ''; flex: 1; border-top: 1px solid var(--hair); }
-  .also ul { display: grid; grid-template-columns: repeat(5, 1fr); }
+  .also ul { display: grid; grid-template-columns: repeat(3, 1fr); row-gap: 1.25rem; }
+  .also li:nth-child(3n + 1) { border-left: 0; padding-left: 0; }
   .also li { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.1rem 1.25rem; border-left: 1px solid var(--hair); font-size: 0.92rem; line-height: 1.45; }
   .also li:first-child { border-left: 0; padding-left: 0; }
   .also strong { font-weight: 600; font-size: 1rem; }
@@ -379,49 +354,38 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .see-more[open] .when-open { display: inline; }
   .cards.extra { margin-top: 1.5rem; }
 
-  /* ── 04 Skills: title | one of three layouts (S1/S2/S3) | current focus ── */
-  .skills { --pill-on: var(--navy); display: grid; grid-template-columns: 0.62fr 3fr 0.9fr; column-gap: clamp(1.25rem, 2.5vw, 2.5rem); align-items: center; }
-  .skills-title .chapter-title { font-size: clamp(2.2rem, 1rem + 2vw, 3rem); }
-  .skills-sub { margin-top: 0.9rem; font-size: 1.05rem; opacity: 0.9; }
-  .skill-views { align-self: stretch; }
-  /* S1 capability cards */
-  .caps { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .cap { padding: 1rem 1.1rem; border: 1px solid var(--hair); }
-  .cap h3 { font-size: 0.64rem; font-weight: 600; }
-  .impact { margin: 0.35rem 0 0.8rem; font-size: 0.9rem; font-style: italic; opacity: 0.8; }
-  .cap .pill { --c: var(--blue); font-size: 0.82rem; }
-  .used { margin-top: 0.7rem; font-size: 0.78rem; opacity: 0.7; }
-  /* S2 stack columns */
-  .cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(1rem, 2vw, 2rem); }
-  .col h3 { font-size: 0.64rem; font-weight: 600; padding-bottom: 0.6rem; margin-bottom: 0.4rem; border-bottom: 1px solid var(--hair); }
-  .col li { display: flex; justify-content: space-between; align-items: baseline; gap: 0.6rem; padding: 0.3rem 0; font-size: 0.9rem; line-height: 1.35; }
-  /* S3 proof table */
-  .proof { width: 100%; border-collapse: collapse; font-size: 0.9rem; line-height: 1.35; }
-  .proof th, .proof td { text-align: left; padding: 0.42rem 1rem 0.42rem 0; vertical-align: top; }
-  .proof thead th { font-size: 0.58rem; font-weight: 600; opacity: 0.7; padding-bottom: 0.6rem; border-bottom: 1px solid var(--hair); }
-  .proof tbody + tbody { border-top: 1px solid var(--hair); }
-  .proof tbody tr:first-child > * { padding-top: 0.7rem; }
-  .proof .area { font-weight: 600; white-space: nowrap; }
-  .proof .where { opacity: 0.75; }
-  .proof tr.best td:nth-of-type(1) { color: var(--blue); font-weight: 600; }
-  .proof .lvl { margin-left: 0; }
-  .domain { margin-top: 1rem; font-size: 0.82rem; opacity: 0.7; }
-  .direction { background: var(--navy-2); padding: 1.4rem; }
-  .direction .label { display: flex; align-items: center; gap: 0.8rem; font-size: 0.64rem; font-weight: 600; }
+  /* ── 04 Skills: head row | 2×2 area tables | full-width current focus ── */
+  .skills { --pill-on: var(--navy); display: grid; gap: clamp(1.5rem, 3vh, 2.25rem); }
+  .skills-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem clamp(1.25rem, 2.5vw, 2.5rem); }
+  .skills-head .chapter-title { font-size: clamp(2.2rem, 1rem + 2vw, 3rem); }
+  .skills-sub { font-size: 1.05rem; opacity: 0.9; }
+  .skills-head .legend { margin-left: auto; }
+  .areas { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem clamp(1.5rem, 3vw, 3rem); }
+  .area-block h3 { display: flex; align-items: baseline; gap: 0.8rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--hair); }
+  .area-block h3 .label { font-size: 0.66rem; font-weight: 600; }
+  .cap-name { font-size: 0.9rem; font-style: italic; font-weight: 400; opacity: 0.7; }
+  /* one row per skill: name | dots | where used */
+  .rows li { display: grid; grid-template-columns: 1fr 3.2rem 1.15fr; align-items: baseline; gap: 0.25rem 1rem; padding: 0.38rem 0; font-size: 0.9rem; line-height: 1.35; border-bottom: 1px solid color-mix(in srgb, currentColor 10%, transparent); }
+  .rows .rows-head { padding: 0.45rem 0 0.2rem; font-size: 0.54rem; font-weight: 600; opacity: 0.55; border-bottom: 0; }
+  .rows .where { opacity: 0.72; font-size: 0.84rem; }
+  .rows li.best .skill { color: var(--blue); font-weight: 600; }
+  .rows .lvl { margin-left: 0; }
+  .focus-strip { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 0.75rem clamp(1.25rem, 2.5vw, 2.5rem); background: var(--navy-2); padding: 1.1rem 1.4rem; }
+  .focus-strip > .label { display: flex; align-items: center; gap: 0.7rem; font-size: 0.64rem; font-weight: 600; white-space: nowrap; }
+  .focus-strip .domain { grid-column: 1 / -1; font-size: 0.8rem; opacity: 0.65; }
   /* skill level: three dots, filled up to the level; currentColor so lit pills invert them */
   .lvl { display: inline-flex; gap: 3px; margin-left: 0.55em; vertical-align: 0.05em; }
   .lvl i { width: 6px; height: 6px; border-radius: 50%; border: 1px solid currentColor; opacity: 0.85; }
   .l1 i:nth-child(1), .l2 i:nth-child(-n + 2), .l3 i { background: currentColor; }
-  .legend { margin-top: 1.1rem; display: grid; gap: 0.35rem; font-size: 0.58rem; opacity: 0.8; }
+  .legend { display: flex; flex-wrap: wrap; gap: 0.35rem 1.2rem; font-size: 0.58rem; opacity: 0.8; }
   .legend .lvl { margin: 0 0.8em 0 0; }
-  .focus { list-style: disc; padding-left: 1.1em; font-size: 0.9rem; line-height: 1.45; margin: 0.9rem 0 1.2rem; opacity: 0.92; }
-  .focus li + li { margin-top: 0.35rem; }
-  .focus li::marker { color: var(--blue); }
+  .focus { display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; font-size: 0.92rem; line-height: 1.4; opacity: 0.92; }
+  .focus li::before { content: '•'; margin-right: 0.5em; color: var(--blue); }
   .talk { white-space: nowrap; --btn: var(--paper-ink); --btn-ink: var(--navy); padding: 0.6em 1.3em; }
 
   /* temporary variant switcher (?variants): body class picks which .vt / .vs blocks show */
-  .tags-a .vt:not(.vt-a), .tags-b .vt:not(.vt-b), .tags-c .vt:not(.vt-c),
-  .skills-s1 .vs:not(.vs-s1), .skills-s2 .vs:not(.vs-s2), .skills-s3 .vs:not(.vs-s3) { display: none !important; }
+  .tags-a .vt:not(.vt-a), .tags-b .vt:not(.vt-b), .tags-c .vt:not(.vt-c) { display: none !important; }
+
   .variants { position: fixed; z-index: 20; right: 16px; bottom: 16px; display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; padding: 0.6rem 0.8rem; background: white; color: var(--ink); border: 1px solid var(--card-line); box-shadow: 0 6px 20px rgb(0 0 0 / 0.15); font: 500 0.75rem / 1 var(--sans); }
   .variants[hidden] { display: none; }
   .variants button { margin-left: 0.25rem; padding: 0.35em 0.6em; border: 1px solid var(--navy); background: none; color: var(--navy); font: inherit; cursor: pointer; }
@@ -455,14 +419,11 @@ const pad = (n: number) => String(n).padStart(2, '0');
   }
   @media (max-width: 1199px) {
     .motto { display: none; }
-    .skills { grid-template-columns: 1fr; row-gap: 2rem; }
-    .skill-views { border-left: 0; padding-left: 0; }
-    .highlights { grid-template-columns: repeat(3, 1fr); }
     .card { padding: 0.9rem; }
     .card-top { gap: 0.6rem; }
     .cards.extra, .also ul { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 1.25rem; }
-    .cols { grid-template-columns: 1fr 1fr; row-gap: 1.5rem; }
-    .also li:nth-child(3) { border-left: 0; padding-left: 0; }
+    .also li:nth-child(n) { border-left: 1px solid var(--hair); padding-left: 1.25rem; }
+    .also li:nth-child(odd) { border-left: 0; padding-left: 0; }
   }
   @media (max-width: 899px) {
     nav { display: none; } /* ponytail: no mobile menu; the page is one scroll */
@@ -470,11 +431,10 @@ const pad = (n: number) => String(n).padStart(2, '0');
     .profile, .skills, .foot { grid-template-columns: 1fr; row-gap: 1.75rem; }
     .visual { min-height: 260px; }
     .all { margin-left: 0; }
-    .cards, .cards.extra, .also ul, .caps, .cols, .highlights { grid-template-columns: 1fr; row-gap: 1.25rem; }
-    .proof thead { display: none; }
-    .proof tr { display: grid; grid-template-columns: 1fr auto; }
-    .proof .area { display: block; padding-top: 1rem; }
-    .proof .where { grid-column: 1 / -1; padding-top: 0; font-size: 0.82rem; }
+    .cards, .cards.extra, .also ul, .areas { grid-template-columns: 1fr; row-gap: 1.25rem; }
+    .rows li { grid-template-columns: 1fr auto; }
+    .rows .where { grid-column: 1 / -1; }
+    .focus-strip { grid-template-columns: 1fr; }
     .also li { border-left: 0; padding-left: 0; }
     .foot > .vrule { justify-content: flex-start; min-height: 0; }
     .open { text-align: left; }
